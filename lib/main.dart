@@ -1,10 +1,11 @@
+
+import 'package:e_ticaret_flutter_app/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'register.dart';
 import 'login.dart';
 import 'notifications.dart';
 import 'message_list.dart';
-import 'my_product.dart';
-import 'ad_detail.dart';
+import 'main_drawer.dart';
 
 
 void main() => runApp(MyApp());
@@ -34,6 +35,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.yellow,
       appBar: AppBar(title: Text('Sayfalar Arası Geçiş / Navigation')),
+      drawer: MainDrawer(),
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text('HomePage'),

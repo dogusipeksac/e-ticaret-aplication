@@ -1,4 +1,4 @@
-import 'p/home/dogus/AndroidStudioProjects/navigation_flutter_appackage:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 
 //bildirimler sayfasi
