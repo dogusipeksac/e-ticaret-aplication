@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'login.dart';
 import 'main_drawer.dart';
+import 'register.dart';
 
 
 //anasayfa
