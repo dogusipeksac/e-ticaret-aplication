@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-kn/values-kn.xml",
+            "outputFile": "C:\\Users\\bunya\\Desktop\\Projects\\GitProject\\e-ticaret-application\\Eticaret_flutter_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-kn\\values-kn.xml",
             "map": [
                 {
-                    "source": "/home/dogus/.gradle/caches/transforms-2/files-2.1/2e94107f30f39be366a17347c2bf100b/core-1.1.0/res/values-kn/values-kn.xml",
+                    "source": "C:\\Users\\bunya\\.gradle\\caches\\transforms-2\\files-2.1\\2e94107f30f39be366a17347c2bf100b\\core-1.1.0\\res\\values-kn\\values-kn.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
