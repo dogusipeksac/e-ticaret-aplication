@@ -1,13 +1,12 @@
 
-
-import 'package:e_ticaret_flutter_app/my_product.dart';
-import 'package:e_ticaret_flutter_app/setting.dart';
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'my_product.dart';
 import 'register.dart';
 import 'login.dart';
 import 'notifications.dart';
 import 'message_list.dart';
+import 'setting.dart';
 
 
 void main() => runApp(MyApp());
