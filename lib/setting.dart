@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
-//ürünlerim listesinin sayfası
-class MyProduct extends StatelessWidget {
-  static String routeName = '/routeMessagePage';
+//Ayarlar sayfası
+class Setting extends StatelessWidget {
+  static String routeName = '/routeSetting';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(title: Text('Ürünlerim')),
+      appBar: AppBar(title: Text('Ayarlar')),
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('ürünlerimin listesi sayfası'),
-
+            Text('message list sayfası'),
           ])),
     );
   }

@@ -1,11 +1,13 @@
 
-import 'package:e_ticaret_flutter_app/main_drawer.dart';
+
+import 'package:e_ticaret_flutter_app/my_product.dart';
+import 'package:e_ticaret_flutter_app/setting.dart';
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 import 'register.dart';
 import 'login.dart';
 import 'notifications.dart';
 import 'message_list.dart';
-import 'main_drawer.dart';
 
 
 void main() => runApp(MyApp());
@@ -22,44 +24,12 @@ class MyApp extends StatelessWidget {
           Register.routeName: (context) => Register(),
           Notifications.routeName: (context) => Notifications(),
           MessageList.routeName:(context)=>MessageList(),
-
+          Setting.routeName:(context)=>Setting(),
+          MyProduct.routeName:(context)=>MyProduct(),
         });
   }
 }
-//anasayfa
-class HomePage extends StatelessWidget {
 
-  static String routeName = '/';
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.yellow,
-      appBar: AppBar(title: Text('Sayfalar Arası Geçiş / Navigation')),
-      drawer: MainDrawer(),
-      body: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('HomePage'),
-            RaisedButton(
-                child: Text('Git -> Login'),
-                onPressed: () {
-                  Navigator.pushNamed(context, Login.routeName);
-                }), RaisedButton(
-                child: Text('Git -> Register'),
-                onPressed: () {
-                  Navigator.pushNamed(context, Register.routeName);
-                }),
-            RaisedButton(
-                child: Text('Git -> Notification'),
-                onPressed: () {
-                  Navigator.pushNamed(context, Notifications.routeName);
-                }),
-
-
-
-          ])),
-    );
-  }
-}
 
 
 

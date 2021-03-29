@@ -1,12 +1,24 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'for_text_style.dart';
+import 'home_page.dart';
+import 'login.dart';
+import 'main.dart';
+import 'message_list.dart';
+import 'my_product.dart';
+import 'notifications.dart';
+import 'setting.dart';
 
 
 class MainDrawer extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
+
         children: <Widget> [
         Container(
           width: double.infinity,
@@ -33,9 +45,9 @@ class MainDrawer extends StatelessWidget {
                   child: Container(
                     child: Column(
                       children: <Widget>[
-                        Text('name'),
-                        Text('yoldız'),
-                        Text('urun'),
+                        Text('name',style: textStyle),
+                        Text('yildız',style: textStyle),
+                        Text('urun',style: textStyle),
                       ],
                     ),
                   ),
@@ -45,7 +57,49 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
         ),
-
+          Expanded(
+            child: Container(
+              color: Theme.of(context).accentColor,
+              child: Column(
+                children:<Widget> [
+                  ListTile(
+                    title: Text('Anasayfa',style: menuTextStyle),
+                    onTap:(){
+                      Navigator.pushNamed(context, HomePage.routeName);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Bildirimler',style: menuTextStyle),
+                    onTap:(){
+                      Navigator.pushNamed(context, Notifications.routeName);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Mesajlar',style: menuTextStyle),
+                    onTap: (){
+                      Navigator.pushNamed(context, MessageList.routeName);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Ürünlerim',style: menuTextStyle),
+                    onTap: (){
+                      Navigator.pushNamed(context, MyProduct.routeName);
+                    },
+                  ), ListTile(
+                    title: Text('Ayarlar',style: menuTextStyle),
+                    onTap:(){
+                      Navigator.pushNamed(context, Setting.routeName);
+                    },
+                  ),ListTile(
+                    title: Text('Çıkış',style: menuTextStyle),
+                    onTap: (){
+                      Navigator.pushNamed(context, Login.routeName);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
 
         ],
       ),
