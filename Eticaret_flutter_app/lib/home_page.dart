@@ -66,11 +66,11 @@ class HomePage extends StatelessWidget {
           children: List.generate(4, (index) {
             return Center(
               child: Container(
-                height: 175,
-                width: 185,
+                height: 190,
+                width: 180,
                 decoration: BoxDecoration(
                   color: filterBackground,
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -78,31 +78,34 @@ class HomePage extends StatelessWidget {
                   children: [
                     Center(
                       child: Container(
-                        width: 92,
-                        height: 92,
-                        margin: EdgeInsets.only(top: 5),
+                        width: 80,
+                        height: 80,
+                        margin: EdgeInsets.only(top: 10),
                         decoration: BoxDecoration(
                           color: text,
+                          boxShadow: [BoxShadow(color: background,blurRadius: 12)],
                           borderRadius: BorderRadius.all(Radius.circular(21))
                         ),
                         child: Center(
-                          child: Image.asset("images/Opel_KARL.jpg",),
+                          child: Image.asset("assets/images/Opel_KARL.jpg",),
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 6),
                     Padding(
                       padding: const EdgeInsets.only(left:15.0),
                       child: Text("Urun ile ilgili baslik bulunacak.",
                         textAlign: TextAlign.start,
-                        style: TextStyle(color: text,fontSize: 12),
+                        style: TextStyle(color: text,fontSize: 13,fontFamily: 'Tienne',),
                       ),
                     ),
+                    SizedBox(height: 6),
                     Padding(
                       padding: const EdgeInsets.only(left:15.0),
-                      child: Text("1000 \$",
+                      child: Text("43.500 TL",
                         style: TextStyle(
                           color: themeColor,
+                          fontFamily: 'Tienne',
                           fontSize: 11,
                           decoration: TextDecoration.lineThrough
                         ),
@@ -110,11 +113,11 @@ class HomePage extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left:15.0),
-                      child: Text("1000 \$",
+                      child: Text("60.000 TL",
                         style: TextStyle(
                           color: themeColor,
                           fontSize: 20,
-                          decoration: TextDecoration.lineThrough
+                          fontFamily: 'Tienne'
                         ),
                       ),
                     ),

@@ -118,7 +118,7 @@ class Register extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 100,
                     backgroundColor: const Color(0XFF),
-                    backgroundImage: AssetImage("images/Logo.png"),
+                    backgroundImage: AssetImage("assets/images/Logo.png"),
                   ),
                 ),
                 SizedBox(height: 40),
