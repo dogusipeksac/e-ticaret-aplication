@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'my_product.dart';
@@ -7,6 +6,7 @@ import 'login.dart';
 import 'notifications.dart';
 import 'message_list.dart';
 import 'setting.dart';
+import 'filter.dart';
 
 
 void main() => runApp(MyApp());
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
           MessageList.routeName:(context)=>MessageList(),
           Setting.routeName:(context)=>Setting(),
           MyProduct.routeName:(context)=>MyProduct(),
+          Filter.routeName:(context)=>Filter(),
         });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'filter.dart';
 import 'login.dart';
 import 'main_drawer.dart';
 import 'register.dart';
@@ -26,6 +27,10 @@ class HomePage extends StatelessWidget {
                 child: Text('Git -> Register'),
                 onPressed: () {
                   Navigator.pushNamed(context, Register.routeName);
+                }),RaisedButton(
+                child: Text('Git -> Filter'),
+                onPressed: () {
+                  Navigator.pushNamed(context, Filter.routeName);
                 }),
 
 
