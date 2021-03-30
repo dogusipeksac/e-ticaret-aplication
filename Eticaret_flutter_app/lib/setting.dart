@@ -76,7 +76,7 @@ Widget SettingHome(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(child: Image.asset("Image/kapak.png",)),
+            Center(child: Image.asset("images/kapak.png",)),
             SizedBox(height: 10.0),
             Text('Profil İsmi',style: TextStyle(fontWeight: FontWeight.bold,color:acikBeyaz)),
             SizedBox(height: 10.0),

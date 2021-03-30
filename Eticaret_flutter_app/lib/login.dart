@@ -67,7 +67,7 @@ Widget LoginHome(BuildContext context) {
           children: <Widget>[
             Center(
                 child: Image.asset(
-              "Image/kapak.png",
+              "images/kapak.png",
             )),
             SizedBox(height: 10.0),
             Text('Email',
