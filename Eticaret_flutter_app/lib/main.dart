@@ -1,3 +1,4 @@
+import 'package:e_ticaret_flutter_app/View/product_share_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'View/home_page.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           Setting.routeName:(context)=>Setting(),
           MyProduct.routeName:(context)=>MyProduct(),
           Filter.routeName:(context)=>Filter(),
+          ProductSharePage.routeName:(context)=>ProductSharePage(),
         });
   }
 }
