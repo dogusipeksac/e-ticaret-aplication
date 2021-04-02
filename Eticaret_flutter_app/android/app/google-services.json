@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24758081227",
+    "project_id": "eticaret-bab00",
+    "storage_bucket": "eticaret-bab00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24758081227:android:6c272af6707dd4a584ed4e",
+        "android_client_info": {
+          "package_name": "com.example.e_ticaret_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24758081227-mr5s6b4lpptbrq9mtmpicja9v7le1h4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBfgDtlZxbSXI8Bngc5SwLBvGFi4hySaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24758081227-mr5s6b4lpptbrq9mtmpicja9v7le1h4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
