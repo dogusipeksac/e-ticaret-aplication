@@ -1,4 +1,5 @@
 
+import 'package:e_ticaret_flutter_app/ad_detail.dart';
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'my_product.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
           Notifications.routeName: (context) => Notifications(),
           MessageList.routeName:(context)=>MessageList(),
           Setting.routeName:(context)=>Setting(),
-          MyProduct.routeName:(context)=>MyProduct(),
+          AdDetail.routeName:(context)=>AdDetail(),
         });
   }
 }

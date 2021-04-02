@@ -1,14 +1,20 @@
+import 'dart:io';
+
+import 'package:e_ticaret_flutter_app/ad_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'login.dart';
 import 'main_drawer.dart';
-import 'register.dart';
 import 'color_cons.dart';
 
 //anasayfa
 class HomePage extends StatelessWidget {
   static String routeName = '/';
+  void _onTileClicked(int index,var context){
+    debugPrint("You tapped on item $index");
+    Navigator.pushNamed(context, AdDetail.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     const double _radius = 3;
@@ -38,7 +44,6 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
-
     return Scaffold(
       backgroundColor: themeColor,
       resizeToAvoidBottomInset: false,
@@ -64,67 +69,69 @@ class HomePage extends StatelessWidget {
         child: GridView.count(
           crossAxisCount: 2,
           children: List.generate(4, (index) {
-            return Center(
-              child: Container(
-                height: 190,
-                width: 180,
-                decoration: BoxDecoration(
-                  color: filterBackground,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        margin: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          color: text,
-                          boxShadow: [BoxShadow(color: background,blurRadius: 12)],
-                          borderRadius: BorderRadius.all(Radius.circular(21))
-                        ),
-                        child: Center(
-                          child: Image.asset("assets/images/Opel_KARL.jpg",),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Padding(
-                      padding: const EdgeInsets.only(left:15.0),
-                      child: Text("Urun ile ilgili baslik bulunacak.",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: text,fontSize: 13,fontFamily: 'Tienne',),
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Padding(
-                      padding: const EdgeInsets.only(left:15.0),
-                      child: Text("43.500 TL",
-                        style: TextStyle(
-                          color: themeColor,
-                          fontFamily: 'Tienne',
-                          fontSize: 11,
-                          decoration: TextDecoration.lineThrough
+            return InkResponse(
+              child: Center(
+                child: Container(
+                  height: 190,
+                  width: 180,
+                  decoration: BoxDecoration(
+                    color: filterBackground,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          margin: EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                            color: text,
+                            boxShadow: [BoxShadow(color: background,blurRadius: 12)],
+                            borderRadius: BorderRadius.all(Radius.circular(21))
+                          ),
+                          child: Center(
+                            child: Image.asset("assets/images/Opel_KARL.jpg",),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left:15.0),
-                      child: Text("60.000 TL",
-                        style: TextStyle(
-                          color: themeColor,
-                          fontSize: 20,
-                          fontFamily: 'Tienne'
+                      SizedBox(height: 6),
+                      Padding(
+                        padding: const EdgeInsets.only(left:15.0),
+                        child: Text("Urun ile ilgili baslik bulunacak.",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(color: text,fontSize: 13,fontFamily: 'Tienne',),
                         ),
                       ),
-                    ),
-
-                  ],
+                      SizedBox(height: 6),
+                      Padding(
+                        padding: const EdgeInsets.only(left:15.0),
+                        child: Text("43.500 TL",
+                          style: TextStyle(
+                            color: themeColor,
+                            fontFamily: 'Tienne',
+                            fontSize: 11,
+                            decoration: TextDecoration.lineThrough
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left:15.0),
+                        child: Text("60.000 TL",
+                          style: TextStyle(
+                            color: themeColor,
+                            fontSize: 20,
+                            fontFamily: 'Tienne'
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              onTap:() => _onTileClicked(index,context),
             );
           }),
         ),
