@@ -1,3 +1,4 @@
+import 'package:e_ticaret_flutter_app/View/ad_detail_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'View/home_page.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           Setting.routeName:(context)=>Setting(),
           MyProduct.routeName:(context)=>MyProduct(),
           Filter.routeName:(context)=>Filter(),
+          AdDetail.routeName:(context)=>AdDetail(),
         });
   }
 }
