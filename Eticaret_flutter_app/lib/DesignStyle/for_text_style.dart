@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 TextStyle textStyle=TextStyle(
-  fontSize: 22,
+  fontSize: 20,
   fontWeight: FontWeight.bold,
   color:Colors.white,
 );
