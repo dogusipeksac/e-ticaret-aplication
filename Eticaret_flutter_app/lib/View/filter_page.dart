@@ -16,6 +16,9 @@ class _FilterPageState extends State<FilterPage> {
   String valueChoseCategoryOnTheFilter;
   String valueChoseLocation;
   String selectedButtonSmartSort;
+  final TextEditingController _minimum = TextEditingController();
+  final TextEditingController _maximum = TextEditingController();
+
 
   ProductShareService _productSharePage = ProductShareService();
   String image = "";
@@ -34,24 +37,55 @@ class _FilterPageState extends State<FilterPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width*2;
     double height = MediaQuery.of(context).size.height*2;
-    final TextEditingController _title = TextEditingController();
 
 
-    final title = TextField(
-        controller: _title,
+
+    final minumumPrize = TextField(
+        controller: _minimum,
         obscureText: false,
-        cursorColor: text,
+        cursorColor: themeColor,
         textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.bottom,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 18,
           color: text,
         ),
         decoration: InputDecoration(
-          hintText: "İlanınız için başlık giriniz.",
+          hintText: "Minimum(TL)",
           hintStyle: TextStyle(color: textDarkHint),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color:filterBackground,width: 0),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground,width: 0),
+          ),
           border: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
+            borderSide: BorderSide(color: filterBackground,width: 0),
+          ),
+        ));
+    final maximumPrize = TextField(
+        controller: _minimum,
+        obscureText: false,
+        cursorColor: themeColor,
+        textAlign: TextAlign.start,
+        textAlignVertical: TextAlignVertical.bottom,
+        style: TextStyle(
+          fontSize: 18,
+          color: text,
+        ),
+        decoration: InputDecoration(
+          hintText: "Maximum(TL)",
+          hintStyle: TextStyle(color: textDarkHint),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color:filterBackground,width: 0),
+          ),
+          focusedBorder: UnderlineInputBorder(
+
+            borderSide: BorderSide(color: filterBackground,width: 0),
+          ),
+          border: UnderlineInputBorder(
+
+            borderSide: BorderSide(color: filterBackground,width: 0),
           ),
         ));
 
@@ -142,6 +176,10 @@ class _FilterPageState extends State<FilterPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 1,right: 10),
                           child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left:15.0,bottom: 2),
+                              child: minumumPrize,
+                            ),
                             height: 50,
                             decoration: BoxDecoration(
                               color: filterBackground,
@@ -155,6 +193,10 @@ class _FilterPageState extends State<FilterPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 1,right: 10),
                           child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left:15.0,bottom: 2),
+                              child: maximumPrize,
+                            ),
                             height: 50,
                             decoration: BoxDecoration(
                               color: filterBackground,

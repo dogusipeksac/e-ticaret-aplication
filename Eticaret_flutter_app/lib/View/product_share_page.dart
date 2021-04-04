@@ -15,8 +15,14 @@ class _ProductSharePageState extends State<ProductSharePage> {
   String valueChoseCategory;
   String valueChoseProductState;
 
+
   ProductShareService _productSharePage = ProductShareService();
-  String image = "";
+
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _price = TextEditingController();
+  String image="images/Opel_KARL.jpg";
+  TextEditingController _explain = TextEditingController();
+
 
   List listItemCategory = [
     "2.El Araç",
@@ -31,49 +37,91 @@ class _ProductSharePageState extends State<ProductSharePage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width*2;
     double height = MediaQuery.of(context).size.height*2;
-    final TextEditingController _title = TextEditingController();
-    final TextEditingController _price = TextEditingController();
-    String image="images/Opel_KARL.jpg";
-    TextEditingController _explain = TextEditingController();
+
 
 
 
 
     final title = TextField(
+
         controller: _title,
         obscureText: false,
-        cursorColor: text,
+        cursorColor: themeColor,
         textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.bottom,
+
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 15,
           color: text,
         ),
         decoration: InputDecoration(
-          hintText: "İlanınız için başlık giriniz.",
-          hintStyle: TextStyle(color: textDarkHint),
+          labelText: "İlanınız için başlık giriniz.",
+          labelStyle: TextStyle(color: textDarkHint),
           border: UnderlineInputBorder(
             borderSide: BorderSide(color: filterBackground),
           ),
-        ));
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color:filterBackground),
+          ),
+        )
+
+    );
+
     final price = TextField(
+
+        maxLines: 1,
         controller: _price,
         obscureText: false,
-        cursorColor: text,
+        cursorColor: themeColor,
         textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.bottom,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 15,
           color: text,
         ),
         decoration: InputDecoration(
-          hintText: "İlanınız için fiyat giriniz.",
-          hintStyle: TextStyle(color: textDarkHint),
+          labelText: "İlanınız için fiyat giriniz.",
+          labelStyle: TextStyle(color: textDarkHint),
           border: UnderlineInputBorder(
             borderSide: BorderSide(color: filterBackground),
           ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color:filterBackground),
+          ),
+
+
         ));
-    final explain = TextField(
+    final explane=TextField(
+
+      style: TextStyle(
+        fontSize: 15,
+        color: text,
+      ),
+        controller: _explain,
+        maxLines: 5,
+        cursorColor: themeColor,
+        decoration: InputDecoration(
+          alignLabelWithHint: true,
+          hintText: "İlanınız için tanım giriniz.",
+          hintStyle: TextStyle(color: textDarkHint),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color:filterBackground),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground),
+          ),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground),
+          ),
+        )
+    );
+    /*final explain = TextField(
         controller: _explain,
         obscureText: false,
         cursorColor: text,
@@ -89,7 +137,8 @@ class _ProductSharePageState extends State<ProductSharePage> {
           border: UnderlineInputBorder(
             borderSide: BorderSide(color: filterBackground),
           ),
-        ));
+        ));*/
+
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -246,6 +295,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
+
                         padding: EdgeInsets.only(left: 14, right: 14),
                         decoration: BoxDecoration(
                           color: filterBackground,
@@ -336,14 +386,14 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
-                        height: 100,
+                        height: 150,
                         padding: EdgeInsets.only(left: 14, right: 14),
                         decoration: BoxDecoration(
                           color: filterBackground,
                           border: Border.all(color: filterBackground, width: 1),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: explain,
+                        child: explane,
                       ),
                     ),
                     SizedBox(height: 20,),
