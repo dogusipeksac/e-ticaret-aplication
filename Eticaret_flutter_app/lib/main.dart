@@ -1,4 +1,5 @@
 import 'package:e_ticaret_flutter_app/View/ad_detail_page.dart';
+import 'package:e_ticaret_flutter_app/View/message_detail.dart';
 import 'package:e_ticaret_flutter_app/View/product_share_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
           FilterPage.routeName:(context)=>FilterPage(),
           ProductSharePage.routeName:(context)=>ProductSharePage(),
           AdDetail.routeName:(context)=>AdDetail(),
+          MessageDetail.routeName:(context)=>MessageDetail(),
         });
   }
 }
