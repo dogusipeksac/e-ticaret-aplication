@@ -4,8 +4,6 @@ import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-
-
 class FilterPage extends StatefulWidget {
   static String routeName = '/routeFilterPage';
   @override
@@ -15,10 +13,9 @@ class FilterPage extends StatefulWidget {
 class _FilterPageState extends State<FilterPage> {
   String valueChoseCategoryOnTheFilter;
   String valueChoseLocation;
-  String selectedButtonSmartSort;
+  String selectedButtonSmartSort="";
   final TextEditingController _minimum = TextEditingController();
   final TextEditingController _maximum = TextEditingController();
-
 
   ProductShareService _productSharePage = ProductShareService();
   String image = "";
@@ -32,13 +29,10 @@ class _FilterPageState extends State<FilterPage> {
   ];
   List listItemCityState = ["Adana", "Mersin", "İstanbul", "Malatya"];
 
-
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width*2;
-    double height = MediaQuery.of(context).size.height*2;
-
-
+    double width = MediaQuery.of(context).size.width * 2;
+    double height = MediaQuery.of(context).size.height * 2;
 
     final minumumPrize = TextField(
         controller: _minimum,
@@ -54,17 +48,17 @@ class _FilterPageState extends State<FilterPage> {
           hintText: "Minimum(TL)",
           hintStyle: TextStyle(color: textDarkHint),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color:filterBackground,width: 0),
+            borderSide: BorderSide(color: filterBackground, width: 0),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground,width: 0),
+            borderSide: BorderSide(color: filterBackground, width: 0),
           ),
           border: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground,width: 0),
+            borderSide: BorderSide(color: filterBackground, width: 0),
           ),
         ));
     final maximumPrize = TextField(
-        controller: _minimum,
+        controller: _maximum,
         obscureText: false,
         cursorColor: themeColor,
         textAlign: TextAlign.start,
@@ -77,19 +71,15 @@ class _FilterPageState extends State<FilterPage> {
           hintText: "Maximum(TL)",
           hintStyle: TextStyle(color: textDarkHint),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color:filterBackground,width: 0),
+            borderSide: BorderSide(color: filterBackground, width: 0),
           ),
           focusedBorder: UnderlineInputBorder(
-
-            borderSide: BorderSide(color: filterBackground,width: 0),
+            borderSide: BorderSide(color: filterBackground, width: 0),
           ),
           border: UnderlineInputBorder(
-
-            borderSide: BorderSide(color: filterBackground,width: 0),
+            borderSide: BorderSide(color: filterBackground, width: 0),
           ),
         ));
-
-
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -108,20 +98,19 @@ class _FilterPageState extends State<FilterPage> {
           Container(
             child: ListView(
               shrinkWrap: true,
-              padding: EdgeInsets.all(10),/*
+              padding: EdgeInsets.all(10),
+              /*
                   controller: myScrollConroller,*/
               children: <Widget>[
-
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Text(
                     "Tüm Kategori",
                     style: filterStyle,
                   ),
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Container(
                     padding: EdgeInsets.only(left: 14, right: 14),
                     decoration: BoxDecoration(
@@ -159,31 +148,32 @@ class _FilterPageState extends State<FilterPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Text(
                     "Fiyat Aralığı",
                     style: filterStyle,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
-
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 1,right: 10),
+                          padding: const EdgeInsets.only(left: 1, right: 10),
                           child: Container(
                             child: Padding(
-                              padding: const EdgeInsets.only(left:15.0,bottom: 2),
+                              padding:
+                                  const EdgeInsets.only(left: 15.0, bottom: 2),
                               child: minumumPrize,
                             ),
                             height: 50,
                             decoration: BoxDecoration(
                               color: filterBackground,
-                              border: Border.all(color: filterBackground, width: 1),
+                              border:
+                                  Border.all(color: filterBackground, width: 1),
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
@@ -191,35 +181,35 @@ class _FilterPageState extends State<FilterPage> {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 1,right: 10),
+                          padding: const EdgeInsets.only(left: 1, right: 10),
                           child: Container(
                             child: Padding(
-                              padding: const EdgeInsets.only(left:15.0,bottom: 2),
+                              padding:
+                                  const EdgeInsets.only(left: 15.0, bottom: 2),
                               child: maximumPrize,
                             ),
                             height: 50,
                             decoration: BoxDecoration(
                               color: filterBackground,
-                              border: Border.all(color: filterBackground, width: 1),
+                              border:
+                                  Border.all(color: filterBackground, width: 1),
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
                         ),
                       ),
                     ],
-
                   ),
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Text(
                     "Konum",
                     style: filterStyle,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Container(
                     padding: EdgeInsets.only(left: 14, right: 14),
                     decoration: BoxDecoration(
@@ -232,7 +222,6 @@ class _FilterPageState extends State<FilterPage> {
                         "Bir şehir seç...",
                         style: textStyle,
                       ),
-
                       dropdownColor: background,
                       icon: Icon(
                         Icons.arrow_drop_down,
@@ -258,25 +247,75 @@ class _FilterPageState extends State<FilterPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                   child: Text(
                     "Sırala",
                     style: filterStyle,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
-                  child: Container(
-                      height: 50,
-                      width: 50,
-                      padding: EdgeInsets.only(left: 14, right: 14),
-                      decoration: BoxDecoration(
-                        color: filterBackground,
-                        border: Border.all(color: filterBackground, width: 1),
-                        borderRadius: BorderRadius.circular(15),
-                      )
+                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        children:<Widget> [
+                          ForShortContainer(
+                            onPressed: () {
+                              setState(() {
+                                selectedButtonSmartSort = 'Akıllı';
+                              });
+                            },
+                            color: selectedButtonSmartSort == 'Akıllı'
+                                ? themeColor
+                                : filterBackground,
+                            child: Center(child: Text("Akıllı Sıralama",style: textStyle,)),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ForShortContainer(
+                            onPressed: () {
+                              setState(() {
+                                selectedButtonSmartSort = 'Düşük';
+                              });
+                            },
+                            color: selectedButtonSmartSort == 'Düşük'
+                                ? themeColor
+                                : filterBackground,
+                            child: Center(child: Text("Azalan fiyat",style: textStyle,)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        children: [
+                          ForShortContainer(
+                            onPressed: () {
+                              setState(() {
+                                selectedButtonSmartSort = 'Yüksek';
+                              });
+                            },
+                            color: selectedButtonSmartSort == 'Yüksek'
+                                ? themeColor
+                                : filterBackground,
+                            child: Center(child: Text("Artan fiyat",style: textStyle,)),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                       /*   ForShortContainer(
+                            onPressed: () {
+                              setState(() {
+                                selectedButtonSmartSort = '';
+                              });
+                            },
+                          ),*/
+                        ],
+                      ),
+                    ],
                   ),
-
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -289,16 +328,15 @@ class _FilterPageState extends State<FilterPage> {
                       border: Border.all(color: filterBackground, width: 1),
                       borderRadius: BorderRadius.circular(15),
                     ),
-
                     child: FlatButton(
-                      onPressed: (){
-
-                      },
-                      child: Text("Filtrele",style:TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                      ),),
-
+                      onPressed: () {},
+                      child: Text(
+                        "Filtrele",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -314,5 +352,27 @@ class _FilterPageState extends State<FilterPage> {
   }
 }
 
+class ForShortContainer extends StatelessWidget {
+  final Function onPressed;
+  final Widget child;
+  final Color color;
 
+  ForShortContainer({this.onPressed, this.child, this.color});
 
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: this.onPressed,
+      child: Container(
+          child: this.child,
+          height: 50,
+          width: 150,
+          padding: EdgeInsets.only(left: 14, right: 14),
+          decoration: BoxDecoration(
+            color: color,
+            border: Border.all(color: filterBackground, width: 1),
+            borderRadius: BorderRadius.circular(15),
+          )),
+    );
+  }
+}
