@@ -87,7 +87,7 @@ class _AdDetailState extends State<AdDetail> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 5,
+            flex: 4,
               child: Material(
                 color: Colors.transparent,
                 child: Stack(
@@ -264,7 +264,7 @@ class SelectedPhoto extends StatelessWidget {
     dots.add(
       Padding(
         padding: const EdgeInsets.only(left: 4.0),
-        child: Text("$photoIndex/$numberOfDots",style: TextStyle(color: Colors.black,fontSize: 20),),
+        child: Text("${photoIndex+1}/$numberOfDots",style: TextStyle(color: Colors.black,fontSize: 20),),
       )
     );
     return dots;

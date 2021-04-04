@@ -12,4 +12,9 @@ TextStyle menuTextStyle=TextStyle(
   fontWeight: FontWeight.bold,
   color:Colors.white,
 );
+TextStyle filterStyle=TextStyle(
+  fontSize: 26,
+  fontWeight: FontWeight.normal,
+  color:Colors.white,
+);
 

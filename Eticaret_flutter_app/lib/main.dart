@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           MessageList.routeName:(context)=>MessageList(),
           Setting.routeName:(context)=>Setting(),
           MyProduct.routeName:(context)=>MyProduct(),
-          Filter.routeName:(context)=>Filter(),
+          FilterPage.routeName:(context)=>FilterPage(),
           ProductSharePage.routeName:(context)=>ProductSharePage(),
           AdDetail.routeName:(context)=>AdDetail(),
         });

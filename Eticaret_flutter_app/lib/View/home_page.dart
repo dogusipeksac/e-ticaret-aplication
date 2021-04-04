@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
         elevation: 0,
         actions: <Widget>[
           IconButton(
-            onPressed: () {Navigator.pushNamed(context, Filter.routeName);},
+            onPressed: () {Navigator.pushNamed(context, FilterPage.routeName);},
             icon: Icon(
               Icons.filter_list_rounded,
               color: Colors.white,

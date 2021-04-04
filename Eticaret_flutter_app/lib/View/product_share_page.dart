@@ -14,8 +14,9 @@ class ProductSharePage extends StatefulWidget {
 class _ProductSharePageState extends State<ProductSharePage> {
   String valueChoseCategory;
   String valueChoseProductState;
-  ProductShareService _productSharePage=ProductShareService();
-  String image="";
+
+  ProductShareService _productSharePage = ProductShareService();
+  String image = "";
 
   List listItemCategory = [
     "2.El Araç",
@@ -28,9 +29,15 @@ class _ProductSharePageState extends State<ProductSharePage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width*2;
+    double height = MediaQuery.of(context).size.height*2;
     final TextEditingController _title = TextEditingController();
     final TextEditingController _price = TextEditingController();
+    String image="images/Opel_KARL.jpg";
     TextEditingController _explain = TextEditingController();
+
+
+
 
     final title = TextField(
         controller: _title,
@@ -68,7 +75,6 @@ class _ProductSharePageState extends State<ProductSharePage> {
         ));
     final explain = TextField(
         controller: _explain,
-
         obscureText: false,
         cursorColor: text,
         textAlign: TextAlign.start,
@@ -86,87 +92,110 @@ class _ProductSharePageState extends State<ProductSharePage> {
         ));
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       backgroundColor: background,
       appBar: AppBar(
         title: Text('İlan detayı'),
         backgroundColor: background,
       ),
-      body: Container(
-
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+      body: Stack(
+        children: <Widget>[
+         // DraggableScrollableSheet(
+           /* initialChildSize: 0.6,
+            minChildSize: 0.1,
+            maxChildSize: 0.9,*/
+           // builder: (BuildContext context, myScrollConroller) {
+              Container(
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(10),/*
+                  controller: myScrollConroller,*/
+                  children: [
+                    Container(
+                      height: 150.0,
+                      width: width,
+                      color: Colors.transparent,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child:Image.asset(
+                              image,
+                              width: 150,
+                              height: 150,
+                            ),
+                              margin: EdgeInsets.all(5),
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child:Image.asset(
+                                image,
+                                width: 150,
+                                height: 150,
+                              ),
+                              margin: EdgeInsets.all(5),
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child:Image.asset(
+                                image,
+                                width: 150,
+                                height: 150,
+                              ),
+                              margin: EdgeInsets.all(5),
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child:FlatButton(
+                                child: Icon(Icons.add),
+                                onPressed: (){},
+                              ),
+                              margin: EdgeInsets.all(5),
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Kategori",
+                        style: TextStyle(color: themeColor, fontSize: 20),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      child: FlatButton(),
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 1,
-                color: Colors.transparent,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Kategori",
-                      style: TextStyle(color: themeColor, fontSize: 20),
-                    ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
@@ -205,22 +234,15 @@ class _ProductSharePageState extends State<ProductSharePage> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 1,
-                color: Colors.transparent,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Başlık",
-                      style: TextStyle(color: themeColor, fontSize: 20),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Başlık",
+                        style: TextStyle(color: themeColor, fontSize: 20),
+                      ),
                     ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
@@ -233,22 +255,15 @@ class _ProductSharePageState extends State<ProductSharePage> {
                         child: title,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 1,
-                color: Colors.transparent,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Fiyat",
-                      style: TextStyle(color: themeColor, fontSize: 20),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Fiyat",
+                        style: TextStyle(color: themeColor, fontSize: 20),
+                      ),
                     ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
@@ -261,22 +276,15 @@ class _ProductSharePageState extends State<ProductSharePage> {
                         child: price,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 1,
-                color: Colors.transparent,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Durum",
-                      style: TextStyle(color: themeColor, fontSize: 20),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Durum",
+                        style: TextStyle(color: themeColor, fontSize: 20),
+                      ),
                     ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
@@ -291,6 +299,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                             "Bir durum seç...",
                             style: textStyle,
                           ),
+
                           dropdownColor: background,
                           icon: Icon(
                             Icons.arrow_drop_down,
@@ -315,25 +324,19 @@ class _ProductSharePageState extends State<ProductSharePage> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 1,
-                color: Colors.transparent,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Tanım",
-                      style: TextStyle(color: themeColor, fontSize: 20),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Tanım",
+                        style: TextStyle(color: themeColor, fontSize: 20),
+                      ),
                     ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
+                        height: 100,
                         padding: EdgeInsets.only(left: 14, right: 14),
                         decoration: BoxDecoration(
                           color: filterBackground,
@@ -343,38 +346,43 @@ class _ProductSharePageState extends State<ProductSharePage> {
                         child: explain,
                       ),
                     ),
+                    SizedBox(height: 20,),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Container(
+                        padding: EdgeInsets.only(left: 14, right: 14),
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: themeColor,
+                          border: Border.all(color: filterBackground, width: 1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+
+                        child: FlatButton(
+                          onPressed: (){
+                            _productSharePage.addProduct(image,
+                                valueChoseCategory,
+                                _title.text,
+                                _price.text,
+                                valueChoseProductState,
+                                _explain.text);
+                          },
+                          child: Text("İlanı Paylaş",style:TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                          ),),
+
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 14, right: 14),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: themeColor,
-                border: Border.all(color: filterBackground, width: 1),
-                borderRadius: BorderRadius.circular(15),
-              ),
 
-              child: FlatButton(
-                onPressed: (){
-                  _productSharePage.addProduct(image,
-                      valueChoseCategory,
-                      _title.text,
-                      _price.text,
-                      valueChoseProductState,
-                      _explain.text);
-                },
-                child: Text("İlanı Paylaş",style:TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                ),),
-
-              ),
-            ),
-          ],
-        ),
+            //},
+         // ),
+        ],
       ),
     );
   }
