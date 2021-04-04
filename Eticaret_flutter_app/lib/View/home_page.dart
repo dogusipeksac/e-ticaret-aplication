@@ -66,81 +66,83 @@ class HomePage extends StatelessWidget {
       ),
       drawer: MainDrawer(),
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(4, (index) {
-            return InkResponse(
-              child: Center(
-                child: Container(
-                  height: 190,
-                  width: 180,
-                  decoration: BoxDecoration(
-                    color: filterBackground,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          margin: EdgeInsets.only(top: 10),
-                          decoration: BoxDecoration(
-                              color: text,
-                              boxShadow: [BoxShadow(color: background,blurRadius: 12)],
-                              borderRadius: BorderRadius.all(Radius.circular(21))
-                          ),
-                          child: Center(
-                            child: Image.asset("images/Opel_KARL.jpg",),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Padding(
-                        padding: const EdgeInsets.only(left:15.0),
-                        child: Text("Urun ile ilgili baslik bulunacak.",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(color: text,fontSize: 13,fontFamily: 'Tienne',),
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Padding(
-                        padding: const EdgeInsets.only(left:15.0),
-                        child: Text("43.500 TL",
-                          style: TextStyle(
-                              color: themeColor,
-                              fontFamily: 'Tienne',
-                              fontSize: 11,
-                              decoration: TextDecoration.lineThrough
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left:15.0),
-                        child: Text("60.000 TL",
-                          style: TextStyle(
-                              color: themeColor,
-                              fontSize: 20,
-                              fontFamily: 'Tienne'
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              onTap:() => _onTileClicked(index,context),
-            );
-          }),
-        ),
         decoration: new BoxDecoration(
           color: background,
-          borderRadius: new BorderRadius.only(
-            bottomRight: const Radius.circular(180),
+        ),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom:35.0,left: 10.0,right: 10.0),
+          child: ListView(
+            children: List.generate(4, (index) {
+              return InkResponse(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height/2,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: filterBackground,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Image.asset("images/Opel_KARL.jpg",fit: BoxFit.fill),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex:1,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 15.0),
+                                  child: Text("Urun ile ilgili baslik bulunacak.",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(color: text,fontSize: 18,fontFamily: 'Tienne',fontWeight: FontWeight.bold,),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("43.500 TL",
+                                      style: TextStyle(
+                                          color: themeColor,
+                                          fontFamily: 'Tienne',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          decoration: TextDecoration.lineThrough
+                                      ),
+                                    ),
+                                    Text("60.000 TL",
+                                      style: TextStyle(
+                                        color: themeColor,
+                                        fontSize: 25,
+                                        fontFamily: 'Tienne',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                onTap:() => _onTileClicked(index,context),
+              );
+            }),
           ),
         ),
       ),
@@ -148,6 +150,7 @@ class HomePage extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(context, ProductSharePage.routeName);
         },
+        elevation: 5,
         shape: CircleBorder(
             side: BorderSide(
                 color: background,

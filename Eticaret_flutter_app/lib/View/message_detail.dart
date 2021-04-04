@@ -15,7 +15,7 @@ class _MessageDetailState extends State<MessageDetail> {
   String productName = '2034 Opel Corsa Hataasız';
   String productPrices = '47.000 TL';
   String productImage = 'https://images4.alphacoders.com/880/880948.jpg';
-  String profileImage = 'https://randomuser.me/api/portraits/men/5.jpg';
+  String profileImage = 'https://cdn.pixabay.com/photo/2017/01/31/21/23/avatar-2027366_1280.png';
   List<ChatMessage> messages = [
     ChatMessage(
       messageContent: "Hello, Will",
@@ -190,7 +190,7 @@ class _MessageDetailState extends State<MessageDetail> {
                       child: Container(
                         decoration: BoxDecoration(
                             color: filterBackground,
-                            borderRadius: BorderRadius.circular(15)),
+                            borderRadius: BorderRadius.circular(10)),
                         padding: EdgeInsets.only(left: 15),
                         child: TextField(
                           style: TextStyle(color: text),

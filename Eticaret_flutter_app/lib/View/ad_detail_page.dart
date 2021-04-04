@@ -55,6 +55,22 @@ class _AdDetailState extends State<AdDetail> {
               photoIndex: current_photo,
             ),
           ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: themeColor,
+                  size: 40,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
