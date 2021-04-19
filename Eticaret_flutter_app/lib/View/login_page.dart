@@ -1,4 +1,5 @@
 import 'package:e_ticaret_flutter_app/Database/auth.dart';
+import 'package:e_ticaret_flutter_app/Dialog/alert_dialog_cool.dart';
 import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -61,8 +62,18 @@ controller: _emailController,
           style: TextStyle(color: text, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          _authService.signIn(_emailController.text,_passwordController.text)
-          .then((value) =>  Navigator.pushNamed(context, HomePage.routeName));
+
+          setState(() {
+            if(_emailController.text.toString().isNotEmpty && _passwordController.text.toString().isNotEmpty){
+              _authService.signIn(_emailController.text,_passwordController.text)
+                  .then((value) =>  Navigator.pushNamed(context, HomePage.routeName));
+
+            }
+            else{
+              ErorrAlertLogin(context);
+            }
+          });
+
          },
       ),
     );

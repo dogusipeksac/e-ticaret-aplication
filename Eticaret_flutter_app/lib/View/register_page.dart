@@ -1,4 +1,8 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:e_ticaret_flutter_app/Database/auth.dart';
+import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:e_ticaret_flutter_app/Dialog/alert_dialog_cool.dart';
+
 import 'package:e_ticaret_flutter_app/View/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +21,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController=TextEditingController();
   final TextEditingController _passwordController=TextEditingController();
   final TextEditingController _nameSurnameController=TextEditingController();
+
+
+
+
 
   AuthService _authService=AuthService();
 
@@ -108,8 +116,19 @@ class _RegisterPageState extends State<RegisterPage> {
           style: TextStyle(color: text, fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          _authService.createPerson(_emailController.text,_nameSurnameController.text,_passwordController.text);
-          Navigator.pushNamed(context, LoginPage.routeName);},
+          setState(() {
+            if(_emailController.text.toString().isNotEmpty && _nameSurnameController.text.toString().isNotEmpty && _passwordController.text.toString().isNotEmpty){
+              //_authService.createPerson(_emailController.text,_nameSurnameController.text,_passwordController.text);
+              SuccessAlertRegister(context);
+              //
+            }
+            else{
+              ErorrAlertRegister(context);
+            }
+          });
+
+          }
+
       ),
     );
     final goLoginButton = TextButton(
