@@ -1,5 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
-import 'package:e_ticaret_flutter_app/Database/auth.dart';
+import 'package:e_ticaret_flutter_app/Database/auth_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:e_ticaret_flutter_app/Dialog/alert_dialog_cool.dart';
 
@@ -118,8 +118,8 @@ class _RegisterPageState extends State<RegisterPage> {
         onPressed: () {
           setState(() {
             if(_emailController.text.toString().isNotEmpty && _nameSurnameController.text.toString().isNotEmpty && _passwordController.text.toString().isNotEmpty){
-              //_authService.createPerson(_emailController.text,_nameSurnameController.text,_passwordController.text);
               SuccessAlertRegister(context);
+              _authService.createPerson(_emailController.text,_nameSurnameController.text,_passwordController.text);
               //
             }
             else{
@@ -144,7 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: themeColor,
       body: Container(
         child: Expanded(

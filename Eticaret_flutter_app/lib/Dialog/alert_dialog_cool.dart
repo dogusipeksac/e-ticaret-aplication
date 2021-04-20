@@ -2,6 +2,7 @@
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
+import 'package:e_ticaret_flutter_app/View/login_page.dart';
 import 'package:e_ticaret_flutter_app/View/register_page.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ import 'package:flutter/material.dart';
      text: "Kayıt başarılı!",
      title: 'Harika.',
      confirmBtnText: 'Giriş için tıkla!',
-     // onConfirmBtnTap: () => Navigator.pushNamed(context, LoginPage.routeName),
+      onConfirmBtnTap: () => Navigator.pushNamed(context, LoginPage.routeName),
      backgroundColor: background,
      confirmBtnColor: background,
    );
@@ -45,6 +46,33 @@ void ErorrAlertLogin(BuildContext context){
     confirmBtnColor: background,
   );
 }
+
+void LoadingAlertLogin(BuildContext context){
+  CoolAlert.show(
+    context: context,
+    type: CoolAlertType.loading,
+    text: "Loading!",
+    backgroundColor: background,
+    confirmBtnColor: background,
+  );
+
+}
+
+void SuccessAlertLogin(BuildContext context){
+  CoolAlert.show(
+    context: context,
+    type: CoolAlertType.success,
+    text: "Giriş başarılı!",
+    title: 'Harika.',
+    confirmBtnText: 'Anasayfaya Dön!',
+    backgroundColor: background,
+    confirmBtnColor: background,
+  );
+
+}
+
+
+
 
 
 

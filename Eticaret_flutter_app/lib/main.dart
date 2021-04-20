@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           RegisterPage.routeName: (context) => RegisterPage(),
           Notifications.routeName: (context) => Notifications(),
           MessageList.routeName:(context)=>MessageList(),
-          Setting.routeName:(context)=>Setting(),
+          SettingPage.routeName:(context)=>SettingPage(),
           MyProduct.routeName:(context)=>MyProduct(),
           FilterPage.routeName:(context)=>FilterPage(),
           ProductSharePage.routeName:(context)=>ProductSharePage(),

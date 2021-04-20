@@ -199,7 +199,7 @@ class MainDrawer extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             fontFamily: 'Tienne')),
                     onTap: () {
-                      Navigator.pushNamed(context, Setting.routeName);
+                      Navigator.pushNamed(context, SettingPage.routeName);
                     },
                   ),
                   Container(

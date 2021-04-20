@@ -88,265 +88,253 @@ class _FilterPageState extends State<FilterPage> {
         title: Text('Filtrele'),
         backgroundColor: background,
       ),
-      body: Stack(
-        children: [
-          // DraggableScrollableSheet(
-          /* initialChildSize: 0.6,
-            minChildSize: 0.1,
-            maxChildSize: 0.9,*/
-          // builder: (BuildContext context, myScrollConroller) {
-          Container(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(10),
-              /*
-                  controller: myScrollConroller,*/
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Text(
-                    "Tüm Kategori",
-                    style: filterStyle,
-                  ),
+      body: Container(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(10),
+          /*
+              controller: myScrollConroller,*/
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Text(
+                "Tüm Kategori",
+                style: filterStyle,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Container(
+                padding: EdgeInsets.only(left: 14, right: 14),
+                decoration: BoxDecoration(
+                  color: filterBackground,
+                  border: Border.all(color: filterBackground, width: 1),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 14, right: 14),
-                    decoration: BoxDecoration(
-                      color: filterBackground,
-                      border: Border.all(color: filterBackground, width: 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: DropdownButton(
-                      hint: Text(
-                        "Bir kategori seç...",
-                        style: textStyle,
-                      ),
-                      dropdownColor: background,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.white,
-                      ),
-                      iconSize: 30,
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      value: valueChoseCategoryOnTheFilter,
-                      style: textStyle,
-                      onChanged: (newValue) {
-                        setState(() {
-                          valueChoseCategoryOnTheFilter = newValue;
-                        });
-                      },
-                      items: listItemCategory.map((valueItem) {
-                        return DropdownMenuItem(
-                          value: valueItem,
-                          child: Text(valueItem),
-                        );
-                      }).toList(),
-                    ),
+                child: DropdownButton(
+                  hint: Text(
+                    "Bir kategori seç...",
+                    style: textStyle,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Text(
-                    "Fiyat Aralığı",
-                    style: filterStyle,
+                  dropdownColor: background,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
                   ),
+                  iconSize: 30,
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  value: valueChoseCategoryOnTheFilter,
+                  style: textStyle,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueChoseCategoryOnTheFilter = newValue;
+                    });
+                  },
+                  items: listItemCategory.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Text(
+                "Fiyat Aralığı",
+                style: filterStyle,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 1, right: 10),
+                      child: Container(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 1, right: 10),
-                          child: Container(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15.0, bottom: 2),
-                              child: minumumPrize,
-                            ),
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: filterBackground,
-                              border:
-                                  Border.all(color: filterBackground, width: 1),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
+                          padding:
+                              const EdgeInsets.only(left: 15.0, bottom: 2),
+                          child: minumumPrize,
+                        ),
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: filterBackground,
+                          border:
+                              Border.all(color: filterBackground, width: 1),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                       ),
-                      Expanded(
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 1, right: 10),
+                      child: Container(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 1, right: 10),
-                          child: Container(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15.0, bottom: 2),
-                              child: maximumPrize,
-                            ),
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: filterBackground,
-                              border:
-                                  Border.all(color: filterBackground, width: 1),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
+                          padding:
+                              const EdgeInsets.only(left: 15.0, bottom: 2),
+                          child: maximumPrize,
+                        ),
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: filterBackground,
+                          border:
+                              Border.all(color: filterBackground, width: 1),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Text(
-                    "Konum",
-                    style: filterStyle,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 14, right: 14),
-                    decoration: BoxDecoration(
-                      color: filterBackground,
-                      border: Border.all(color: filterBackground, width: 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: DropdownButton(
-                      hint: Text(
-                        "Bir şehir seç...",
-                        style: textStyle,
-                      ),
-                      dropdownColor: background,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.white,
-                      ),
-                      iconSize: 30,
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      value: valueChoseLocation,
-                      style: textStyle,
-                      onChanged: (newValue) {
-                        setState(() {
-                          valueChoseLocation = newValue;
-                        });
-                      },
-                      items: listItemCityState.map((valueItem) {
-                        return DropdownMenuItem(
-                          value: valueItem,
-                          child: Text(valueItem),
-                        );
-                      }).toList(),
                     ),
                   ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Text(
+                "Konum",
+                style: filterStyle,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Container(
+                padding: EdgeInsets.only(left: 14, right: 14),
+                decoration: BoxDecoration(
+                  color: filterBackground,
+                  border: Border.all(color: filterBackground, width: 1),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Text(
-                    "Sırala",
-                    style: filterStyle,
+                child: DropdownButton(
+                  hint: Text(
+                    "Bir şehir seç...",
+                    style: textStyle,
                   ),
+                  dropdownColor: background,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
+                  ),
+                  iconSize: 30,
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  value: valueChoseLocation,
+                  style: textStyle,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueChoseLocation = newValue;
+                    });
+                  },
+                  items: listItemCityState.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        children:<Widget> [
-                          ForShortContainer(
-                            onPressed: () {
-                              setState(() {
-                                selectedButtonSmartSort = 'Akıllı';
-                              });
-                            },
-                            color: selectedButtonSmartSort == 'Akıllı'
-                                ? themeColor
-                                : filterBackground,
-                            child: Center(child: Text("Akıllı Sıralama",style: textStyle,)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          ForShortContainer(
-                            onPressed: () {
-                              setState(() {
-                                selectedButtonSmartSort = 'Düşük';
-                              });
-                            },
-                            color: selectedButtonSmartSort == 'Düşük'
-                                ? themeColor
-                                : filterBackground,
-                            child: Center(child: Text("Azalan fiyat",style: textStyle,)),
-                          ),
-                        ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Text(
+                "Sırala",
+                style: filterStyle,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              child: Column(
+                children: [
+                  Row(
+                    children:<Widget> [
+                      ForShortContainer(
+                        onPressed: () {
+                          setState(() {
+                            selectedButtonSmartSort = 'Akıllı';
+                          });
+                        },
+                        color: selectedButtonSmartSort == 'Akıllı'
+                            ? themeColor
+                            : filterBackground,
+                        child: Center(child: Text("Akıllı Sıralama",style: textStyle,)),
                       ),
                       SizedBox(
-                        height: 15,
+                        width: 10,
                       ),
-                      Row(
-                        children: [
-                          ForShortContainer(
-                            onPressed: () {
-                              setState(() {
-                                selectedButtonSmartSort = 'Yüksek';
-                              });
-                            },
-                            color: selectedButtonSmartSort == 'Yüksek'
-                                ? themeColor
-                                : filterBackground,
-                            child: Center(child: Text("Artan fiyat",style: textStyle,)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                       /*   ForShortContainer(
-                            onPressed: () {
-                              setState(() {
-                                selectedButtonSmartSort = '';
-                              });
-                            },
-                          ),*/
-                        ],
+                      ForShortContainer(
+                        onPressed: () {
+                          setState(() {
+                            selectedButtonSmartSort = 'Düşük';
+                          });
+                        },
+                        color: selectedButtonSmartSort == 'Düşük'
+                            ? themeColor
+                            : filterBackground,
+                        child: Center(child: Text("Azalan fiyat",style: textStyle,)),
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    padding: EdgeInsets.only(left: 14, right: 14),
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: themeColor,
-                      border: Border.all(color: filterBackground, width: 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: FlatButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Filtrele",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                        ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      ForShortContainer(
+                        onPressed: () {
+                          setState(() {
+                            selectedButtonSmartSort = 'Yüksek';
+                          });
+                        },
+                        color: selectedButtonSmartSort == 'Yüksek'
+                            ? themeColor
+                            : filterBackground,
+                        child: Center(child: Text("Artan fiyat",style: textStyle,)),
                       ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                   /*   ForShortContainer(
+                        onPressed: () {
+                          setState(() {
+                            selectedButtonSmartSort = '';
+                          });
+                        },
+                      ),*/
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                padding: EdgeInsets.only(left: 14, right: 14),
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: themeColor,
+                  border: Border.all(color: filterBackground, width: 1),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: FlatButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Filtrele",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25,
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-
-          //},
-          // ),
-        ],
+          ],
+        ),
       ),
     );
   }
