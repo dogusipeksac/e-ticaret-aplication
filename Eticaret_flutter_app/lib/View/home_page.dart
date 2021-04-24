@@ -3,6 +3,7 @@ import 'package:e_ticaret_flutter_app/View/filter_page.dart';
 import 'package:e_ticaret_flutter_app/View/product_share_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'ad_detail_page.dart';
 import '../Map/main_drawer.dart';

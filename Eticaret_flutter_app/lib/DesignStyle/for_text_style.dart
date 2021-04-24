@@ -1,20 +1,21 @@
-
-
 import 'package:flutter/material.dart';
 
-TextStyle textStyle=TextStyle(
+TextStyle textStyle = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.bold,
-  color:Colors.white,
+  color: Colors.white,
 );
-TextStyle menuTextStyle=TextStyle(
+TextStyle menuTextStyle = TextStyle(
   fontSize: 23,
   fontWeight: FontWeight.bold,
-  color:Colors.white,
+  color: Colors.white,
 );
-TextStyle filterStyle=TextStyle(
+TextStyle filterStyle = TextStyle(
   fontSize: 26,
   fontWeight: FontWeight.normal,
-  color:Colors.white,
+  color: Colors.white,
 );
 
+TextStyle inputTexts =
+    TextStyle(fontWeight: FontWeight.bold,
+        color: Colors.white);

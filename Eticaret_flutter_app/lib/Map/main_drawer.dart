@@ -1,10 +1,10 @@
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
+import 'package:e_ticaret_flutter_app/View/authentication/login/login_page.dart';
+import 'package:e_ticaret_flutter_app/View/authentication/setting/setting_page.dart';
 import 'package:e_ticaret_flutter_app/View/home_page.dart';
-import 'package:e_ticaret_flutter_app/View/login_page.dart';
 import 'package:e_ticaret_flutter_app/View/message_list_page.dart';
 import 'package:e_ticaret_flutter_app/View/my_product_page.dart';
 import 'package:e_ticaret_flutter_app/View/notifications_page.dart';
-import 'package:e_ticaret_flutter_app/View/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -41,41 +41,39 @@ class MainDrawer extends StatelessWidget {
                       ),
                     ),
                     Center(
-                      child: Padding(
+                      child: Container(
                         padding: const EdgeInsets.only(left: 8),
-                        child: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Kullanıcı Adı',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Kullanıcı Adı',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Tienne',
+                                fontWeight: FontWeight.bold,
+                                color: text,
+                              ),
+                            ),
+                            IconTheme(
+                              data: IconThemeData(
+                                color: Colors.deepOrange,
+                                size: 20,
+                              ),
+                              child: StarDisplay(value: 3),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top:8.0),
+                              child: Text(
+                                '19 Ürün',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontFamily: 'Tienne',
-                                  fontWeight: FontWeight.bold,
                                   color: text,
                                 ),
                               ),
-                              IconTheme(
-                                data: IconThemeData(
-                                  color: Colors.deepOrange,
-                                  size: 20,
-                                ),
-                                child: StarDisplay(value: 3),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top:8.0),
-                                child: Text(
-                                  '19 Ürün',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'Tienne',
-                                    color: text,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

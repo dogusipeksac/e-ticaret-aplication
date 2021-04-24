@@ -7,7 +7,7 @@ import 'package:e_ticaret_flutter_app/Entitiy/product.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProductShareService{
-    final FirebaseFirestore _firestore=FirebaseFirestore.instance;
+  /*  //final FirebaseFirestore _firestore=FirebaseFirestore.instance;
     StorageService _storageService=StorageService();
     String mediaUrl="";
 
@@ -17,7 +17,7 @@ class ProductShareService{
         String productPrize,
         String productState,
         String productOfDescription)async{
-      var ref=_firestore.collection("Product");
+   //   var ref=_firestore.collection("Product");
       if(image==null){
           mediaUrl='';
       }
@@ -44,6 +44,6 @@ class ProductShareService{
           productState:productState,
           productTitle:productTitle);
     }
-
+*/
 
 }

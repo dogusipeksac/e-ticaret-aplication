@@ -50,84 +50,18 @@ class _ProductSharePageState extends State<ProductSharePage> {
     double width = MediaQuery.of(context).size.width * 2;
     double height = MediaQuery.of(context).size.height * 2;
 
-    final title = TextField(
-        controller: _title,
-        obscureText: false,
-        cursorColor: themeColor,
-        textAlign: TextAlign.start,
-        textAlignVertical: TextAlignVertical.bottom,
-        style: TextStyle(
-          fontSize: 15,
-          color: text,
-        ),
-        decoration: InputDecoration(
-          labelText: "İlanınız için başlık giriniz.",
-          labelStyle: TextStyle(color: textDarkHint),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-        ));
+    final title = productShareTextfieldPackage(
+        _title, false, "İlanınız için başlık giriniz.", 1);
 
-    final price = TextField(
-        maxLines: 1,
-        controller: _price,
-        obscureText: false,
-        cursorColor: themeColor,
-        textAlign: TextAlign.start,
-        textAlignVertical: TextAlignVertical.bottom,
-        style: TextStyle(
-          fontSize: 15,
-          color: text,
-        ),
-        decoration: InputDecoration(
-          labelText: "İlanınız için fiyat giriniz.",
-          labelStyle: TextStyle(color: textDarkHint),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-        ));
-    final explane = TextField(
-        style: TextStyle(
-          fontSize: 15,
-          color: text,
-        ),
-        controller: _explain,
-        maxLines: 5,
-        cursorColor: themeColor,
-        decoration: InputDecoration(
-          alignLabelWithHint: true,
-          hintText: "İlanınız için tanım giriniz.",
-          hintStyle: TextStyle(color: textDarkHint),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-        ));
+    final price = productShareTextfieldPackage(
+        _price, false, "İlanınız için fiyat giriniz.", 1);
+    final explane = productShareTextfieldPackage(
+        _explain, false, "İlanınız için tanım giriniz.", 5);
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       backgroundColor: background,
-      appBar: AppBar(
-        title: Text('İlan detayı'),
-        backgroundColor: background,
-      ),
+      appBar: produckShareScaffoldAppbar(),
       body: Container(
         child: ListView(
           shrinkWrap: true,
@@ -137,74 +71,25 @@ class _ProductSharePageState extends State<ProductSharePage> {
           children: [
             Container(
               height: 150.0,
-              width: width,
+
               color: Colors.transparent,
               child: Row(
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: Container(
-                      child: imagePlace(),
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                    child: littleImageSharePage(),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Container(
-                      child:Image.asset(
-                        image,
-                        width: 150,
-                        height: 150,
-                      ),
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                    child: littleImageSharePage(),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Container(
-                      child:Image.asset(
-                        image,
-                        width: 150,
-                        height: 150,
-                      ),
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                    child:littleImageSharePage(),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Container(
-                      child: FlatButton(
-                        child: Icon(Icons.add),
-                        onPressed: () {
-                          _onButtonPressedImageAdd();
-                        },
-                      ),
-                      margin: EdgeInsets.all(5),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                    child:littleImageSharePage(),
                   ),
                 ],
               ),
@@ -426,9 +311,68 @@ class _ProductSharePageState extends State<ProductSharePage> {
     );
   }
 
+  Container littleImageSharePage() {
+    return Container(
+      child: FlatButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          _onButtonPressedImageAdd();
+        },
+      ),
+      margin: EdgeInsets.all(5),
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
+
+  }
+
+  AppBar produckShareScaffoldAppbar() {
+    return AppBar(
+      title: Text('İlan detayı'),
+      backgroundColor: background,
+    );
+  }
+
+  TextField productShareTextfieldPackage(
+    TextEditingController controller,
+    bool obscureText,
+    String label,
+    int lineCount,
+  ) {
+    return TextField(
+
+        maxLines: lineCount,
+        controller: _title,
+        obscureText: false,
+        cursorColor: themeColor,
+        textAlign: TextAlign.start,
+        textAlignVertical: TextAlignVertical.center,
+        style: TextStyle(
+          fontSize: 15,
+          color: text,
+        ),
+        decoration: InputDecoration(
+          labelText: "İlanınız için başlık giriniz.",
+          labelStyle: TextStyle(color: textDarkHint),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: filterBackground),
+          ),
+        ));
+  }
+
   void _onButtonPressedImageAdd() {
     showModalBottomSheet(
-      backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         context: context,
         builder: (context) {
           return Container(
@@ -450,9 +394,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     'Kamera',
                     style: TextStyle(color: Colors.white),
                   ),
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                 ),
                 ListTile(
                   leading:
@@ -461,14 +403,11 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     'Galeri',
                     style: TextStyle(color: Colors.white),
                   ),
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
           );
         });
   }
-
 }
