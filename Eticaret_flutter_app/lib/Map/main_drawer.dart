@@ -1,5 +1,5 @@
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
-import 'package:e_ticaret_flutter_app/View/authentication/login/login_page.dart';
+import 'package:e_ticaret_flutter_app/View/authentication/service/auth_service.dart';
 import 'package:e_ticaret_flutter_app/View/authentication/setting/setting_page.dart';
 import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:e_ticaret_flutter_app/View/message_list_page.dart';
@@ -8,9 +8,18 @@ import 'package:e_ticaret_flutter_app/View/notifications_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 
 class MainDrawer extends StatelessWidget {
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      final auth = Provider.of<AuthService>(context, listen: false);
+      await auth.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -220,9 +229,7 @@ class MainDrawer extends StatelessWidget {
                             fontSize: 30,
                             fontWeight: FontWeight.normal,
                             fontFamily: 'Tienne')),
-                    onTap: () {
-                      Navigator.pushNamed(context, LoginPage.routeName);
-                    },
+                    onTap: () =>_signOut(context),
                   ),
                   Container(
                     width: 280,

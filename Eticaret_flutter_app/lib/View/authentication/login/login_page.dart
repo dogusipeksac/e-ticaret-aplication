@@ -8,10 +8,8 @@ import 'package:e_ticaret_flutter_app/View/authentication/service/auth_service.d
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import '../../home_page.dart';
-
 class LoginPage extends StatefulWidget {
-  static String routeName = '/routeLogin';
+  static String routeName = '/routeLoginPage';
 
   @override
   _LoginPageState createState() => _LoginPageState();

@@ -31,7 +31,11 @@ class AuthService {
   String imageAdress =
       'https://i.tmgrup.com.tr/gq/img/920x615/17-06/22/user_male_circle_filled1600.png';
 
-  Stream<User> get authStateChanges => _auth.authStateChanges();
+  Stream<User> get authStateChanges => _auth.authStateChanges()
+      .map((event) {
+        var val = event == null? null : event;
+        return val;
+      });
 
 
 
@@ -49,7 +53,7 @@ class AuthService {
   }
 
   //çıkış yap
-  signOut() async {
+  Future<void> signOut() async {
     return await _auth.signOut();
   }
 //kayıt ol
