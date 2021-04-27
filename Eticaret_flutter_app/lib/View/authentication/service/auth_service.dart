@@ -35,11 +35,16 @@ class AuthService {
 
 
 
-  Future<User> signIn(String email, String password) async {
-
-      var user = await _auth.signInWithEmailAndPassword(
+  Future<bool> signIn(String email, String password) async {
+    try{
+      await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      return user.user;
+      return true;
+
+    }catch(e){
+        return false;
+    }
+
 
   }
 

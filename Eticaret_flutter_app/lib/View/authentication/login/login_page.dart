@@ -1,3 +1,4 @@
+
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:e_ticaret_flutter_app/Dialog/alert_dialog_cool.dart';
@@ -16,77 +17,124 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+String email_valid =
+    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+RegExp regExp = new RegExp(email_valid);
+
 class _LoginPageState extends State<LoginPage> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+   bool obsture=true;
+  bool validation(){
+    final FormState _form=_formKey.currentState;
+    if(_form.validate()){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
-    final emailField = loginTextFieldPackage(
-        'example@hotmail.com', false, _emailController, Icons.mail);
-
-    final passwordField = loginTextFieldPackage(
-        '***********', true, _passwordController, Icons.vpn_key);
-
-    final loginButton = loginButtonDesign(context);
-    final goRegisterButton = goRegisterTextButton(context);
-    return loginScaffoldBody(
-        emailField, passwordField, loginButton, goRegisterButton);
-  }
-
-  Scaffold loginScaffoldBody(TextField emailField, TextField passwordField,
-      Material loginButton, TextButton goRegisterButton) {
-    return Scaffold(
-      backgroundColor: background,
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              Center(
-                  child: Image.asset(
-                "images/kapak.png",
-              )),
-              SizedBox(height: 10.0),
-              titleText('E-posta'),
-              SizedBox(height: 10.0),
-              emailField,
-              SizedBox(height: 10.0),
-              titleText('Şifre'),
-              SizedBox(height: 10.0),
-              passwordField,
-              SizedBox(height: 10.0),
-              Center(child: loginButton),
-              SizedBox(height: 10.0),
-              Center(child: goRegisterButton),
-            ],
-          ),
-          decoration: new BoxDecoration(
-              color: background,
-              borderRadius: new BorderRadius.only(
-                  bottomRight: const Radius.circular(180))),
-        ),
-      ),
-    );
-  }
-
-  TextButton goRegisterTextButton(BuildContext context) {
-    return TextButton(
-      style: ButtonStyle(),
-      onPressed: () {
-        Navigator.pushNamed(context, RegisterPage.routeName);
+    final emailField =  TextFormField(
+      validator: (value) {
+        if (value =="") {
+          return "Boş bırakılamaz.";
+        } else if (!regExp.hasMatch(value)) {
+          return "E mail geçersiz.";
+        }
+        return null;
       },
-      child: Text(
-        "Hesap oluşturak için tıklayın.",
-        style: TextStyle(color: text),
+      controller: _emailController,
+      style: TextStyle(
+        color: Colors.white,
+        decorationColor: Colors.white,
+      ),
+      cursorColor: Colors.white,
+
+      textAlign: TextAlign.start,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        focusColor: Colors.white,
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        prefixIcon: Icon(
+          Icons.email,
+          color: Colors.white,
+          size: 20,
+        ),
+        fillColor: Colors.white,
+        hintText: "example@hotmail.com",
+        hintStyle: TextStyle(color: Colors.white),
+
       ),
     );
-  }
 
-  Material loginButtonDesign(BuildContext context) {
-    return Material(
+    final passwordField = TextFormField(
+      validator: (value) {
+        if (value == "") {
+          return "Boş bırakılmaz.";
+        } else if (value.length < 8) {
+          return "Şifreniz çok kısa en az 8 karakter olmalı.";
+        }
+        return null;
+      },
+      controller: _passwordController,
+      style: TextStyle(
+        color: Colors.white,
+        decorationColor: Colors.white,
+      ),
+      cursorColor: Colors.white,
+      textAlign: TextAlign.start,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        focusColor: Colors.white,
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        prefixIcon: Icon(
+          Icons.vpn_key,
+          color: Colors.white,
+          size: 20,
+        ),
+        suffixIcon: GestureDetector(
+          onTap: () {
+            setState(() {
+              obsture=!obsture;
+            });
+            FocusScope.of(context).unfocus();
+
+          },
+          child: Icon(
+            obsture==true ? Icons.visibility : Icons.visibility_off,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+        fillColor: Colors.white,
+        hintText: "Şifre giriniz.",
+        hintStyle: TextStyle(color: Colors.white),
+
+      ),
+      obscureText: obsture,
+    );;
+
+    final loginButton = Material(
       borderRadius: BorderRadius.circular(1.0),
       color: background,
       // ignore: deprecated_member_use
@@ -99,58 +147,79 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(color: text, fontWeight: FontWeight.bold),
         ),
         onPressed: () async {
+          setState(() async {
+            if (validation()) {
+              bool result=await _authService
+                  .signIn(_emailController.text,
+                  _passwordController.text);
+              // ignore: unrelated_type_equality_checks
+              if(result){
+                SuccessAlertLogin(context);
+              }
+              else{
+                ErorrAlertLogin(context);
+              }
+            }
+          });
           // dynamic result=await _authService.signInAnon();
-          if (_emailController.text.toString().isNotEmpty &&
-              _passwordController.text.toString().isNotEmpty) {
-            _authService
-                .signIn(_emailController.text, _passwordController.text)
-            .then((value) => Navigator.pushNamed(context, HomePage.routeName).
-            then((value) => SuccessAlertLogin(context)));
-          }
-          else{
-            ErorrAlertLogin(context);
-          }
 
-          /*  setState(() {
-          if (_emailController.text.toString().isNotEmpty &&
-              _passwordController.text.toString().isNotEmpty) {
-            _authService
-                .signIn(_emailController.text, _passwordController.text)
-                .then((value) =>
 
-          } else {
-            ErorrAlertLogin(context);
-          }
-        });*/
         },
       ),
     );
-  }
-
-  TextField loginTextFieldPackage(String hintText, bool obscureText,
-      TextEditingController controller, IconData icon) {
-    return TextField(
-      controller: controller,
-      style: TextStyle(
-        color: Colors.white,
-        decorationColor: Colors.white,
+    final goRegisterButton = TextButton(
+      style: ButtonStyle(),
+      onPressed: () {
+        Navigator.pushNamed(context, RegisterPage.routeName);
+      },
+      child: Text(
+        "Hesap oluşturak için tıklayın.",
+        style: TextStyle(color: text),
       ),
-      cursorColor: Colors.white,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        prefixIcon: Icon(
-          icon,
-          color: Colors.white,
-          size: 20,
+    );
+    return Scaffold(
+      backgroundColor: background,
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                Center(
+                    child: Image.asset(
+                      "images/kapak.png",
+                    )),
+                SizedBox(height: 10.0),
+                Text('E-posta', style: inputTexts),
+                SizedBox(height: 10.0),
+                emailField,
+                SizedBox(height: 10.0),
+                Text('Şifre', style: inputTexts),
+                SizedBox(height: 10.0),
+                passwordField,
+                SizedBox(height: 10.0),
+                Center(child: loginButton),
+                SizedBox(height: 10.0),
+                Center(child: goRegisterButton),
+              ],
+            ),
+          ),
+          decoration: new BoxDecoration(
+              color: background,
+              borderRadius: new BorderRadius.only(
+                  bottomRight: const Radius.circular(180))),
         ),
-        fillColor: Colors.white,
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white),
       ),
     );
   }
 
-  Text titleText(String title) {
-    return Text(title, style: inputTexts);
+
+
+
+
+
   }
-}
+
+

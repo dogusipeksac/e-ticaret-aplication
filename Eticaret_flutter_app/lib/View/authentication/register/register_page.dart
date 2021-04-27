@@ -12,130 +12,242 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
+String email_valid =
+    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+RegExp regExp = new RegExp(email_valid);
+
+
 class _RegisterPageState extends State<RegisterPage> {
+
+
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool obsture = true;
+
+  bool validation(){
+    final FormState _form=_formKey.currentState;
+    if(_form.validate()){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameSurnameController = TextEditingController();
-  final darkGrey = background;
 
   AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
-    final nameSurname = registerTextFieldPackage(
-        _nameSurnameController, "Adınızı ve Soyadınızı Giriniz", false,Icons.person_rounded);
-    final email =
-        registerTextFieldPackage(_emailController, "E-Mail Giriniz", false,Icons.mail);
-    final password =
-        registerTextFieldPackage(_passwordController, "Şifre Giriniz.", true,Icons.vpn_key);
-    final registerButton = registerButtonDesing();
+    final nameSurname = TextFormField(
+      validator: (value) {
+        if (value.length < 6) {
+          return "İsminiz çok kısa";
+        } else if (value =="") {
+          return "Boş bırakılmaz.";
+        }
+        return null;
+      },
+      controller: _nameSurnameController,
+      textAlign: TextAlign.start,
+      textAlignVertical: TextAlignVertical.center,
+      style: TextStyle(
+        fontSize: 18,
+        color: text,
+      ),
+      decoration: InputDecoration(
+        focusColor: Colors.white,
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        prefixIcon: Icon(
+          Icons.person,
+          color: Colors.white,
+          size: 20,
+        ),
+        fillColor: Colors.white,
+        hintText: "Ad ve soyad giriniz.",
+        hintStyle: TextStyle(color: Colors.white),
+      ),
+    );
+    final email = TextFormField(
+      validator: (value) {
+        if (value =="") {
+          return "Boş bırakılamaz.";
+        } else if (!regExp.hasMatch(value)) {
+          return "E mail geçersiz.";
+        }
+        return null;
+      },
+      controller: _emailController,
+      textAlign: TextAlign.start,
+      textAlignVertical: TextAlignVertical.center,
+      style: TextStyle(
+        fontSize: 18,
+        color: text,
+      ),
+      decoration: InputDecoration(
+        focusColor: Colors.white,
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        prefixIcon: Icon(
+          Icons.mail,
+          color: Colors.white,
+          size: 20,
+        ),
+        fillColor: Colors.white,
+        hintText: "E mail giriniz.",
+        hintStyle: TextStyle(color: Colors.white),
+      ),
+    );
+    ;
+    final password = TextFormField(
+      validator: (value) {
+        if (value == "") {
+          return "Boş bırakılmaz.";
+        } else if (value.length < 8) {
+          return "Şifreniz çok kısa en az 8 karakter olmalı.";
+        }
+        return null;
+      },
+      controller: _passwordController,
+      obscureText: obsture,
+      textAlign: TextAlign.start,
+      textAlignVertical: TextAlignVertical.center,
+      style: TextStyle(
+        fontSize: 18,
+        color: text,
+      ),
+      decoration: InputDecoration(
+        focusColor: Colors.white,
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            )),
+        prefixIcon: Icon(
+          Icons.vpn_key,
+          color: Colors.white,
+          size: 20,
+        ),
+        suffixIcon: GestureDetector(
+          onTap: () {
+            setState(() {
+              obsture = !obsture;
+            });
+            FocusScope.of(context).unfocus();
+          },
+          child: Icon(
+            obsture == true ? Icons.visibility : Icons.visibility_off,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+        fillColor: Colors.white,
+        hintText: "Şifre giriniz.",
+
+        hintStyle: TextStyle(color: Colors.white),
+      ),
+    );
+    ;
+    final registerButton = Material(
+      borderRadius: BorderRadius.circular(1.0),
+      color: background,
+      // ignore: deprecated_member_use
+      child: FlatButton(
+
+          shape: RoundedRectangleBorder(side: BorderSide(color: text)),
+          minWidth: 50,
+          child: Text(
+            "HESAP OLUŞTUR",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: text, fontWeight: FontWeight.bold),
+          ),
+          onPressed: () async {
+            setState(() {
+              if(validation()){
+                SuccessAlertRegister(context);
+                _authService.createPerson(_emailController.text,
+                    _nameSurnameController.text, _passwordController.text);
+              }
+            });
+          }),
+    );
     final goLoginButton = goLoginTextButton(context);
 
-    return registerScaffoldBody(
-        nameSurname,
-        email,
-        password,
-        registerButton,
-        goLoginButton);
-  }
-
-  Scaffold registerScaffoldBody(TextField nameSurname,
-      TextField email,
-      TextField password,
-      Material registerButton,
-      TextButton goLoginButton) {
     return Scaffold(
-      backgroundColor: themeColor,
-    body: SingleChildScrollView(
-      child: Container(
+      backgroundColor: background,
+      body: Container(
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(15),
-        child: Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(
-                child: CircleAvatar(
-                  radius: 100,
-                  backgroundColor: const Color(0XFF),
-                  backgroundImage: AssetImage("images/Logo.png"),
-                ),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Center(
+                    child: CircleAvatar(
+                      radius: 100,
+                      backgroundColor: const Color(0XFF),
+                      backgroundImage: AssetImage("images/Logo.png"),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  registerTitleText('KAYIT OL', 42),
+                  SizedBox(height: 10),
+                  registerTitleText("Adı Soyadı", 14),
+                  nameSurname,
+                  SizedBox(height: 10),
+                  registerTitleText("E-posta", 14),
+                  email,
+                  SizedBox(height: 10),
+                  registerTitleText("Şifre", 14),
+                  password,
+                  SizedBox(height: 10),
+                  Center(child: registerButton),
+                  SizedBox(height: 10),
+                  Center(child: goLoginButton),
+                ],
               ),
-              SizedBox(height: 10),
-              registerTitleText('KAYIT OL',42),
-              SizedBox(height: 10),
-              registerTitleText("Adı Soyadı",14),
-              nameSurname,
-              SizedBox(height: 10),
-             registerTitleText("E-posta",14),
-              email,
-              SizedBox(height: 10),
-              registerTitleText("Şifre",14),
-              password,
-              SizedBox(height: 10),
-              Center(child: registerButton),
-              SizedBox(height: 10),
-              Center(child: goLoginButton),
             ],
           ),
         ),
-        decoration: new BoxDecoration(
-            color: background,
-            borderRadius:
-                new BorderRadius.only(bottomRight: const Radius.circular(180))),
+
       ),
-    ),
-  );
+    );
   }
 
-  Text registerTitleText(String title,double fontsize) {
+
+  Text registerTitleText(String title, double fontsize) {
     return Text(
-            title,
-            style: TextStyle(
-              color: text,
-              fontSize: fontsize,
-            ),
-          );
+      title,
+      style: TextStyle(
+        color: text,
+        fontSize: fontsize,
+      ),
+    );
   }
 
-  Material registerButtonDesing() {
-    return Material(
-    borderRadius: BorderRadius.circular(1.0),
-    color: background,
-    child: FlatButton(
-        shape: RoundedRectangleBorder(side: BorderSide(color: text)),
-        minWidth: 50,
-        child: Text(
-          "HESAP OLUŞTUR",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: text, fontWeight: FontWeight.bold),
-        ),
-        onPressed: () async {
-          if(_emailController.text.toString().isNotEmpty &&
-              _nameSurnameController.text.toString().isNotEmpty &&
-              _passwordController.text.toString().isNotEmpty){
-            SuccessAlertRegister(context);
-            _authService.createPerson(_emailController.text,
-                _nameSurnameController.text,_passwordController.text);
 
-          }else{
-            ErorrAlertRegister(context);
-          }
-
-          /*   setState(() {
-          if(_emailController.text.toString().isNotEmpty && _nameSurnameController.text.toString().isNotEmpty && _passwordController.text.toString().isNotEmpty){
-            SuccessAlertRegister(context);
-            _authService.createPerson(_emailController.text,
-            _nameSurnameController.text,_passwordController.text);
-            //
-          }
-          else{
-            ErorrAlertRegister(context);
-          }
-        });*/
-        }),
-  );
-  }
 
   TextButton goLoginTextButton(BuildContext context) {
     return TextButton(
@@ -150,31 +262,5 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  TextField registerTextFieldPackage(
-      TextEditingController controller, String hintText, obscureText,IconData icon) {
-    return TextField(
-        controller: controller,
-        obscureText: obscureText,
-        cursorColor: text,
-        textAlign: TextAlign.start,
-        textAlignVertical: TextAlignVertical.bottom,
-        style: TextStyle(
-          fontSize: 18,
-          color: text,
-        ),
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon,color: Colors.white,size: 20,),
-          hintText: hintText,
-          hintStyle: TextStyle(color: textDarkHint),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: text),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: text),
-          ),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: text),
-          ),
-        ));
-  }
+
 }

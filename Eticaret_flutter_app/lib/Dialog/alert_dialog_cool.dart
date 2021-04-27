@@ -55,7 +55,6 @@ void LoadingAlertLogin(BuildContext context){
     backgroundColor: background,
     confirmBtnColor: background,
   );
-
 }
 
 void SuccessAlertLogin(BuildContext context){
