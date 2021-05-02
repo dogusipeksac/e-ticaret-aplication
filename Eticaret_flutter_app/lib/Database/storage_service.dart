@@ -1,17 +1,26 @@
+
+
 import 'dart:io';
 
-//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as Path;
 
 class StorageService {
-  /*final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  //resim ekle
-  Future<String>uplodMedia(File file) async {
-    var uploadTast=_firebaseStorage.ref().child(""
-        "${DateTime.now().millisecondsSinceEpoch}."
-        "${file.path.split('.').last}").putFile(file);
-    uploadTast.events.listen((event) { });
-    var storageRef=await uploadTast.onComplete;
-    return await storageRef.ref.getDownloadURL();
-  }*/
+
+
+  firebase_storage.Reference ref;
+  CollectionReference imgRef;
+
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+
+
+
+
 }
+
+

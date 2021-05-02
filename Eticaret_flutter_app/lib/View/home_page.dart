@@ -1,4 +1,6 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_ticaret_flutter_app/Database/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/View/filter_page.dart';
 import 'package:e_ticaret_flutter_app/View/product_share_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +22,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double _radius = 3;
+    ProductShareService _productShareService=ProductShareService();
     final searchInput = TextField(
       cursorColor: searchText,
       style: TextStyle(
@@ -47,7 +50,7 @@ class HomePage extends StatelessWidget {
       ),
     );
     return Scaffold(
-      backgroundColor: themeColor,
+      backgroundColor: background,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
@@ -65,87 +68,110 @@ class HomePage extends StatelessWidget {
         backgroundColor: background,
       ),
       drawer: MainDrawer(),
-      body: Container(
-        decoration: new BoxDecoration(
-          color: background,
-        ),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom:35.0,left: 10.0,right: 10.0),
-          child: ListView(
-            children: List.generate(4, (index) {
-              return InkResponse(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height/2,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: filterBackground,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Image.asset("images/Opel_KARL.jpg",fit: BoxFit.fill),
+      body: StreamBuilder(
+
+      stream:_productShareService.getProduct(),
+        builder:(BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if(!snapshot.hasData){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  child: InkResponse(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height / 2,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        decoration: BoxDecoration(
+                          color: filterBackground,
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                flex:1,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Text("Urun ile ilgili baslik bulunacak.",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(color: text,fontSize: 18,fontFamily: 'Tienne',fontWeight: FontWeight.bold,),
-                                  ),
-                                ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: snapshot.data.docs[index]["Image 1"] == "" ?
+                                Image.asset("images/Opel_KARL.jpg") : Image.network(snapshot.data.docs[index]["Image 1"]),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text("43.500 TL",
-                                      style: TextStyle(
-                                          color: themeColor,
+
+                            Expanded(
+                              flex: 1,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 15.0),
+                                      child: Text(
+                                        "${snapshot.data.docs[index]["Baslik"]}",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(color: text,
+                                          fontSize: 18,
                                           fontFamily: 'Tienne',
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          decoration: TextDecoration.lineThrough
+                                          fontWeight: FontWeight.bold,),
                                       ),
                                     ),
-                                    Text("60.000 TL",
-                                      style: TextStyle(
-                                        color: themeColor,
-                                        fontSize: 25,
-                                        fontFamily: 'Tienne',
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .center,
+                                      children: [
+                                        Text("43.500 TL",
+                                          style: TextStyle(
+                                              color: themeColor,
+                                              fontFamily: 'Tienne',
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              decoration: TextDecoration
+                                                  .lineThrough
+                                          ),
+                                        ),
+                                        Text("${snapshot.data.docs[index]["Fiyat"]}",
+                                          style: TextStyle(
+                                            color: themeColor,
+                                            fontSize: 25,
+                                            fontFamily: 'Tienne',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
+                    onTap: () => _onTileClicked(index, context),
                   ),
-                ),
-                onTap:() => _onTileClicked(index,context),
-              );
-            }),
-          ),
-        ),
+                );
+              }
+
+
+          );
+        }
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, ProductSharePage.routeName);

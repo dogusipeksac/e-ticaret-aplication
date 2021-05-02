@@ -7,12 +7,7 @@ class AuthService {
     return user !=null? User(uid: user.uid) :null;
 
   }
-
   //sign in anonim
-
-
-
-
 //auth change user stream
   Stream<User> get user{
     return _auth.onAuthStateChanged

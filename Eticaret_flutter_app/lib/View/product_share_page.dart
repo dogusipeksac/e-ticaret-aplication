@@ -1,10 +1,15 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ticaret_flutter_app/Database/product_share_service.dart';
+import 'package:e_ticaret_flutter_app/Database/storage_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as Path;
 
 class ProductSharePage extends StatefulWidget {
   static String routeName = '/routeProductSharePage';
@@ -18,22 +23,20 @@ class _ProductSharePageState extends State<ProductSharePage> {
   String valueChoseProductState;
 
   ProductShareService _productSharePage = ProductShareService();
-  final ImagePicker _imagePicker = ImagePicker();
-  dynamic _pickImage;
+  //
+  final ImagePicker imagePicker = ImagePicker();
   PickedFile profilImage;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  List<File> image = [];
+  List<String> urls = [];
 
-  Widget imagePlace() {
-    double height = MediaQuery.of(context).size.height;
-    if (profilImage != null) {
-      return CircleAvatar(
-        backgroundImage: FileImage(File(profilImage.path)),
-      );
-    }
-  }
+  CollectionReference imgRef;
+  bool uploading = false;
+  double val = 0;
+  firebase_storage.Reference ref;
 
   final TextEditingController _title = TextEditingController();
   final TextEditingController _price = TextEditingController();
-  String image = "images/Opel_KARL.jpg";
   TextEditingController _explain = TextEditingController();
 
   List listItemCategory = [
@@ -45,82 +48,200 @@ class _ProductSharePageState extends State<ProductSharePage> {
   ];
   List listItemProductState = ["İyi", "Çok İyi", "Eski", "Orta"];
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool validation() {
+    final FormState _form = _formKey.currentState;
+    if (_form.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  choseImage() async {
+    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    setState(() {
+      image.add(File(pickedFile.path));
+      if (pickedFile == null) retrieveLostData();
+    });
+  }
+
+  Future uploadFile() async {
+    int i = 1;
+    for (var img in image) {
+      setState(() {
+        val = i / image.length;
+      });
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('Product Image Files/${auth.currentUser.uid}')
+          .child(Path.basename(img.path));
+
+      await ref.putFile(img).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
+          urls.add(value);
+        });
+      });
+      i++;
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData response = await imagePicker.getLostData();
+    if (response.file != null) {
+      setState(() {
+        image.add(File(response.file.path));
+      });
+    } else {
+      print(response.file);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width * 2;
     double height = MediaQuery.of(context).size.height * 2;
 
-    final title = productShareTextfieldPackage(
-        _title, false, "İlanınız için başlık giriniz.", 1);
+    final title = TextFormField(
+        validator: (value) {
+          if (value == "") {
+            return "Boş bırakılmaz.";
+          } else if (value.length < 5) {
+            return "En az 5 karakter olmalı başlık";
+          }
+          return null;
+        },
+        controller: _title,
+        maxLines: 2,
+        obscureText: false,
+        cursorColor: themeColor,
+        textAlign: TextAlign.start,
+        textAlignVertical: TextAlignVertical.center,
+        style: TextStyle(
+          fontSize: 15,
+          color: text,
+        ),
+        decoration: inputDecoraton("İlanınız için başlık giriniz."));
 
-    final price = productShareTextfieldPackage(
-        _price, false, "İlanınız için fiyat giriniz.", 1);
-    final explane = productShareTextfieldPackage(
-        _explain, false, "İlanınız için tanım giriniz.", 5);
+    final price = TextFormField(
+        validator: (value) {
+          if (value == "") {
+            return "Boş bırakılmaz.";
+          }
+          return null;
+        },
+        controller: _price,
+        maxLines: 2,
+        obscureText: false,
+        cursorColor: themeColor,
+        textAlign: TextAlign.start,
+        textAlignVertical: TextAlignVertical.center,
+        style: TextStyle(
+          fontSize: 15,
+          color: text,
+        ),
+        decoration: inputDecoraton("İlanınız için fiyat giriniz."));
+    final explane = TextFormField(
+        validator: (value) {
+          if (value == "") {
+            return "Boş bırakılmaz.";
+          } else if (value.length < 10) {
+            return "En az 10 karakter olmalı başlık";
+          }
+          return null;
+        },
+        textDirection:TextDirection.ltr ,
+        maxLines: 5,
+        controller: _explain,
+        obscureText: false,
+        style: TextStyle(
+          fontSize: 15,
+          color: text,
+        ),
+        decoration: inputDecoraton("İlanınız için açıklama giriniz."));
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       backgroundColor: background,
       appBar: produckShareScaffoldAppbar(),
-      body: Container(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(10),
-          /*
-          controller: myScrollConroller,*/
-          children: [
-            Container(
-              height: 150.0,
-
-              color: Colors.transparent,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: littleImageSharePage(),
+      body: Stack(
+        children: [
+          Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(10),
+              /*
+            controller: myScrollConroller,*/
+              children: [
+                Container(
+                  height: 130.0,
+                  color: Colors.transparent,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Stack(
+                          children: <Widget>[
+                            GridView.builder(
+                                scrollDirection: Axis.horizontal,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 1),
+                                itemCount: image.length + 1,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return index == 0
+                                      ? Container(
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          child: IconButton(
+                                            icon: Icon(Icons.add),
+                                            color: themeColor,
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              !uploading ? choseImage() : null;
+                                            },
+                                          ),
+                                        )
+                                      : Container(
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                            image: DecorationImage(
+                                                image:
+                                                    FileImage(image[index - 1]),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        );
+                                }),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: littleImageSharePage(),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child:littleImageSharePage(),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child:littleImageSharePage(),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                "Kategori",
-                style: TextStyle(color: themeColor, fontSize: 20),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                padding: EdgeInsets.only(left: 14, right: 14),
-                decoration: BoxDecoration(
-                  color: filterBackground,
-                  border: Border.all(color: filterBackground, width: 1),
-                  borderRadius: BorderRadius.circular(15),
                 ),
-                child: DropdownButton(
-                  hint: Text(
-                    "Bir kategori seç...",
-                    style: textStyle,
-                  ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Kategori",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == null) {
+                      return "Lütfen birini seçin...";
+                    }
+                    return null;
+                  },
                   dropdownColor: background,
                   icon: Icon(
                     Icons.arrow_drop_down,
@@ -128,7 +249,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                   ),
                   iconSize: 30,
                   isExpanded: true,
-                  underline: SizedBox(),
+                  decoration: inputDecoraton("Bir kategori seç..."),
                   value: valueChoseCategory,
                   style: textStyle,
                   onChanged: (newValue) {
@@ -143,85 +264,45 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     );
                   }).toList(),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                "Başlık",
-                style: TextStyle(color: themeColor, fontSize: 20),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                padding: EdgeInsets.only(left: 14, right: 14),
-                decoration: BoxDecoration(
-                  color: filterBackground,
-                  border: Border.all(color: filterBackground, width: 1),
-                  borderRadius: BorderRadius.circular(15),
+                SizedBox(
+                  height: 20,
                 ),
-                child: title,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                "Fiyat",
-                style: TextStyle(color: themeColor, fontSize: 20),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                padding: EdgeInsets.only(left: 14, right: 14),
-                decoration: BoxDecoration(
-                  color: filterBackground,
-                  border: Border.all(color: filterBackground, width: 1),
-                  borderRadius: BorderRadius.circular(15),
+                Text(
+                  "Başlık",
+                  style: TextStyle(color: themeColor, fontSize: 20),
                 ),
-                child: price,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                "Durum",
-                style: TextStyle(color: themeColor, fontSize: 20),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                padding: EdgeInsets.only(left: 14, right: 14),
-                decoration: BoxDecoration(
-                  color: filterBackground,
-                  border: Border.all(color: filterBackground, width: 1),
-                  borderRadius: BorderRadius.circular(15),
+                SizedBox(
+                  height: 20,
                 ),
-                child: DropdownButton(
-                  hint: Text(
-                    "Bir durum seç...",
-                    style: textStyle,
-                  ),
+                title,
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Fiyat",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                price,
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Durum",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == null) {
+                      return "Boş bırakılmaz.";
+                    }
+                    return null;
+                  },
                   dropdownColor: background,
                   icon: Icon(
                     Icons.arrow_drop_down,
@@ -229,7 +310,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                   ),
                   iconSize: 30,
                   isExpanded: true,
-                  underline: SizedBox(),
+                  decoration: inputDecoraton("Bir durum seç..."),
                   value: valueChoseProductState,
                   style: textStyle,
                   onChanged: (newValue) {
@@ -244,90 +325,116 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     );
                   }).toList(),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                "Tanım",
-                style: TextStyle(color: themeColor, fontSize: 20),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                height: 150,
-                padding: EdgeInsets.only(left: 14, right: 14),
-                decoration: BoxDecoration(
-                  color: filterBackground,
-                  border: Border.all(color: filterBackground, width: 1),
-                  borderRadius: BorderRadius.circular(15),
+                SizedBox(
+                  height: 20,
                 ),
-                child: explane,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                padding: EdgeInsets.only(left: 14, right: 14),
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: themeColor,
-                  border: Border.all(color: filterBackground, width: 1),
-                  borderRadius: BorderRadius.circular(15),
+                Text(
+                  "Tanım",
+                  style: TextStyle(color: themeColor, fontSize: 20),
                 ),
-                child: FlatButton(
-                  onPressed: () {
-                    // _productSharePage.addProduct(image,
-                    //     valueChoseCategory,
-                    //     _title.text,
-                    //     _price.text,
-                    //     valueChoseProductState,
-                    //     _explain.text);
-                  },
-                  child: Text(
-                    "İlanı Paylaş",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
+                SizedBox(
+                  height: 20,
+                ),
+                explane,
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 45,
+                  margin: EdgeInsets.only(right: 50,left: 50,bottom: 20,top: 20),
+                  decoration: BoxDecoration(
+                    color: themeColor,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        if (validation()) {
+                          uploadFile().whenComplete(() => _productSharePage
+                              .addProduct(
+                                  urls.length >= 1 ? urls[0] : "",
+                                  urls.length >= 2 ? urls[1] : "",
+                                  urls.length >= 3 ? urls[2] : "",
+                                  urls.length >= 4 ? urls[3] : "",
+                                  urls.length >= 5 ? urls[4] : "",
+                                  valueChoseCategory,
+                                  _title.text,
+                                  _price.text,
+                                  valueChoseProductState,
+                                  _explain.text)
+                              .whenComplete(() => Navigator.of(context).pop()));
+                          uploading = true;
+                        }
+                      });
+                    },
+                    child: Text(
+                      "İlanı Paylaş",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+          uploading
+              ? Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "uploading...",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CircularProgressIndicator(
+                          value: val,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.green)),
+                    ],
+                  ),
+                )
+              : Container(),
+        ],
       ),
     );
   }
 
-  Container littleImageSharePage() {
-    return Container(
-      child: FlatButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          _onButtonPressedImageAdd();
-        },
+  InputDecoration inputDecoraton(String hintText) {
+    return InputDecoration(
+      fillColor: filterBackground,
+      focusColor: filterBackground,
+      hintText: hintText,
+      hintStyle: TextStyle(color: Colors.white),
+      enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+         color: Colors.white,
+      )),
+      disabledBorder:  OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.white,
+        ),
       ),
-      margin: EdgeInsets.all(5),
-      width: 100,
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+      errorBorder:  OutlineInputBorder( borderSide: BorderSide(
+        color: Colors.red,
+      )),
+      focusedBorder:  OutlineInputBorder(
+          borderSide: BorderSide(
+            color: themeColor,
+          ),
+      ),
+      focusedErrorBorder:   OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+        ),
       ),
     );
-
   }
 
   AppBar produckShareScaffoldAppbar() {
@@ -337,77 +444,10 @@ class _ProductSharePageState extends State<ProductSharePage> {
     );
   }
 
-  TextField productShareTextfieldPackage(
-    TextEditingController controller,
-    bool obscureText,
-    String label,
-    int lineCount,
-  ) {
-    return TextField(
-
-        maxLines: lineCount,
-        controller: _title,
-        obscureText: false,
-        cursorColor: themeColor,
-        textAlign: TextAlign.start,
-        textAlignVertical: TextAlignVertical.center,
-        style: TextStyle(
-          fontSize: 15,
-          color: text,
-        ),
-        decoration: InputDecoration(
-          labelText: "İlanınız için başlık giriniz.",
-          labelStyle: TextStyle(color: textDarkHint),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: filterBackground),
-          ),
-        ));
-  }
-
-  void _onButtonPressedImageAdd() {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) {
-          return Container(
-            height: 120,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                color: background),
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(
-                    Icons.photo_camera_outlined,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Kamera',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading:
-                      Icon(Icons.photo_album_outlined, color: Colors.white),
-                  title: Text(
-                    'Galeri',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onTap: () {},
-                ),
-              ],
-            ),
-          );
-        });
+  @override
+  void initState() {
+    super.initState();
+    /*
+    imgRef = FirebaseFirestore.instance.collection('imageURLs');*/
   }
 }

@@ -9,10 +9,12 @@ MERGED from [:firebase_auth] /home/dogus/AndroidStudioProjects/e_ticaret_flutter
 MERGED from [:image_picker] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-22:12
 MERGED from [:flutter_plugin_android_lifecycle] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
+MERGED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:17:1-83:12
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/38d8c9ea297c76cb5e2e116073e3c091/exifinterface-1.3.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:2:1-26:12
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:15:1-39:12
 MERGED from [com.google.android.gms:play-services-auth-api-phone:17.4.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/6b57ff4a5ecd38a3ddf40bc9933c1df1/jetified-play-services-auth-api-phone-17.4.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/3fa3af1463c301e1bb3bc9f8f527d114/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.firebase:firebase-auth-interop:19.0.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/e8766c61e94f44f16a617b2ee5577624/jetified-firebase-auth-interop-19.0.0/AndroidManifest.xml:2:1-10:12
@@ -63,6 +65,8 @@ MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/cache
 MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:14:5-67
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:14:5-67
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:27:5-67
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:27:5-67
 	android:name
 		ADDED from /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/android/app/src/main/AndroidManifest.xml:4:22-64
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
@@ -89,12 +93,16 @@ MERGED from [:image_picker] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_
 MERGED from [:image_picker] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-20:19
 MERGED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
+MERGED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
+MERGED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:26:5-81:19
 MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:26:5-81:19
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:16:5-24:19
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:16:5-24:19
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:29:5-37:19
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:29:5-37:19
 MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/3fa3af1463c301e1bb3bc9f8f527d114/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/3fa3af1463c301e1bb3bc9f8f527d114/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml:22:5-20
 MERGED from [com.google.firebase:firebase-auth-interop:19.0.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/e8766c61e94f44f16a617b2ee5577624/jetified-firebase-auth-interop-19.0.0/AndroidManifest.xml:7:5-8:19
@@ -171,6 +179,8 @@ MERGED from [:flutter_plugin_android_lifecycle] /home/dogus/AndroidStudioProject
 MERGED from [:flutter_plugin_android_lifecycle] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:21:5-44
@@ -179,6 +189,8 @@ MERGED from [androidx.exifinterface:exifinterface:1.3.0] /home/dogus/.gradle/cac
 MERGED from [androidx.exifinterface:exifinterface:1.3.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/38d8c9ea297c76cb5e2e116073e3c091/exifinterface-1.3.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.gms:play-services-auth-api-phone:17.4.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/6b57ff4a5ecd38a3ddf40bc9933c1df1/jetified-play-services-auth-api-phone-17.4.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-auth-api-phone:17.4.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/6b57ff4a5ecd38a3ddf40bc9933c1df1/jetified-play-services-auth-api-phone-17.4.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/3fa3af1463c301e1bb3bc9f8f527d114/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml:20:5-44
@@ -241,12 +253,16 @@ service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [:firebase_auth] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
+MERGED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
+MERGED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:74:9-80:19
 MERGED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:74:9-80:19
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:17:9-23:19
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:17:9-23:19
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:30:9-36:19
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:30:9-36:19
 MERGED from [com.google.firebase:firebase-common:19.5.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/a348beea78586f27ffc2391bf0a13f9b/jetified-firebase-common-19.5.0/AndroidManifest.xml:33:9-46:19
 MERGED from [com.google.firebase:firebase-common:19.5.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/a348beea78586f27ffc2391bf0a13f9b/jetified-firebase-common-19.5.0/AndroidManifest.xml:33:9-46:19
 	android:exported
@@ -285,6 +301,12 @@ ADDED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutte
 		ADDED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
 	android:name
 		ADDED from [:cloud_firestore] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-134
+meta-data#com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar
+ADDED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
+	android:value
+		ADDED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
+	android:name
+		ADDED from [:firebase_storage] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-126
 meta-data#com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar
 ADDED from [:firebase_core] /home/dogus/AndroidStudioProjects/e_ticaret_flutter_app/Eticaret_flutter_app/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
 	android:value
@@ -295,6 +317,8 @@ uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from [com.google.firebase:firebase-auth:20.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/6c36ee46c3bd8a692637bbddce91c1bd/jetified-firebase-auth-20.0.1/AndroidManifest.xml:24:5-79
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:13:5-79
 MERGED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:13:5-79
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:26:5-79
 MERGED from [io.grpc:grpc-android:1.28.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/289acafbabb5e968fae411bc8bf50bfc/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
 MERGED from [io.grpc:grpc-android:1.28.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/289acafbabb5e968fae411bc8bf50bfc/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
 	android:name
@@ -373,6 +397,12 @@ ADDED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/c
 		ADDED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:22:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-firestore:22.0.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/fc6f21c124e89ffdf2dcc46f4cecfa9f/jetified-firebase-firestore-22.0.1/AndroidManifest.xml:21:17-111
+meta-data#com.google.firebase.components:com.google.firebase.storage.StorageRegistrar
+ADDED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:33:13-35:85
+	android:value
+		ADDED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:35:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-storage:19.2.1] /home/dogus/.gradle/caches/transforms-2/files-2.1/1dc10c172a8263f915032e727768e611/jetified-firebase-storage-19.2.1/AndroidManifest.xml:34:17-107
 activity#com.google.android.gms.common.api.GoogleApiActivity
 ADDED from [com.google.android.gms:play-services-base:17.1.0] /home/dogus/.gradle/caches/transforms-2/files-2.1/1d67e9f8fcd3c103d0f9ff5b012246e9/jetified-play-services-base-17.1.0/AndroidManifest.xml:23:9-26:75
 	android:exported

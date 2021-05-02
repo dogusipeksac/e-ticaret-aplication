@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/Map/main_drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 //Ayarlar sayfası
 class SettingPage extends StatefulWidget {
@@ -14,17 +17,28 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  PickedFile _imageFile;
-  final ImagePicker _picker = ImagePicker();
+
+
+  File _imageFile;
+  firebase_storage.Reference ref;
+  FirebaseAuth auth=FirebaseAuth.instance;
   final TextEditingController _isimControllerr = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
 
   void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
+    final pickedFile = await ImagePicker().getImage(source: source);
     setState(() {
-      _imageFile = pickedFile;
+      _imageFile = File(pickedFile.path);
     });
+    /*var referansYol=FirebaseStorage.instance.ref().child("ProfilResimleri").
+    child(auth.currentUser.uid).
+    child("profilResmi.png");
+    var yuklemeGorevi=referansYol.putFile(_imageFile);
+    String url=await (await yuklemeGorevi.then((value){
+
+    });*/
+
   }
 
   Stack ImageProfile() {
@@ -184,6 +198,8 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 }
+
+
 
 TextField settingTextFieldPackage(
     TextEditingController controller, bool obscureText, String hintText,IconData icon) {
