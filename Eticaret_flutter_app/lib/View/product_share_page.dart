@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ticaret_flutter_app/Database/product_share_service.dart';
-import 'package:e_ticaret_flutter_app/Database/storage_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -99,8 +98,6 @@ class _ProductSharePageState extends State<ProductSharePage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width * 2;
-    double height = MediaQuery.of(context).size.height * 2;
 
     final title = TextFormField(
         validator: (value) {
@@ -352,6 +349,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                         if (validation()) {
                           uploadFile().whenComplete(() => _productSharePage
                               .addProduct(
+                                  auth.currentUser.uid,
                                   urls.length >= 1 ? urls[0] : "",
                                   urls.length >= 2 ? urls[1] : "",
                                   urls.length >= 3 ? urls[2] : "",

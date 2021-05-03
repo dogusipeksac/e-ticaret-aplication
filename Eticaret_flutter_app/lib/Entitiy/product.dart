@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
   String id;
+  String userId;
   //mesela çok iyi durumda
   String productState;
 
@@ -22,6 +23,7 @@ class Product {
 
   Product(
       {this.id,
+        this.userId,
       this.productCategory,
       this.productImage1,
       this.productImage2,
@@ -33,9 +35,26 @@ class Product {
       this.productState,
       this.productTitle});
 
+  List<String> getImages(){
+    List<String> images = [
+      productImage1,
+      productImage2,
+      productImage3,
+      productImage4,
+      productImage5,
+    ];
+    for(var i=0; i< images.length; i++ ){
+      if(images.elementAt(i).isEmpty)
+        images.removeRange(i, images.length);
+    }
+    return images;
+  }
+
+
   factory Product.fromSnapshot(DocumentSnapshot snapshot) {
     return Product(
       id: snapshot.id,
+      userId: snapshot["User id"],
       productCategory: snapshot["Kategori"],
       productImage1: snapshot["Image 1"],
       productImage2: snapshot["Image 2"],
@@ -45,7 +64,7 @@ class Product {
       productOfDescription: snapshot["Aciklama"],
       productPrice: snapshot["Fiyat"],
       productState: snapshot["Durumu"],
-      productTitle: snapshot[" "],
+      productTitle: snapshot["Baslik"],
     );
 
 

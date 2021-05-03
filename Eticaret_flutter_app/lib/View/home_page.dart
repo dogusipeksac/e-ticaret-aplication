@@ -1,6 +1,6 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ticaret_flutter_app/Database/product_share_service.dart';
+import 'package:e_ticaret_flutter_app/Entitiy/product.dart';
 import 'package:e_ticaret_flutter_app/View/filter_page.dart';
 import 'package:e_ticaret_flutter_app/View/product_share_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,9 +14,10 @@ import '../DesignStyle/colors_cons.dart';
 
 class HomePage extends StatelessWidget {
   static String routeName = '/routeHomePage';
-  void _onTileClicked(int index,var context){
-    debugPrint("You tapped on item $index");
-    Navigator.pushNamed(context, AdDetail.routeName);
+  void _onTileClicked(Product snapshot,var context){
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => AdDetail(snapshot: snapshot,),
+    ));
   }
 
   @override
@@ -69,16 +70,22 @@ class HomePage extends StatelessWidget {
       ),
       drawer: MainDrawer(),
       body: StreamBuilder(
-
-      stream:_productShareService.getProduct(),
-        builder:(BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if(!snapshot.hasData){
+        stream:_productShareService.getProduct(),
+        builder:(BuildContext context,AsyncSnapshot<List<Product>> snapshot) {
+          if(snapshot.hasError){
+            return Text(snapshot.error.toString());
+          }
+          if(snapshot.connectionState==ConnectionState.waiting){
             return Center(
               child: CircularProgressIndicator(),
             );
           }
+          if (snapshot.hasData && snapshot.data.isEmpty) {
+            return Text("Document does not exist");
+          }
+
           return ListView.builder(
-              itemCount: snapshot.data.docs.length,
+              itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 return Container(
                   child: InkResponse(
@@ -100,9 +107,16 @@ class HomePage extends StatelessWidget {
                         child: Column(
                           children: [
                             Expanded(
-                              flex: 3,
-                              child: snapshot.data.docs[index]["Image 1"] == "" ?
-                                Image.asset("images/Opel_KARL.jpg") : Image.network(snapshot.data.docs[index]["Image 1"]),
+                              flex: 5,
+                              child: Container(
+                                width: double.maxFinite,
+                                height: double.maxFinite,
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: snapshot.data.elementAt(index).productImage1 == "" ?
+                                    Image.asset("images/Opel_KARL.jpg") : Image.network(snapshot.data.elementAt(index).productImage1),
+                                ),
+                              ),
                               ),
 
                             Expanded(
@@ -117,7 +131,7 @@ class HomePage extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 15.0),
                                       child: Text(
-                                        "${snapshot.data.docs[index]["Baslik"]}",
+                                        "${snapshot.data.elementAt(index).productTitle}",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(color: text,
                                           fontSize: 18,
@@ -144,7 +158,7 @@ class HomePage extends StatelessWidget {
                                                   .lineThrough
                                           ),
                                         ),
-                                        Text("${snapshot.data.docs[index]["Fiyat"]}",
+                                        Text("${snapshot.data.elementAt(index).productPrice}",
                                           style: TextStyle(
                                             color: themeColor,
                                             fontSize: 25,
@@ -162,7 +176,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onTap: () => _onTileClicked(index, context),
+                    onTap: () => _onTileClicked(snapshot.data.elementAt(index), context),
                   ),
                 );
               }

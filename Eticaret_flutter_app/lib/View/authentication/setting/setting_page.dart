@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/Map/main_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -140,40 +139,47 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  SingleChildScrollView settingScaffoldBody(TextField isimField,
+  Widget settingScaffoldBody(TextField isimField,
       TextField sifreField, TextField konumField, Material uygulaButton) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(child: ImageProfile()),
-              SizedBox(height: 20.0),
-              settingTitlePackage('Profil İsmi'),
-              SizedBox(height: 20.0),
-              isimField,
-              SizedBox(height: 20.0),
-              settingTitlePackage('Şifre'),
-              SizedBox(height: 10.0),
-              sifreField,
-              SizedBox(height: 20.0),
-              settingTitlePackage('Konum'),
-              SizedBox(height: 20.0),
-              konumField,
-              SizedBox(height: 30.0),
-              Center(child: uygulaButton),
-              SizedBox(height: 40.0),
-            ],
-          ),
-          decoration: new BoxDecoration(
-              color: background,
-              borderRadius: new BorderRadius.only(
-                  bottomRight: const Radius.circular(180))),
-        ),
-      ),
+    Size size = MediaQuery.of(context).size;
+    return LayoutBuilder(
+        builder: (context,constraints) {
+          return Container(
+            height: size.height-(size.height-constraints.maxHeight),
+            width: size.width,
+            padding: EdgeInsets.all(15.0),
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: ImageProfile()),
+                    SizedBox(height: 20.0),
+                    settingTitlePackage('Profil İsmi'),
+                    SizedBox(height: 20.0),
+                    isimField,
+                    SizedBox(height: 20.0),
+                    settingTitlePackage('Şifre'),
+                    SizedBox(height: 10.0),
+                    sifreField,
+                    SizedBox(height: 20.0),
+                    settingTitlePackage('Konum'),
+                    SizedBox(height: 20.0),
+                    konumField,
+                    SizedBox(height: 30.0),
+                    Center(child: uygulaButton),
+                    SizedBox(height: 40.0),
+                  ],
+                ),
+              ),
+            ),
+            decoration: new BoxDecoration(
+                color: background,
+                borderRadius: new BorderRadius.only(
+                    bottomRight: const Radius.circular(180))),
+          );
+        },
     );
   }
 

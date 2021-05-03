@@ -1,4 +1,3 @@
-import 'package:e_ticaret_flutter_app/View/ad_detail_page.dart';
 import 'package:e_ticaret_flutter_app/View/authentication/auth_widget.dart';
 import 'package:e_ticaret_flutter_app/View/authentication/auth_widget_builder.dart';
 import 'package:e_ticaret_flutter_app/View/message_detail.dart';
@@ -53,7 +52,6 @@ class MyApp extends StatelessWidget {
               MyProduct.routeName: (context) => MyProduct(),
               FilterPage.routeName: (context) => FilterPage(),
               ProductSharePage.routeName: (context) => ProductSharePage(),
-              AdDetail.routeName: (context) => AdDetail(),
               MessageDetail.routeName: (context) => MessageDetail(),
             });
         }),

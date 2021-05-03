@@ -1,28 +1,45 @@
+
+import 'package:e_ticaret_flutter_app/Entitiy/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 
 class AdDetail extends StatefulWidget {
   static String routeName = '/routeAdDetailPage';
+  final Product snapshot;
+
+  const AdDetail({@required this.snapshot});
+
 
   @override
-  _AdDetailState createState() => _AdDetailState();
+  _AdDetailState createState() => _AdDetailState(
+    product: snapshot.productTitle,
+    info: snapshot.productOfDescription,
+    price: snapshot.productPrice,
+    images: snapshot.getImages()
+  );
 }
 
 class _AdDetailState extends State<AdDetail> {
   PageController pageController;
   int current_photo;
-  String product = "2034 Opel Corsa";
-  String price = "43.500 TL";
-  String info =
-      "Araç temizdir boya değişen yok.\n Hasar kaydı temiz,\n 25.000 Km \n Memurdan "
-      "\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\nV";
-  List<String> images = [
+  _AdDetailState({
+    @required this.product,
+    @required this.price,
+    @required this.info,
+    @required this.images,
+  });
+  final String product;
+  final String price;
+  final String info;
+  final List<String> images;
+
+  /*List<String> images = [
     'https://www.torcanrentacar.com/upload/resimler/araba/yeni%20renault%20symbol.jpg',
     'https://i0.shbdn.com/photos/11/34/85/x5_337113485uf1.jpg',
     'https://www.thestreet.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTY4NTE2OTEyNjk4NDM1MzUw/the-best-cars-to-buy-used.jpg',
     'https://images4.alphacoders.com/880/880948.jpg'
-  ];
+  ];*/
 
   @override
   void initState() {

@@ -9,6 +9,7 @@ class ProductShareService {
 
 //veri ekleme fonksiyonu
   Future<void> addProduct(
+      String userId,
       String pickedFile1,
       String pickedFile2,
       String pickedFile3,
@@ -22,6 +23,7 @@ class ProductShareService {
     var ref = _firestore.collection("Product");
 
     var documentRef = await ref.add({
+      'User id': userId,
       'Image 1': pickedFile1,
       'Image 2': pickedFile2,
       'Image 3': pickedFile3,
@@ -35,6 +37,7 @@ class ProductShareService {
     });
     return Product(
         id: documentRef.id,
+        userId: userId,
         productImage1: pickedFile1,
         productImage2: pickedFile2,
         productImage3: pickedFile3,
@@ -47,11 +50,37 @@ class ProductShareService {
         productTitle: productTitle);
   }
 
-  //veri gösterme
-  Stream<QuerySnapshot> getProduct() {
-    var ref = _firestore.collection("Product").snapshots();
-    return ref;
+
+  Query getUserProduct(){
+    return FirebaseFirestore.instance.collection("Product").
+    where("User id",isEqualTo: FirebaseAuth.instance.currentUser.uid);
   }
+
+  Stream<List<Product>> getProduct() {
+    var stream =
+    _firestore.collection('Product').snapshots();
+    return stream.map(
+            (qShot) => qShot.docs.map(
+                (doc) => Product(
+                  id: doc.id,
+                  userId: doc.get('User id'),
+                  productOfDescription: doc.get('Aciklama'),
+                  productTitle: doc.get('Baslik'),
+                  productState: doc.get('Durumu'),
+                  productPrice: doc.get('Fiyat'),
+                  productImage1: doc.get('Image 1'),
+                  productImage2: doc.get('Image 2'),
+                  productImage3: doc.get('Image 3'),
+                  productImage4: doc.get('Image 4'),
+                  productImage5: doc.get('Image 5'),
+                  productCategory: doc.get('Kategori'),
+                 )
+        ).toList()
+    );
+  }
+  
+  
+  
   //silme
   Future<void> remove(String docId) {
     var ref = _firestore.collection("Product").doc(docId).delete();
