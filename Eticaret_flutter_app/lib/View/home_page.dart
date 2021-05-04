@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
       return;
     }
-
     _products.forEach((product) {
       if (product.productTitle.contains(text) || product.productOfDescription.contains(text)
           || product.productCategory.contains(text))
@@ -44,39 +43,45 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     const double _radius = 3;
     ProductShareService _productShareService=ProductShareService();
-    final searchInput = new ListTile(
-      leading: new Icon(Icons.search),
-      title: new TextField(
-        controller: controller,
-        style: TextStyle(
-          color: searchText,
-          fontWeight: FontWeight.bold,
-        ),
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 8),
-          hintText: "Ürün Ara",
-          hintStyle: TextStyle(color: searchTextHint),
-          filled: true,
-          fillColor: themeColor,
-          enabledBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(_radius)),
-            borderSide: BorderSide(color: themeColor),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(_radius)),
-            borderSide: BorderSide(color: themeColor),
-          ),
-          border: UnderlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(_radius)),
-            borderSide: BorderSide(color: themeColor),
-          ),
-        ),
-        onChanged: onSearchTextChanged,
+    final searchInput = ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(_radius)
       ),
-      trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
-        controller.clear();
-        onSearchTextChanged('');
-      },),
+      child: ListTile(
+        tileColor: themeColor,
+        contentPadding: EdgeInsets.only(left: 10),
+        leading: new Icon(Icons.search),
+        title: new TextField(
+          controller: controller,
+          style: TextStyle(
+            color: searchText,
+            fontWeight: FontWeight.bold,
+          ),
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 8),
+            hintText: "Ürün Ara",
+            hintStyle: TextStyle(color: searchTextHint),
+            filled: true,
+            fillColor: themeColor,
+            enabledBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(_radius)),
+              borderSide: BorderSide(color: themeColor),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(_radius)),
+              borderSide: BorderSide(color: themeColor),
+            ),
+            border: UnderlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(_radius)),
+              borderSide: BorderSide(color: themeColor),
+            ),
+          ),
+          onChanged: onSearchTextChanged,
+        ),
+        trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
+          controller.clear();
+          onSearchTextChanged('');
+        },),
+      ),
     );
 
     return Scaffold(

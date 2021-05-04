@@ -51,9 +51,10 @@ class _AdDetailState extends State<AdDetail> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final _pageView = SizedBox(
-      height: MediaQuery.of(context).size.height/2,
-      width: MediaQuery.of(context).size.width,
+      height: size.height/2,
+      width: size.width,
       child: Stack(
         children: [
           PageView.builder(
@@ -91,56 +92,58 @@ class _AdDetailState extends State<AdDetail> {
         ],
       ),
     );
-    final _productDetail = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 15.0, left: 15),
-          child: Text(
-            price,
-            style: TextStyle(
-              color: themeColor,
-              fontSize: 30,
-              fontFamily: "Tienne",
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5, left: 15),
-          child: Text(
-            product,
-            style: TextStyle(
-              color: text,
-              fontSize: 25,
-              fontFamily: "Tienne",
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Text(
-            "Açıklama :",
-            style: TextStyle(
-              fontSize: 19,
-              fontFamily: "Tienne",
-              fontWeight: FontWeight.bold,
-              color: text,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: Text(
-            info,
-            style: TextStyle(
-              fontSize: 19,
-              fontFamily: "Tienne",
-              color: text,
-            ),
-          ),
-        ),
-      ],
-    );
+    final _productDetail =Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0, left: 15),
+                child: Text(
+                  price,
+                  style: TextStyle(
+                    color: themeColor,
+                    fontSize: 30,
+                    fontFamily: "Tienne",
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 15),
+                child: Text(
+                  product,
+                  style: TextStyle(
+                    color: text,
+                    fontSize: 25,
+                    fontFamily: "Tienne",
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  "Açıklama :",
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontFamily: "Tienne",
+                    fontWeight: FontWeight.bold,
+                    color: text,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Text(
+                  info,
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontFamily: "Tienne",
+                    color: text,
+                  ),
+                ),
+              ),
+            ],
+          );
+
+
     return Scaffold(
       backgroundColor: background,
       bottomNavigationBar: BottomAppBar(
@@ -187,14 +190,23 @@ class _AdDetailState extends State<AdDetail> {
           ],
         ),
       ),
-      body: Container(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            _pageView,
-            _productDetail,
-          ],
-        ),
+      body: LayoutBuilder(
+        builder: (context,constraints){
+          print((size.height-constraints.maxHeight));
+          return Container(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                _pageView,
+                Container(
+                  height: (size.height/2)-(size.height-constraints.maxHeight),
+                  width: size.width,
+                  child:_productDetail,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -204,7 +216,6 @@ class _AdDetailState extends State<AdDetail> {
       current_photo = page;
     });
   }
-
   imageSlider(int index) {
     return Container(
       width: double.maxFinite,
