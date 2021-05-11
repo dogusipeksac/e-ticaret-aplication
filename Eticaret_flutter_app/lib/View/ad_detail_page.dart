@@ -52,6 +52,7 @@ class _AdDetailState extends State<AdDetail> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     final _pageView = SizedBox(
       height: size.height/2,
       width: size.width,
@@ -143,7 +144,6 @@ class _AdDetailState extends State<AdDetail> {
             ],
           );
 
-
     return Scaffold(
       backgroundColor: background,
       bottomNavigationBar: BottomAppBar(
@@ -152,7 +152,7 @@ class _AdDetailState extends State<AdDetail> {
           children: [
             Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: ()=>showInformationDialog(context),
               child: Padding(
                 padding: const EdgeInsets.all(3.0),
                 child: Text(
@@ -190,25 +190,19 @@ class _AdDetailState extends State<AdDetail> {
           ],
         ),
       ),
-      body: LayoutBuilder(
-        builder: (context,constraints){
-          print((size.height-constraints.maxHeight));
-          return Container(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                _pageView,
-                Container(
-                  height: (size.height/2)-(size.height-constraints.maxHeight),
-                  width: size.width,
-                  child:_productDetail,
-                ),
-              ],
+      body: Column(
+          children: [
+            _pageView,
+            Expanded(
+              child: ListView(
+                children: [
+                  _productDetail
+                ],
+              ),
             ),
-          );
-        },
-      ),
-    );
+          ],
+        ),
+      );
   }
 
   _onPageChanged(int page) {
@@ -227,6 +221,74 @@ class _AdDetailState extends State<AdDetail> {
           fit: BoxFit.fill,
         ),
       ),
+    );
+  }
+  
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Future<void> showInformationDialog(BuildContext context) async {
+    return await showDialog(context: context,
+        builder: (context){
+          final TextEditingController _textEditingController = TextEditingController();
+          Widget getButton(String text){
+            return ButtonTheme(
+              minWidth: double.infinity,
+              height: 50,
+              buttonColor: themeColor,
+              child: RaisedButton(
+                onPressed: () {},
+                elevation: 3,
+                child: Text(text,style: TextStyle(color: background, fontSize: 20),),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              ),
+            );
+          }
+          OutlineInputBorder border = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(13),
+            borderSide: BorderSide(
+              width:2,
+              color: themeColor,),
+          );
+          return StatefulBuilder(builder: (context,setState){
+            return AlertDialog(
+              scrollable: true,
+              title: Center(child: Text("Mesaj Gönder",style: TextStyle(color:Colors.white),)),
+              backgroundColor: background,
+              content: Form(
+                 key: _formKey,
+                 child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                     getButton("Hala satılık mı?"),
+                     SizedBox(height: 10,),
+                     getButton("Pazarlık var mı?"),
+                     SizedBox(height: 10,),
+                      getButton("Ne zaman alabilirim?"),
+                      SizedBox(height: 10,),
+                      getButton("Sorunu var mı?"),
+                      SizedBox(height: 10,),
+                     TextFormField(
+                        controller: _textEditingController,
+                        style: TextStyle(color: themeColor),
+                        validator: (value){
+                          return value.isNotEmpty ? null : "Invalid Field";
+                        },
+                        decoration: InputDecoration(
+                            labelText: "Keni Mesajını Yaz",
+                            labelStyle: TextStyle(color: themeColor),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.send_outlined,color: themeColor,),
+                              onPressed: () => print("gönderdii!"),
+                            ),
+                            enabledBorder: border,
+                            focusedBorder: border,
+                        ),
+                      )
+                   ],
+                 ),
+              ),
+            );
+          });
+          },
     );
   }
 }
