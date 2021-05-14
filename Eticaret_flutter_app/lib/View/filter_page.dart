@@ -1,4 +1,5 @@
-import 'package:e_ticaret_flutter_app/Database/product_share_service.dart';
+
+import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:flutter/material.dart';

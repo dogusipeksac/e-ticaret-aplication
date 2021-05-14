@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_ticaret_flutter_app/Entitiy/product.dart';
+import 'package:e_ticaret_flutter_app/Model/product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ProductShareService {
@@ -62,25 +62,25 @@ class ProductShareService {
     return stream.map(
             (qShot) => qShot.docs.map(
                 (doc) => Product(
-                  id: doc.id,
-                  userId: doc.get('User id'),
-                  productOfDescription: doc.get('Aciklama'),
-                  productTitle: doc.get('Baslik'),
-                  productState: doc.get('Durumu'),
-                  productPrice: doc.get('Fiyat'),
-                  productImage1: doc.get('Image 1'),
-                  productImage2: doc.get('Image 2'),
-                  productImage3: doc.get('Image 3'),
-                  productImage4: doc.get('Image 4'),
-                  productImage5: doc.get('Image 5'),
-                  productCategory: doc.get('Kategori'),
-                 )
+              id: doc.id,
+              userId: doc.get('User id'),
+              productOfDescription: doc.get('Aciklama'),
+              productTitle: doc.get('Baslik'),
+              productState: doc.get('Durumu'),
+              productPrice: doc.get('Fiyat'),
+              productImage1: doc.get('Image 1'),
+              productImage2: doc.get('Image 2'),
+              productImage3: doc.get('Image 3'),
+              productImage4: doc.get('Image 4'),
+              productImage5: doc.get('Image 5'),
+              productCategory: doc.get('Kategori'),
+            )
         ).toList()
     );
   }
-  
-  
-  
+
+
+
   //silme
   Future<void> remove(String docId) {
     var ref = _firestore.collection("Product").doc(docId).delete();

@@ -2,7 +2,7 @@
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
-import 'package:e_ticaret_flutter_app/View/authentication/login/login_page.dart';
+import 'package:e_ticaret_flutter_app/View/login_page.dart';
 
 import 'package:flutter/material.dart';
 

@@ -16,11 +16,9 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-
-
   File _imageFile;
   firebase_storage.Reference ref;
-  FirebaseAuth auth=FirebaseAuth.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   final TextEditingController _isimControllerr = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
@@ -35,9 +33,7 @@ class _SettingPageState extends State<SettingPage> {
     child("profilResmi.png");
     var yuklemeGorevi=referansYol.putFile(_imageFile);
     String url=await (await yuklemeGorevi.then((value){
-
     });*/
-
   }
 
   Stack ImageProfile() {
@@ -116,19 +112,88 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final konumField =
-        settingTextFieldPackage(_locationController, false, "Adana/Seyhan",Icons.location_on_rounded);
+    final konumField = TextFormField(
+      controller: _locationController,
+      style: TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          Icons.location_on_rounded,
+          color: Colors.white,
+          size: 20,
+        ),
+        suffixIcon: Icon(Icons.pin_drop,color: Colors.white,size: 20,),
+        hintText: "Adana/Seyhan",
+        hintStyle: TextStyle(color: Colors.white),
+      ),
+    );
     final uygulaButton = saveProfilButton();
-    final sifreField =
-        settingTextFieldPackage(_passwordController, true, "***********",Icons.vpn_key);
-    final isimField =
-        settingTextFieldPackage(_isimControllerr, false, 'Doğuş İpeksaç',Icons.person_rounded);
+    final sifreField = TextFormField(
+      controller: _passwordController,
+      style: TextStyle(color: Colors.white),
+      obscureText: true,
+      cursorColor: Colors.white,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          Icons.vpn_key,
+          color: Colors.white,
+          size: 20,
+        ),
+        hintText: "***********",
+        hintStyle: TextStyle(color: Colors.white),
+      ),
+    );
+    final isimField = TextFormField(
+      controller: _isimControllerr,
+      style: TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          Icons.person_rounded,
+          color: Colors.white,
+          size: 20,
+        ),
+        hintText: 'Doğuş İpeksaç',
+        hintStyle: TextStyle(color: Colors.white),
+      ),
+    );
     return Scaffold(
       backgroundColor: themeColor,
       appBar: settingScaffoldAppBar(),
       drawer: MainDrawer(),
-      body:
-          settingScaffoldBody(isimField, sifreField, konumField, uygulaButton),
+      body: Container(
+        padding: EdgeInsets.all(15.0),
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(child: ImageProfile()),
+                SizedBox(height: 20.0),
+                settingTitlePackage('Profil İsmi'),
+                SizedBox(height: 20.0),
+                isimField,
+                SizedBox(height: 20.0),
+                settingTitlePackage('Şifre'),
+                SizedBox(height: 10.0),
+                sifreField,
+                SizedBox(height: 20.0),
+                settingTitlePackage('Konum'),
+                SizedBox(height: 20.0),
+                konumField,
+                SizedBox(height: 30.0),
+                Center(child: uygulaButton),
+                SizedBox(height: 40.0),
+              ],
+            ),
+          ),
+        ),
+        decoration: new BoxDecoration(
+            color: background,
+            borderRadius:
+                new BorderRadius.only(bottomRight: const Radius.circular(180))),
+      ),
     );
   }
 
@@ -139,50 +204,6 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget settingScaffoldBody(TextField isimField,
-      TextField sifreField, TextField konumField, Material uygulaButton) {
-    Size size = MediaQuery.of(context).size;
-    return LayoutBuilder(
-        builder: (context,constraints) {
-          return Container(
-            height: size.height-(size.height-constraints.maxHeight),
-            width: size.width,
-            padding: EdgeInsets.all(15.0),
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(child: ImageProfile()),
-                    SizedBox(height: 20.0),
-                    settingTitlePackage('Profil İsmi'),
-                    SizedBox(height: 20.0),
-                    isimField,
-                    SizedBox(height: 20.0),
-                    settingTitlePackage('Şifre'),
-                    SizedBox(height: 10.0),
-                    sifreField,
-                    SizedBox(height: 20.0),
-                    settingTitlePackage('Konum'),
-                    SizedBox(height: 20.0),
-                    konumField,
-                    SizedBox(height: 30.0),
-                    Center(child: uygulaButton),
-                    SizedBox(height: 40.0),
-                  ],
-                ),
-              ),
-            ),
-            decoration: new BoxDecoration(
-                color: background,
-                borderRadius: new BorderRadius.only(
-                    bottomRight: const Radius.circular(180))),
-          );
-        },
-    );
-  }
-
   Text settingTitlePackage(String title) {
     return Text(title,
         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white));
@@ -190,12 +211,12 @@ class _SettingPageState extends State<SettingPage> {
 
   Material saveProfilButton() {
     return Material(
-      elevation: 8.0,
       borderRadius: BorderRadius.circular(1.0),
       color: background,
       // ignore: deprecated_member_use
       child: FlatButton(
-        minWidth: 50,
+        minWidth: 60,
+        shape: RoundedRectangleBorder(side: BorderSide(color: text)),
         onPressed: () {},
         child: Text("UYGULA",
             textAlign: TextAlign.center,
@@ -203,21 +224,4 @@ class _SettingPageState extends State<SettingPage> {
       ),
     );
   }
-}
-
-
-
-TextField settingTextFieldPackage(
-    TextEditingController controller, bool obscureText, String hintText,IconData icon) {
-  return TextField(
-    controller: controller,
-    style: TextStyle(color: Colors.white),
-    cursorColor: Colors.white,
-    obscureText: obscureText,
-    decoration: InputDecoration(
-      prefixIcon: Icon(icon,color: Colors.white,size: 20,),
-      hintText: hintText,
-      hintStyle: TextStyle(color: Colors.white),
-    ),
-  );
 }

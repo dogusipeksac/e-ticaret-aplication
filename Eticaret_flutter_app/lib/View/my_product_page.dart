@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_ticaret_flutter_app/Database/product_share_service.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
+
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

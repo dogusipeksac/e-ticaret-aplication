@@ -1,10 +1,10 @@
+import 'package:e_ticaret_flutter_app/Core/Service/auth_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
-import 'package:e_ticaret_flutter_app/View/authentication/service/auth_service.dart';
-import 'package:e_ticaret_flutter_app/View/authentication/setting/setting_page.dart';
 import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:e_ticaret_flutter_app/View/message_list_page.dart';
 import 'package:e_ticaret_flutter_app/View/my_product_page.dart';
 import 'package:e_ticaret_flutter_app/View/notifications_page.dart';
+import 'package:e_ticaret_flutter_app/View/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';

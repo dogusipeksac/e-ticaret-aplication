@@ -24,16 +24,16 @@ class Product {
   Product(
       {this.id,
         this.userId,
-      this.productCategory,
-      this.productImage1,
-      this.productImage2,
-      this.productImage3,
-      this.productImage4,
-      this.productImage5,
-      this.productOfDescription,
-      this.productPrice,
-      this.productState,
-      this.productTitle});
+        this.productCategory,
+        this.productImage1,
+        this.productImage2,
+        this.productImage3,
+        this.productImage4,
+        this.productImage5,
+        this.productOfDescription,
+        this.productPrice,
+        this.productState,
+        this.productTitle});
 
   List<String> getImages(){
     List<String> images = [

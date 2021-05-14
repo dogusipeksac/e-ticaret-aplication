@@ -1,7 +1,10 @@
 import 'package:e_ticaret_flutter_app/View/home_page.dart';
+import 'package:e_ticaret_flutter_app/View/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login/login_page.dart';
+
+
+
 
 class AuthWidget extends StatelessWidget {
   const AuthWidget({Key key, @required this.userSnapshot}) : super(key: key);

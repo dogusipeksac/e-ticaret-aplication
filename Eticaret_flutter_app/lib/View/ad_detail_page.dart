@@ -1,5 +1,5 @@
 
-import 'package:e_ticaret_flutter_app/Entitiy/product.dart';
+import 'package:e_ticaret_flutter_app/Model/product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
@@ -13,10 +13,10 @@ class AdDetail extends StatefulWidget {
 
   @override
   _AdDetailState createState() => _AdDetailState(
-    product: snapshot.productTitle,
-    info: snapshot.productOfDescription,
-    price: snapshot.productPrice,
-    images: snapshot.getImages()
+      product: snapshot.productTitle,
+      info: snapshot.productOfDescription,
+      price: snapshot.productPrice,
+      images: snapshot.getImages()
   );
 }
 
@@ -52,6 +52,7 @@ class _AdDetailState extends State<AdDetail> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     final _pageView = SizedBox(
       height: size.height/2,
       width: size.width,
@@ -93,56 +94,55 @@ class _AdDetailState extends State<AdDetail> {
       ),
     );
     final _productDetail =Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0, left: 15),
-                child: Text(
-                  price,
-                  style: TextStyle(
-                    color: themeColor,
-                    fontSize: 30,
-                    fontFamily: "Tienne",
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 15),
-                child: Text(
-                  product,
-                  style: TextStyle(
-                    color: text,
-                    fontSize: 25,
-                    fontFamily: "Tienne",
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  "Açıklama :",
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontFamily: "Tienne",
-                    fontWeight: FontWeight.bold,
-                    color: text,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  info,
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontFamily: "Tienne",
-                    color: text,
-                  ),
-                ),
-              ),
-            ],
-          );
-
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0, left: 15),
+          child: Text(
+            price,
+            style: TextStyle(
+              color: themeColor,
+              fontSize: 30,
+              fontFamily: "Tienne",
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5, left: 15),
+          child: Text(
+            product,
+            style: TextStyle(
+              color: text,
+              fontSize: 25,
+              fontFamily: "Tienne",
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Text(
+            "Açıklama :",
+            style: TextStyle(
+              fontSize: 19,
+              fontFamily: "Tienne",
+              fontWeight: FontWeight.bold,
+              color: text,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            info,
+            style: TextStyle(
+              fontSize: 19,
+              fontFamily: "Tienne",
+              color: text,
+            ),
+          ),
+        ),
+      ],
+    );
 
     return Scaffold(
       backgroundColor: background,
@@ -152,7 +152,7 @@ class _AdDetailState extends State<AdDetail> {
           children: [
             Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: ()=>showInformationDialog(context),
               child: Padding(
                 padding: const EdgeInsets.all(3.0),
                 child: Text(
@@ -172,7 +172,7 @@ class _AdDetailState extends State<AdDetail> {
                 onPressed: () {},
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 3, horizontal: 30),
+                  const EdgeInsets.symmetric(vertical: 3, horizontal: 30),
                   child: Text(
                     "Ara",
                     style: TextStyle(
@@ -190,23 +190,17 @@ class _AdDetailState extends State<AdDetail> {
           ],
         ),
       ),
-      body: LayoutBuilder(
-        builder: (context,constraints){
-          print((size.height-constraints.maxHeight));
-          return Container(
+      body: Column(
+        children: [
+          _pageView,
+          Expanded(
             child: ListView(
-              shrinkWrap: true,
               children: [
-                _pageView,
-                Container(
-                  height: (size.height/2)-(size.height-constraints.maxHeight),
-                  width: size.width,
-                  child:_productDetail,
-                ),
+                _productDetail
               ],
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -227,6 +221,74 @@ class _AdDetailState extends State<AdDetail> {
           fit: BoxFit.fill,
         ),
       ),
+    );
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Future<void> showInformationDialog(BuildContext context) async {
+    return await showDialog(context: context,
+      builder: (context){
+        final TextEditingController _textEditingController = TextEditingController();
+        Widget getButton(String text){
+          return ButtonTheme(
+            minWidth: double.infinity,
+            height: 50,
+            buttonColor: themeColor,
+            child: RaisedButton(
+              onPressed: () {},
+              elevation: 3,
+              child: Text(text,style: TextStyle(color: background, fontSize: 20),),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            ),
+          );
+        }
+        OutlineInputBorder border = OutlineInputBorder(
+          borderRadius: BorderRadius.circular(13),
+          borderSide: BorderSide(
+            width:2,
+            color: themeColor,),
+        );
+        return StatefulBuilder(builder: (context,setState){
+          return AlertDialog(
+            scrollable: true,
+            title: Center(child: Text("Mesaj Gönder",style: TextStyle(color:Colors.white),)),
+            backgroundColor: background,
+            content: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  getButton("Hala satılık mı?"),
+                  SizedBox(height: 10,),
+                  getButton("Pazarlık var mı?"),
+                  SizedBox(height: 10,),
+                  getButton("Ne zaman alabilirim?"),
+                  SizedBox(height: 10,),
+                  getButton("Sorunu var mı?"),
+                  SizedBox(height: 10,),
+                  TextFormField(
+                    controller: _textEditingController,
+                    style: TextStyle(color: themeColor),
+                    validator: (value){
+                      return value.isNotEmpty ? null : "Invalid Field";
+                    },
+                    decoration: InputDecoration(
+                      labelText: "Keni Mesajını Yaz",
+                      labelStyle: TextStyle(color: themeColor),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.send_outlined,color: themeColor,),
+                        onPressed: () => print("gönderdii!"),
+                      ),
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+      },
     );
   }
 }

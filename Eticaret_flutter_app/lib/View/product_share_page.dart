@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_ticaret_flutter_app/Database/product_share_service.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -183,38 +183,38 @@ class _ProductSharePageState extends State<ProductSharePage> {
                             GridView.builder(
                                 scrollDirection: Axis.horizontal,
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 1),
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1),
                                 itemCount: image.length + 1,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return index == 0
                                       ? Container(
-                                          margin: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                          ),
-                                          child: IconButton(
-                                            icon: Icon(Icons.add),
-                                            color: themeColor,
-                                            iconSize: 40,
-                                            onPressed: () {
-                                              !uploading ? choseImage() : null;
-                                            },
-                                          ),
-                                        )
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(30),
+                                    ),
+                                    child: IconButton(
+                                      icon: Icon(Icons.add),
+                                      color: themeColor,
+                                      iconSize: 40,
+                                      onPressed: () {
+                                        !uploading ? choseImage() : null;
+                                      },
+                                    ),
+                                  )
                                       : Container(
-                                          margin: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                            image: DecorationImage(
-                                                image:
-                                                    FileImage(image[index - 1]),
-                                                fit: BoxFit.cover),
-                                          ),
-                                        );
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(30),
+                                      image: DecorationImage(
+                                          image:
+                                          FileImage(image[index - 1]),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  );
                                 }),
                           ],
                         ),
@@ -349,17 +349,17 @@ class _ProductSharePageState extends State<ProductSharePage> {
                         if (validation()) {
                           uploadFile().whenComplete(() => _productSharePage
                               .addProduct(
-                                  auth.currentUser.uid,
-                                  urls.length >= 1 ? urls[0] : "",
-                                  urls.length >= 2 ? urls[1] : "",
-                                  urls.length >= 3 ? urls[2] : "",
-                                  urls.length >= 4 ? urls[3] : "",
-                                  urls.length >= 5 ? urls[4] : "",
-                                  valueChoseCategory,
-                                  _title.text,
-                                  _price.text,
-                                  valueChoseProductState,
-                                  _explain.text)
+                              auth.currentUser.uid,
+                              urls.length >= 1 ? urls[0] : "",
+                              urls.length >= 2 ? urls[1] : "",
+                              urls.length >= 3 ? urls[2] : "",
+                              urls.length >= 4 ? urls[3] : "",
+                              urls.length >= 5 ? urls[4] : "",
+                              valueChoseCategory,
+                              _title.text,
+                              _price.text,
+                              valueChoseProductState,
+                              _explain.text)
                               .whenComplete(() => Navigator.of(context).pop()));
                           uploading = true;
                         }
@@ -379,25 +379,25 @@ class _ProductSharePageState extends State<ProductSharePage> {
           ),
           uploading
               ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          "uploading...",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CircularProgressIndicator(
-                          value: val,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.green)),
-                    ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "uploading...",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CircularProgressIndicator(
+                    value: val,
+                    valueColor:
+                    AlwaysStoppedAnimation<Color>(Colors.green)),
+              ],
+            ),
+          )
               : Container(),
         ],
       ),
@@ -412,8 +412,8 @@ class _ProductSharePageState extends State<ProductSharePage> {
       hintStyle: TextStyle(color: Colors.white),
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-         color: Colors.white,
-      )),
+            color: Colors.white,
+          )),
       disabledBorder:  OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.white,
@@ -423,9 +423,9 @@ class _ProductSharePageState extends State<ProductSharePage> {
         color: Colors.red,
       )),
       focusedBorder:  OutlineInputBorder(
-          borderSide: BorderSide(
-            color: themeColor,
-          ),
+        borderSide: BorderSide(
+          color: themeColor,
+        ),
       ),
       focusedErrorBorder:   OutlineInputBorder(
         borderSide: BorderSide(

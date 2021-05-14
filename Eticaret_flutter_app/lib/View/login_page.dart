@@ -1,9 +1,9 @@
 
+import 'package:e_ticaret_flutter_app/Core/Service/auth_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:e_ticaret_flutter_app/Dialog/alert_dialog_cool.dart';
-import 'package:e_ticaret_flutter_app/View/authentication/register/register_page.dart';
-import 'package:e_ticaret_flutter_app/View/authentication/service/auth_service.dart';
+import 'package:e_ticaret_flutter_app/View/register_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
