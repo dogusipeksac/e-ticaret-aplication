@@ -1,16 +1,15 @@
-# e_ticaret_flutter_app
+# E-ticaret Uygulaması İş Programı İlerleyiş
+## Yapılanlar
+- [x] Tasarım dosyaları yüklendi! (23 Mart)
+- [x] Tasarım iskeleti oluşturuldu! (30 Mart)
+- [x] Database modellemesi yüklendi ve bazı activityler güncellendi! (6 Nisan)
+- [x] Firebas bağlantısı tamamlandı! Giriş ve Kayıt ol sayfaları fonksiyonları tamamlandı! (13 Nisan)
+- [x] Anasayfa Modülü kodlanması.     (14-21 Nisan)
+- [x] Mesajlaşma Modülü kodlanması.   (21-28 Nisan)
+- [x] Arama Modülü kodlanması.        (28 Nisan - 5 Mayıs)
+- [x] Teklif Verme Modülü kodlanması. (5-12 Mayıs)
 
-A new Flutter application.
+## Yapılacaklar
+- [ ] Yükleme Modülü kodlanması.      (12-19 Mayıs)
+- [ ] Bildirim Modülü kodlanması.     (19-26 Mayıs)
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
