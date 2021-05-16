@@ -1,8 +1,12 @@
 
+import 'package:e_ticaret_flutter_app/Model/messageCreate.dart';
 import 'package:e_ticaret_flutter_app/Model/product.dart';
+import 'package:e_ticaret_flutter_app/View/message_detail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
+import 'package:provider/provider.dart';
 
 class AdDetail extends StatefulWidget {
   static String routeName = '/routeAdDetailPage';
@@ -13,9 +17,7 @@ class AdDetail extends StatefulWidget {
 
   @override
   _AdDetailState createState() => _AdDetailState(
-      product: snapshot.productTitle,
-      info: snapshot.productOfDescription,
-      price: snapshot.productPrice,
+      product: snapshot,
       images: snapshot.getImages()
   );
 }
@@ -25,21 +27,13 @@ class _AdDetailState extends State<AdDetail> {
   int current_photo;
   _AdDetailState({
     @required this.product,
-    @required this.price,
-    @required this.info,
-    @required this.images,
+    @required this.images
   });
-  final String product;
-  final String price;
-  final String info;
+  final Product product;
+
   final List<String> images;
 
-  /*List<String> images = [
-    'https://www.torcanrentacar.com/upload/resimler/araba/yeni%20renault%20symbol.jpg',
-    'https://i0.shbdn.com/photos/11/34/85/x5_337113485uf1.jpg',
-    'https://www.thestreet.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTY4NTE2OTEyNjk4NDM1MzUw/the-best-cars-to-buy-used.jpg',
-    'https://images4.alphacoders.com/880/880948.jpg'
-  ];*/
+
 
   @override
   void initState() {
@@ -99,7 +93,7 @@ class _AdDetailState extends State<AdDetail> {
         Padding(
           padding: const EdgeInsets.only(top: 15.0, left: 15),
           child: Text(
-            price,
+            product.productPrice,
             style: TextStyle(
               color: themeColor,
               fontSize: 30,
@@ -110,7 +104,7 @@ class _AdDetailState extends State<AdDetail> {
         Padding(
           padding: const EdgeInsets.only(top: 5, left: 15),
           child: Text(
-            product,
+            product.productTitle,
             style: TextStyle(
               color: text,
               fontSize: 25,
@@ -133,7 +127,7 @@ class _AdDetailState extends State<AdDetail> {
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Text(
-            info,
+            product.productOfDescription,
             style: TextStyle(
               fontSize: 19,
               fontFamily: "Tienne",
@@ -235,7 +229,11 @@ class _AdDetailState extends State<AdDetail> {
             height: 50,
             buttonColor: themeColor,
             child: RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  _textEditingController.text=text;
+                });
+              },
               elevation: 3,
               child: Text(text,style: TextStyle(color: background, fontSize: 20),),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -277,7 +275,7 @@ class _AdDetailState extends State<AdDetail> {
                       labelStyle: TextStyle(color: themeColor),
                       suffixIcon: IconButton(
                         icon: Icon(Icons.send_outlined,color: themeColor,),
-                        onPressed: () => print("gönderdii!"),
+                        onPressed: () =>sendMessage(context,_textEditingController.text,product),
                       ),
                       enabledBorder: border,
                       focusedBorder: border,
@@ -288,12 +286,22 @@ class _AdDetailState extends State<AdDetail> {
             ),
           );
         });
+
       },
     );
+
+  }
+
+  sendMessage(BuildContext context,String message,Product product){
+    Navigator.pushNamed(context, MessageDetail.routeName,arguments:MessageCreate(
+      product: product,
+      message: message,
+    ),) ;
   }
 }
 
 class SelectedPhoto extends StatelessWidget {
+
   final int numberOfDots;
   final int photoIndex;
   const SelectedPhoto({this.numberOfDots, this.photoIndex});
@@ -349,6 +357,7 @@ class SelectedPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.only(right: 30.0, bottom: 20.0),
       child: Row(
@@ -357,4 +366,7 @@ class SelectedPhoto extends StatelessWidget {
       ),
     );
   }
+
+
+
 }

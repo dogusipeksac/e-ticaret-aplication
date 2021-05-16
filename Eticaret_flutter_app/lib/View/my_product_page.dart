@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 
 import '../Map/main_drawer.dart';
 
-//bildirimler sayfasi
 class MyProduct extends StatelessWidget {
   final ProductShareService service= ProductShareService();
   static String routeName = '/routeMyProduct';

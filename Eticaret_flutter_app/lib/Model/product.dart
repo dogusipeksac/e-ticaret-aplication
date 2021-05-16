@@ -50,23 +50,4 @@ class Product {
     return images;
   }
 
-
-  factory Product.fromSnapshot(DocumentSnapshot snapshot) {
-    return Product(
-      id: snapshot.id,
-      userId: snapshot["User id"],
-      productCategory: snapshot["Kategori"],
-      productImage1: snapshot["Image 1"],
-      productImage2: snapshot["Image 2"],
-      productImage3: snapshot["Image 3"],
-      productImage4: snapshot["Image 4"],
-      productImage5: snapshot["Image 5"],
-      productOfDescription: snapshot["Aciklama"],
-      productPrice: snapshot["Fiyat"],
-      productState: snapshot["Durumu"],
-      productTitle: snapshot["Baslik"],
-    );
-
-
-  }
 }

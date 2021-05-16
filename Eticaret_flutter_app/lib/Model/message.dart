@@ -2,6 +2,8 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 
 class Message {
@@ -14,10 +16,10 @@ class Message {
   Message({this.message,this.senderId,this.messageId});
 
   factory Message.fromSnapshot(DocumentSnapshot  snapshot){
+
     return Message(
        messageId: snapshot.id,
-      message: snapshot.data()['message'],
-
+        message: snapshot.data()['message'],
     );
   }
 

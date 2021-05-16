@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                           staggeredTileBuilder: (index) => StaggeredTile.count(
-                              (index % 4 == 0) ? 2 : 1, (index % 4 == 0) ? 4 : 2),
+                              (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
                           mainAxisSpacing: 10.0,
                           crossAxisSpacing: 10.0,
                         ),

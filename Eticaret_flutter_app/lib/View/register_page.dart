@@ -1,3 +1,4 @@
+import 'package:e_ticaret_flutter_app/Core/Controller/user_controller.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/auth_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/Dialog/alert_dialog_cool.dart';
@@ -38,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameSurnameController = TextEditingController();
 
-  AuthService _authService = AuthService();
+  AuthService _userController = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
             setState(() {
               if(validation()){
                 SuccessAlertRegister(context);
-                _authService.createPerson(_emailController.text,
+                _userController.createPerson(_emailController.text,
                     _nameSurnameController.text, _passwordController.text);
               }
             });

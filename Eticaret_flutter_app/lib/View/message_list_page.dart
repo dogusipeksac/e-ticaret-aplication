@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_ticaret_flutter_app/Core/Controller/message_list_controller.dart';
+
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/Model/chat.dart';
-import 'package:e_ticaret_flutter_app/Model/message.dart';
 import 'package:e_ticaret_flutter_app/View/message_detail.dart';
 import 'package:e_ticaret_flutter_app/ViewModal/chats_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +13,6 @@ import '../Map/main_drawer.dart';
 
 //bildirimler sayfasi
 class MessageList extends StatelessWidget {
-  MessageListController controller=MessageListController();
   String userID=FirebaseAuth.instance.currentUser.uid;
   static String routeName = '/routeMessageList';
   @override
