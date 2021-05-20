@@ -6,11 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 class NotificationService{
   ///turn current user's notification list
   Stream<List<NotificationModel>> getUserNotificationList(){
-    var notificationList;
     var snapshots = NotificationModel.getPath
         .where("user_id",isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .snapshots();
-    notificationList = snapshots.map((qShot) => qShot.docs.map((doc) => NotificationModel.fromSnapshot(doc)).toList());
+    var notificationList = snapshots.map((qShot) => qShot.docs
+        .map((doc) => NotificationModel.fromSnapshot(doc))
+        .toList());
     return notificationList;
   }
 
@@ -34,4 +35,10 @@ class NotificationService{
       NotificationModel.getPath.doc(element.id).delete();
     }));
   }
+  ///update notification
+  updateNotification(NotificationModel notificationModel){
+    NotificationModel.getPath.doc(notificationModel.id)
+        .update(NotificationModel().toMap(notificationModel));
+  }
+
 }

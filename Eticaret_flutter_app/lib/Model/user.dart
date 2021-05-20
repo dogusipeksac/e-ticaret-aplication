@@ -30,7 +30,7 @@ class UserModel {
       name: snapshot['name'],
       email: snapshot['email'],
       password: snapshot['password'],
-      userImage: snapshot['image'],
+      userImageLink: snapshot['image'],
       userLocation: snapshot['location'],
     );
   }

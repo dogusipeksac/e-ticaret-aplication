@@ -1,5 +1,6 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/wish_list_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
@@ -53,8 +54,7 @@ class _AdDetailState extends State<AdDetail> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final _pageView = Consumer<User>(
-      builder: (context, user, child) => SizedBox(
+    final _pageView = SizedBox(
         height: size.height/2,
         width: size.width,
         child: Stack(
@@ -94,30 +94,11 @@ class _AdDetailState extends State<AdDetail> {
                 ),
               ),
             ),
-            ///add to wish list
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: _wishListService.isInWishList(product.id,
-                whenTrue:IconButton(
-                  iconSize: 50,
-                  color: themeColor,
-                  icon: Icon(Icons.favorite) ,
-                  onPressed: ()=> removeWishList(user.uid),
-                ),
-                whenFalse: IconButton(
-                  iconSize: 50,
-                  color: themeColor,
-                  icon: Icon(Icons.favorite_outline),
-                  onPressed: ()=> addWishList(),
-                ),
-              ),
-            )
           ],
         ),
-      ),
-    );
+      );
     final _productDetail = Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.only(left:15.0, right: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -140,6 +121,34 @@ class _AdDetailState extends State<AdDetail> {
         body: Column(
           children: [
             _pageView,
+            StreamBuilder<QuerySnapshot>(
+              stream: _wishListService.countOfProductWish(product.id),
+              builder: (builder,count){
+                print(count.data);
+                if(count.hasData)
+                  return product.userId != user.uid ?
+                  _wishListService.isInWishList(product.id,count.data.size,
+                    whenTrue: IconButton(
+                      iconSize: 45,
+                      color: themeColor,
+                      icon: Icon(Icons.favorite,) ,
+                      onPressed: ()=> removeWishList(user.uid),
+                    ),
+                    whenFalse: IconButton(
+                      iconSize: 45,
+                      color: themeColor,
+                      icon: Icon(Icons.favorite_outline),
+                      onPressed: ()=> addWishList(),
+                    ),
+                  ):Container(
+                    width: size.width,
+                    color: Colors.black45.withOpacity(0.3),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(child: Text("${count.data.size} kişi istek listesine ekledi",style: detailDescription,)),
+                  );
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
             Expanded(
               child: ListView(
                 children: [
