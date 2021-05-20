@@ -54,7 +54,7 @@ class _MessageDetailState extends State<MessageDetail> {
   @override
   Widget build(BuildContext context) {
     final args=ModalRoute.of(context).settings.arguments as MessageCreate;
-  //  messageEditingController.text=args.message;
+    messageEditingController.text=args.message;
     return SafeArea(
       child: Scaffold(
         backgroundColor: background,

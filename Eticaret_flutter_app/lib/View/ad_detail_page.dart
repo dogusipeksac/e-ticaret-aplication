@@ -1,4 +1,9 @@
 
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/wish_list_service.dart';
+import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:e_ticaret_flutter_app/Model/Wish.dart';
 import 'package:e_ticaret_flutter_app/Model/messageCreate.dart';
 import 'package:e_ticaret_flutter_app/Model/product.dart';
 import 'package:e_ticaret_flutter_app/View/message_detail.dart';
@@ -23,8 +28,10 @@ class AdDetail extends StatefulWidget {
 }
 
 class _AdDetailState extends State<AdDetail> {
+  final WishListService _wishListService = WishListService();
+  final auth = FirebaseAuth.instance;
   PageController pageController;
-  int current_photo;
+  int currentPhoto;
   _AdDetailState({
     @required this.product,
     @required this.images
@@ -40,168 +47,129 @@ class _AdDetailState extends State<AdDetail> {
     // TODO: implement initState
     super.initState();
     pageController = PageController(initialPage: 0, viewportFraction: 1);
-    current_photo = pageController.initialPage;
+    currentPhoto = pageController.initialPage;
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    final _pageView = SizedBox(
-      height: size.height/2,
-      width: size.width,
-      child: Stack(
-        children: [
-          PageView.builder(
-            pageSnapping: true,
-            controller: pageController,
-            itemCount: images.length,
-            onPageChanged: _onPageChanged,
-            itemBuilder: (context, position) {
-              return imageSlider(position);
-            },
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SelectedPhoto(
-              numberOfDots: images.length,
-              photoIndex: current_photo,
-            ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: themeColor,
-                  size: 40,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    final _productDetail =Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 15.0, left: 15),
-          child: Text(
-            product.productPrice,
-            style: TextStyle(
-              color: themeColor,
-              fontSize: 30,
-              fontFamily: "Tienne",
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5, left: 15),
-          child: Text(
-            product.productTitle,
-            style: TextStyle(
-              color: text,
-              fontSize: 25,
-              fontFamily: "Tienne",
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Text(
-            "Açıklama :",
-            style: TextStyle(
-              fontSize: 19,
-              fontFamily: "Tienne",
-              fontWeight: FontWeight.bold,
-              color: text,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: Text(
-            product.productOfDescription,
-            style: TextStyle(
-              fontSize: 19,
-              fontFamily: "Tienne",
-              color: text,
-            ),
-          ),
-        ),
-      ],
-    );
-
-    return Scaffold(
-      backgroundColor: background,
-      bottomNavigationBar: BottomAppBar(
-        color: filterBackground,
-        child: Row(
+    final Size size = MediaQuery.of(context).size;
+    final _pageView = Consumer<User>(
+      builder: (context, user, child) => SizedBox(
+        height: size.height/2,
+        width: size.width,
+        child: Stack(
           children: [
-            Spacer(),
-            ElevatedButton(
-              onPressed: ()=>showInformationDialog(context),
+            ///image view
+            PageView.builder(
+              pageSnapping: true,
+              controller: pageController,
+              itemCount: images.length,
+              onPageChanged: _onPageChanged,
+              itemBuilder: (context, position) {
+                return imageSlider(position);
+              },
+            ),
+            ///image counter display
+            Align(
+              alignment: Alignment.bottomRight,
+              child: SelectedPhoto(
+                numberOfDots: images.length,
+                photoIndex: currentPhoto,
+              ),
+            ),
+            ///return back button
+            Align(
+              alignment: Alignment.topRight,
               child: Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Text(
-                  "Mesaj At",
-                  style: TextStyle(
-                      color: background, fontSize: 20, fontFamily: 'Tienne'),
+                padding: const EdgeInsets.all(10.0),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: themeColor,
+                    size: 40,
+                  ),
                 ),
               ),
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  primary: themeColor,
-                  elevation: 10),
             ),
-            Spacer(),
-            ElevatedButton(
-                onPressed: () {},
-                child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 3, horizontal: 30),
-                  child: Text(
-                    "Ara",
-                    style: TextStyle(
-                        color: background, fontSize: 20, fontFamily: 'Tienne'),
-                  ),
+            ///add to wish list
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: _wishListService.isInWishList(product.id,
+                whenTrue:IconButton(
+                  iconSize: 50,
+                  color: themeColor,
+                  icon: Icon(Icons.favorite) ,
+                  onPressed: ()=> removeWishList(user.uid),
                 ),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  primary: themeColor,
-                  elevation: 10,
-                )),
-            Spacer(),
+                whenFalse: IconButton(
+                  iconSize: 50,
+                  color: themeColor,
+                  icon: Icon(Icons.favorite_outline),
+                  onPressed: ()=> addWishList(),
+                ),
+              ),
+            )
           ],
         ),
       ),
-      body: Column(
+    );
+    final _productDetail = Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _pageView,
-          Expanded(
-            child: ListView(
-              children: [
-                _productDetail
-              ],
-            ),
-          ),
+          AutoSizeText(product.productTitle, style: detailTitle, maxLines: 2,),
+          SizedBox(height: 15,),
+          Text("${product.productPrice} TL", style: detailPrice,),
+          SizedBox(height: 15,),
+          Text("Açıklama :", style: detailDescriptionTitle,),
+          SizedBox(height: 15,),
+          Text(product.productOfDescription, style: detailDescription,),
         ],
+      ),
+    );
+
+
+    return Consumer<User>(
+      builder: (context, user, child) => Scaffold(
+        backgroundColor: background,
+        bottomNavigationBar: DetailBottomAppBar(product: product,uid: user.uid,),
+        body: Column(
+          children: [
+            _pageView,
+            Expanded(
+              child: ListView(
+                children: [
+                  _productDetail
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  ///Product Detail Page FUNCTIONS
+  addWishList(){
+    setState(() {
+      _wishListService.addWishList(product);
+    });
+  }
+  removeWishList(String userId){
+    setState(() {
+      _wishListService.removeWishList(Wish(
+        willingId: userId,
+        productId: product.id,
+      ));
+    });
+  }
   _onPageChanged(int page) {
     setState(() {
-      current_photo = page;
+      currentPhoto = page;
     });
   }
   imageSlider(int index) {
@@ -217,35 +185,121 @@ class _AdDetailState extends State<AdDetail> {
       ),
     );
   }
+  sendMessage(BuildContext context,String message,Product product){
+    Navigator.pushNamed(context, MessageDetail.routeName,arguments:MessageCreate(
+      product: product,
+      message: message,
+    ),) ;
+  }
+}
 
+class DetailBottomAppBar extends StatelessWidget {
+  final Product product;
+  final String uid;
+  final ProductShareService service = ProductShareService();
+  DetailBottomAppBar({@required this.product,@required this.uid});
+
+  ///send message function for sending custom or const message send to
+  ///message detail page
+  sendMessage(BuildContext context,String message,Product product){
+    Navigator.pushNamed(context, MessageDetail.routeName,
+      arguments:MessageCreate(
+        product: product,
+        message: message,
+      ),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final Size buttonSize = Size(size.width/3,size.height*0.05);
+    final buttonStyle = ElevatedButton.styleFrom(
+        minimumSize: buttonSize,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        primary: themeColor,
+        elevation: 10
+    );
+    return BottomAppBar(
+      color: filterBackground,
+      child: product.userId!=uid ? Row(
+        children: [
+          Spacer(),
+          ElevatedButton(
+            onPressed: ()=>showInformationDialog(context),
+            child: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text("Mesaj At",style: detailButtonTextStyle,),
+            ),
+            style: buttonStyle,
+          ),
+          Spacer(),
+          ElevatedButton(
+            onPressed: () {},
+            child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: Text("Ara", style: detailButtonTextStyle,)
+            ),
+            style: buttonStyle,
+          ),
+          Spacer(),
+        ],
+      ):Row(
+        children: [
+          Spacer(),
+          ElevatedButton(
+            onPressed: () async{
+              await service.remove(product.id).whenComplete(() => Navigator.pop(context));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child:  Text(
+                "Sil",
+                style: TextStyle(
+                    color: background, fontSize: 20, fontFamily: 'Tienne'),
+              ),
+            ),
+            style: buttonStyle,
+          ),
+          Spacer(),
+        ],
+      ),
+    );
+  }
+  ///Form key for dialog of form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ///Dialog builder for sending const or custom message to seller
   Future<void> showInformationDialog(BuildContext context) async {
     return await showDialog(context: context,
       builder: (context){
+        ///information dialog text edit controller
         final TextEditingController _textEditingController = TextEditingController();
+        ///information dialog button style
+        final buttonStyle = ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            primary: themeColor,
+            elevation: 10
+        );
+        ///information dialog button template
         Widget getButton(String text){
           return ButtonTheme(
             minWidth: double.infinity,
             height: 50,
             buttonColor: themeColor,
-            child: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  _textEditingController.text=text;
-                });
-              },
-              elevation: 3,
+            child: ElevatedButton(
+              onPressed: () => _textEditingController.text=text,
+              style: buttonStyle,
               child: Text(text,style: TextStyle(color: background, fontSize: 20),),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
             ),
           );
         }
+        ///information dialog text field input border style
         OutlineInputBorder border = OutlineInputBorder(
           borderRadius: BorderRadius.circular(13),
           borderSide: BorderSide(
             width:2,
             color: themeColor,),
         );
+
         return StatefulBuilder(builder: (context,setState){
           return AlertDialog(
             scrollable: true,
@@ -291,14 +345,8 @@ class _AdDetailState extends State<AdDetail> {
     );
 
   }
-
-  sendMessage(BuildContext context,String message,Product product){
-    Navigator.pushNamed(context, MessageDetail.routeName,arguments:MessageCreate(
-      product: product,
-      message: message,
-    ),) ;
-  }
 }
+
 
 class SelectedPhoto extends StatelessWidget {
 
@@ -357,7 +405,6 @@ class SelectedPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(right: 30.0, bottom: 20.0),
       child: Row(

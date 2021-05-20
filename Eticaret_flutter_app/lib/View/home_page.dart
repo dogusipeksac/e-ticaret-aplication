@@ -116,9 +116,7 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           actions: <Widget>[
             IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, FilterPage.routeName);
-              },
+              onPressed: () => Navigator.pushNamed(context, FilterPage.routeName),
               icon: Icon(
                 Icons.filter_list_rounded,
                 color: Colors.white,
@@ -159,7 +157,8 @@ class _HomePageState extends State<HomePage> {
                           width: size.width,
                           alignment: Alignment.topCenter,
                           height: closeTopContainer ? 0 : categoryHeight,
-                          child: categoriesScroller),
+                          child: categoriesScroller,
+                      ),
                     ),
                     Expanded(
                       child: Padding(
@@ -167,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                         child: StaggeredGridView.countBuilder(
                           controller: scrollController,
                           physics: BouncingScrollPhysics(),
-                          crossAxisCount: 3,
+                          crossAxisCount: 2,
                           itemCount: _searchResult.isNotEmpty
                               ? _searchResult.length
                               : snapshot.data.length,
@@ -179,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                           staggeredTileBuilder: (index) => StaggeredTile.count(
-                              (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
+                              /*(index % 7 == 0) ? 2 : */1, /*(index % 7 == 0) ? 2 :*/ 1),
                           mainAxisSpacing: 10.0,
                           crossAxisSpacing: 10.0,
                         ),

@@ -16,14 +16,7 @@ import 'package:provider/provider.dart';
 class MainDrawer extends StatelessWidget {
   final UserController _userController=UserController();
 
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthService>(context, listen: false);
-      await auth.signOut();
-    } catch (e) {
-      print(e);
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +33,10 @@ class MainDrawer extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          return Column(
-            children: <Widget>[
-              SafeArea(
-                child: Container(
+          return SafeArea(
+            child: Column(
+              children: <Widget>[
+                Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(20),
                   color: themeColor,
@@ -108,160 +101,29 @@ class MainDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  color: background,
-                  child: Column(
-                    children: <Widget>[
-                      /** Main Page **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Anasayfa',
-                          style: TextStyle(
-                              color: text,
-                              fontSize: 30,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'Tienne'),
-                        ),
-                        onTap: () {
-                          Navigator.pushNamed(context, HomePage.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Notification **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Bildirimler',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, Notifications.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Messages **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Mesajlar',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, MessageList.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** My Products **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Ürünlerim',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, MyProduct.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Settings **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Ayarlar',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, SettingPage.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Log out **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Çıkış',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () =>_signOut(context),
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                    ],
+                Expanded(
+                  child: Container(
+                    color: background,
+                    child: Column(
+                      children: <Widget>[
+                        /** Main Page **/
+                        PageTile(name: 'Anasayfa', textColor: text, routeName: HomePage.routeName),
+                        /** Notification **/
+                        PageTile(name: 'Bildirimler', textColor: text, routeName: Notifications.routeName),
+                        /** Messages **/
+                        PageTile(name: 'Mesajlar', textColor: text, routeName: MessageList.routeName),
+                        /** My Products **/
+                        PageTile(name: 'Ürünlerim', textColor: text, routeName: MyProduct.routeName),
+                        /** Settings **/
+                        PageTile(name: 'Ayarlar', textColor: text, routeName: SettingPage.routeName),
+                        /** Log out **/
+                        PageTile(name: 'Çıkış',textColor: Colors.red,  routeName: "",),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }
 
@@ -269,6 +131,55 @@ class MainDrawer extends StatelessWidget {
     );
   }
 }
+
+class PageTile extends StatelessWidget {
+  final String name;
+  final Color textColor;
+  final String routeName;
+  PageTile({
+    @required this.name,
+    @required this.textColor,
+    @required this.routeName,
+  });
+
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      final auth = Provider.of<AuthService>(context, listen: false);
+      await auth.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 20),
+        ListTile(
+        title: Text(name,
+        style: TextStyle(
+        color: textColor,
+        fontSize: 30,
+        fontWeight: FontWeight.normal,
+        )),
+        onTap: () =>routeName.isEmpty? _signOut(context): Navigator.pushNamed(context, routeName),
+        ),
+        SizedBox(
+          width: 280,
+          child: Divider(
+            color: filterBackground,
+            thickness: 2,
+            height: 3,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
 //class for rating with star
 class StarDisplay extends StatelessWidget {
   final int value;
