@@ -1,12 +1,17 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/Model/messageCreate.dart';
 import 'package:e_ticaret_flutter_app/Model/product.dart';
+import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:e_ticaret_flutter_app/View/message_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:provider/provider.dart';
+
+import 'message_list_page.dart';
 
 class AdDetail extends StatefulWidget {
   static String routeName = '/routeAdDetailPage';
@@ -23,6 +28,7 @@ class AdDetail extends StatefulWidget {
 }
 
 class _AdDetailState extends State<AdDetail> {
+  ProductShareService service=ProductShareService();
   PageController pageController;
   int current_photo;
   _AdDetailState({
@@ -138,63 +144,88 @@ class _AdDetailState extends State<AdDetail> {
       ],
     );
 
-    return Scaffold(
-      backgroundColor: background,
-      bottomNavigationBar: BottomAppBar(
-        color: filterBackground,
-        child: Row(
-          children: [
-            Spacer(),
-            ElevatedButton(
-              onPressed: ()=>showInformationDialog(context),
-              child: Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Text(
-                  "Mesaj At",
-                  style: TextStyle(
-                      color: background, fontSize: 20, fontFamily: 'Tienne'),
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  primary: themeColor,
-                  elevation: 10),
-            ),
-            Spacer(),
-            ElevatedButton(
-                onPressed: () {},
+    return Consumer<User>(
+      builder: (context, user, child) =>Scaffold(
+        backgroundColor: background,
+        bottomNavigationBar: BottomAppBar(
+          color: filterBackground,
+          child: product.userId!=user.uid ? Row(
+            children: [
+              Spacer(),
+               ElevatedButton(
+                onPressed: ()=>showInformationDialog(context),
                 child: Padding(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 3, horizontal: 30),
-                  child: Text(
-                    "Ara",
+                  padding: const EdgeInsets.all(3.0),
+                  child:  Text(
+                    "Mesaj At",
                     style: TextStyle(
                         color: background, fontSize: 20, fontFamily: 'Tienne'),
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    primary: themeColor,
+                    elevation: 10),
+              ),
+              Spacer(),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 3, horizontal: 30),
+                    child: Text(
+                      "Ara",
+                      style: TextStyle(
+                          color: background, fontSize: 20, fontFamily: 'Tienne'),
+                    ),
                   ),
-                  primary: themeColor,
-                  elevation: 10,
-                )),
-            Spacer(),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    primary: themeColor,
+                    elevation: 10,
+                  )),
+              Spacer(),
+            ],
+          ):  Row(
+            children: [
+              Spacer(),
+              ElevatedButton(
+                onPressed: () async{
+                  await service.remove(product.id).whenComplete(() => Navigator.pop(context));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child:  Text(
+                    "Sil",
+                    style: TextStyle(
+                        color: background, fontSize: 20, fontFamily: 'Tienne'),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    primary: themeColor,
+                    elevation: 10),
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+        body: Column(
+          children: [
+            _pageView,
+            Expanded(
+              child: ListView(
+                children: [
+                  _productDetail
+                ],
+              ),
+            ),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          _pageView,
-          Expanded(
-            child: ListView(
-              children: [
-                _productDetail
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -246,54 +277,70 @@ class _AdDetailState extends State<AdDetail> {
             width:2,
             color: themeColor,),
         );
-        return StatefulBuilder(builder: (context,setState){
-          return AlertDialog(
-            scrollable: true,
-            title: Center(child: Text("Mesaj Gönder",style: TextStyle(color:Colors.white),)),
-            backgroundColor: background,
-            content: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  getButton("Hala satılık mı?"),
-                  SizedBox(height: 10,),
-                  getButton("Pazarlık var mı?"),
-                  SizedBox(height: 10,),
-                  getButton("Ne zaman alabilirim?"),
-                  SizedBox(height: 10,),
-                  getButton("Sorunu var mı?"),
-                  SizedBox(height: 10,),
-                  TextFormField(
-                    controller: _textEditingController,
-                    style: TextStyle(color: themeColor),
-                    validator: (value){
-                      return value.isNotEmpty ? null : "Invalid Field";
-                    },
-                    decoration: InputDecoration(
-                      labelText: "Keni Mesajını Yaz",
-                      labelStyle: TextStyle(color: themeColor),
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.send_outlined,color: themeColor,),
-                        onPressed: () =>sendMessage(context,_textEditingController.text,product),
+        return Consumer<User>(
+          builder: (context, user, child) => StatefulBuilder(builder: (context,setState){
+            return AlertDialog(
+              scrollable: true,
+              title: Center(child: Text("Mesaj Gönder",style: TextStyle(color:Colors.white),)),
+              backgroundColor: background,
+              content: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    getButton("Hala satılık mı?"),
+                    SizedBox(height: 10,),
+                    getButton("Pazarlık var mı?"),
+                    SizedBox(height: 10,),
+                    getButton("Ne zaman alabilirim?"),
+                    SizedBox(height: 10,),
+                    getButton("Sorunu var mı?"),
+                    SizedBox(height: 10,),
+                    TextFormField(
+                      controller: _textEditingController,
+                      style: TextStyle(color: themeColor),
+                      validator: (value){
+                        return value.isNotEmpty ? null : "Invalid Field";
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Keni Mesajını Yaz",
+                        labelStyle: TextStyle(color: themeColor),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.send_outlined,color: themeColor,),
+                          onPressed: () =>
+                              sendMessage(context,
+                                  _textEditingController.text,product,user.uid),
+                        ),
+                        enabledBorder: border,
+                        focusedBorder: border,
                       ),
-                      enabledBorder: border,
-                      focusedBorder: border,
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+        );
 
       },
     );
 
   }
 
-  sendMessage(BuildContext context,String message,Product product){
-    Navigator.pushNamed(context, MessageDetail.routeName,arguments:MessageCreate(
+  sendMessage(BuildContext context,String message,Product product,String user) async{
+   var listRef = FirebaseFirestore.instance
+        .collection("Conversitons");
+
+   listRef.add({
+      'message': message,
+      'members':FieldValue.arrayUnion([
+       product.userId,
+       user,
+     ]),
+    });
+
+
+    Navigator.pushNamed(context, MessageList.routeName,arguments:MessageCreate(
       product: product,
       message: message,
     ),) ;

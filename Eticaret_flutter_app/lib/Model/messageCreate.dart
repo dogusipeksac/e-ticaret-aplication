@@ -4,6 +4,7 @@ class MessageCreate{
   Product product;
   String message;
   String userID;
+  String gonderilenid;
 
   MessageCreate({this.product,this.message,this.userID});
 }

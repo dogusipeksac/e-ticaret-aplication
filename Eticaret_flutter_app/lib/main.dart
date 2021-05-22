@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<AuthService>(create: (_) => AuthService(),)
+        Provider<AuthService>(create: (_aut) => AuthService(),)
       ],
       child: AuthWidgetBuilder(builder: (context,userSnapshot) {
         return MaterialApp(

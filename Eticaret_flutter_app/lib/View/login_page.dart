@@ -7,8 +7,6 @@ import 'package:e_ticaret_flutter_app/View/register_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   static String routeName = '/routeLoginPage';
@@ -23,7 +21,7 @@ RegExp regExp = new RegExp(email_valid);
 
 class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-   bool obsture=true;
+  bool obsture=true;
   bool validation(){
     final FormState _form=_formKey.currentState;
     if(_form.validate()){

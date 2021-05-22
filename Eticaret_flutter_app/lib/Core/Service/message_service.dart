@@ -19,7 +19,6 @@ class MessageService{
     _firestore.
     collection("Conversitons/${conservationId}/Messages").
     orderBy('timeStamp').snapshots();
-
     return stream.map(
             (qShot) => qShot.docs.map(
                 (doc) => Message(
