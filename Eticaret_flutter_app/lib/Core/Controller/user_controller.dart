@@ -25,4 +25,5 @@ class UserController{
   getPath(){
     return _firebaseFirestore.collection('User').doc('${auth.currentUser.uid}');
   }
+
 }

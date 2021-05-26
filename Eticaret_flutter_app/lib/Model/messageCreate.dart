@@ -3,8 +3,7 @@ import 'package:e_ticaret_flutter_app/Model/product.dart';
 class MessageCreate{
   Product product;
   String message;
-  String userID;
-  String gonderilenid;
+  String conversitonId;
 
-  MessageCreate({this.product,this.message,this.userID});
+  MessageCreate({this.product,this.message,this.conversitonId});
 }

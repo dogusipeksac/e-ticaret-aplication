@@ -8,7 +8,7 @@
 - [x] Mesajlaşma Modülü kodlanması.   (21-28 Nisan)
 - [x] Arama Modülü kodlanması.        (28 Nisan - 5 Mayıs)
 - [x] Teklif Verme Modülü kodlanması. (5-12 Mayıs)
+- [x] Yükleme Modülü kodlanması.      (12-19 Mayıs)
 ## Yapılacaklar
-- [ ] Yükleme Modülü kodlanması.      (12-19 Mayıs)
 - [ ] Bildirim Modülü kodlanması.     (19-26 Mayıs)
 

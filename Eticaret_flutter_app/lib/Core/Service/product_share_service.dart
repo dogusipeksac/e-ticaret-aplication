@@ -55,26 +55,20 @@ class ProductShareService {
     return FirebaseFirestore.instance.collection("Product").
     where("User id",isEqualTo: FirebaseAuth.instance.currentUser.uid);
   }
+  Stream<List<Product>> getUserProducts(){
+    return getUserProduct()
+        .snapshots()
+        .map((qShot) => qShot.docs
+        .map((doc) => Product.fromSnapshot(doc))
+        .toList());
+  }
 
   Stream<List<Product>> getProduct() {
     var stream =
     _firestore.collection('Product').snapshots();
     return stream.map(
             (qShot) => qShot.docs.map(
-                (doc) => Product(
-              id: doc.id,
-              userId: doc.get('User id'),
-              productOfDescription: doc.get('Aciklama'),
-              productTitle: doc.get('Baslik'),
-              productState: doc.get('Durumu'),
-              productPrice: doc.get('Fiyat'),
-              productImage1: doc.get('Image 1'),
-              productImage2: doc.get('Image 2'),
-              productImage3: doc.get('Image 3'),
-              productImage4: doc.get('Image 4'),
-              productImage5: doc.get('Image 5'),
-              productCategory: doc.get('Kategori'),
-            )
+                (doc) => Product.fromSnapshot(doc)
         ).toList()
     );
   }

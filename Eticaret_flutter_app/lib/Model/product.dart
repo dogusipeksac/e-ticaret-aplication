@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
+  static final getPath = FirebaseFirestore.instance.collection("Product");
   String id;
   String userId;
   //mesela çok iyi durumda
@@ -48,6 +49,28 @@ class Product {
         images.removeRange(i, images.length);
     }
     return images;
+  }
+
+  factory Product.fromSnapshot(DocumentSnapshot snapshot){
+    return Product(
+      id: snapshot.id,
+      userId: snapshot['User id'],
+      productOfDescription: snapshot['Aciklama'],
+      productTitle: snapshot['Baslik'],
+      productState: snapshot['Durumu'],
+      productPrice: snapshot['Fiyat'],
+      productImage1: snapshot['Image 1'],
+      productImage2: snapshot['Image 2'],
+      productImage3: snapshot['Image 3'],
+      productImage4: snapshot['Image 4'],
+      productImage5: snapshot['Image 5'],
+      productCategory: snapshot['Kategori'],
+    );
+  }
+
+  Future<Product> fromProductId(String productId) async {
+    DocumentSnapshot doc = await getPath.doc(productId).get();
+    return Product.fromSnapshot(doc);
   }
 
 }

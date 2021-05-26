@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_ticaret_flutter_app/Core/Controller/user_controller.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/auth_service.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/notification_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
+import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:e_ticaret_flutter_app/Model/notification.dart';
+import 'package:e_ticaret_flutter_app/Model/product.dart';
+import 'package:e_ticaret_flutter_app/Model/user.dart';
 import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:e_ticaret_flutter_app/View/message_list_page.dart';
 import 'package:e_ticaret_flutter_app/View/my_product_page.dart';
@@ -12,9 +16,171 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-
 class MainDrawer extends StatelessWidget {
-  final UserController _userController=UserController();
+  //final UserController _userController = UserController();
+  final NotificationService service = NotificationService();
+
+  @override
+  Widget build(BuildContext context) {
+    UserModel user;
+    List<NotificationModel> notifyList =
+        Provider.of<List<NotificationModel>>(context);
+    if (Provider.of<DocumentSnapshot>(context) != null)
+      user = UserModel.fromSnapshot(Provider.of<DocumentSnapshot>(context));
+    List<Product> productList = Provider.of<List<Product>>(context);
+
+    if (user == null || notifyList == null || productList == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Drawer(
+        elevation: 3,
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                color: themeColor,
+                child: Center(
+                  child: Row(
+                    children: <Widget>[
+                      Material(
+                        borderRadius: BorderRadius.all(Radius.circular(180)),
+                        color: text,
+                        elevation: 20,
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.transparent,
+                          child: ClipOval(
+                            child: Image(
+                              image: user.userImageLink == ""
+                                  ? AssetImage("images/profile.png")
+                                  : NetworkImage(user.userImageLink),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                user.name,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: text,
+                                ),
+                              ),
+                              IconTheme(
+                                data: IconThemeData(
+                                  color: Colors.deepOrange,
+                                  size: 20,
+                                ),
+                                child: StarDisplay(value: 3),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  '${productList.length} Ürün',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: text,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  color: background,
+                  child: Column(
+                    children: <Widget>[
+                      /** Main Page **/
+                      PageTile(
+                        name: 'Anasayfa',
+                        textColor: text,
+                        routeName: HomePage.routeName,
+                        notificationNumber: 0,
+                      ),
+                      /** Notification **/
+                      PageTile(
+                        name: 'Bildirimler',
+                        textColor: text,
+                        routeName: Notifications.routeName,
+                        notificationNumber: numberOfNewNotification(notifyList),
+                      ),
+                      /** Messages **/
+                      PageTile(
+                        name: 'Mesajlar',
+                        textColor: text,
+                        routeName: MessageList.routeName,
+                        notificationNumber: 0,
+                      ),
+                      /** My Products **/
+                      PageTile(
+                        name: 'Ürünlerim',
+                        textColor: text,
+                        routeName: MyProduct.routeName,
+                        notificationNumber: 0,
+                      ),
+                      /** Settings **/
+                      PageTile(
+                        name: 'Ayarlar',
+                        textColor: text,
+                        routeName: SettingPage.routeName,
+                        notificationNumber: 0,
+                      ),
+                      /** Log out **/
+                      PageTile(
+                        name: 'Çıkış',
+                        textColor: Colors.red,
+                        routeName: "",
+                        notificationNumber: 0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  int numberOfNewNotification(List<NotificationModel> list) {
+    int count = 0;
+    if (list != null) {
+      list.forEach((element) {
+        if (!element.isShowed) count++;
+      });
+    }
+    return count;
+  }
+}
+
+class PageTile extends StatelessWidget {
+  final String name;
+  final Color textColor;
+  final String routeName;
+  final int notificationNumber;
+  PageTile({
+    @required this.name,
+    @required this.textColor,
+    @required this.routeName,
+    @required this.notificationNumber,
+  });
 
   Future<void> _signOut(BuildContext context) async {
     try {
@@ -27,248 +193,58 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      elevation: 3,
-      child: StreamBuilder<DocumentSnapshot>(
-        stream: _userController.getPath().snapshots(),
-        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot){
-          if (snapshot.hasError) {
-            return Text("Birşeyler yanlış gitti");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Column(
-            children: <Widget>[
-              SafeArea(
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(20),
-                  color: themeColor,
-                  child: Center(
-                    child: Row(
-                      children: <Widget>[
-                        Material(
-                          borderRadius: BorderRadius.all(Radius.circular(180)),
-                          color: text,
-                          elevation: 20,
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Colors.transparent,
-                            child: ClipOval(
-                              child: Image(
-                                image: snapshot.data['image'] =="" ?
-                                   AssetImage("images/profile.png",)
-                                    :NetworkImage(
-                                    snapshot.data['image']),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  snapshot.data['name'],
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Tienne',
-                                    fontWeight: FontWeight.bold,
-                                    color: text,
-                                  ),
-                                ),
-                                IconTheme(
-                                  data: IconThemeData(
-                                    color: Colors.deepOrange,
-                                    size: 20,
-                                  ),
-                                  child: StarDisplay(value: 3),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top:8.0),
-                                  child: Text(
-                                    '19 Ürün',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: 'Tienne',
-                                      color: text,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 20),
+        Stack(children: [
+          Align(
+            alignment: Alignment.center,
+            child: ListTile(
+              title: Text(
+                name,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 30,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              onTap: () => routeName.isEmpty
+                  ? _signOut(context)
+                  : Navigator.pushNamed(context, routeName),
+            ),
+          ),
+          ((notificationNumber != null && notificationNumber != 0) &&
+                  routeName == Notifications.routeName)
+              ? Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Colors.lightGreenAccent,
+                      child: Center(
+                          child: Text(
+                        notificationNumber.toString(),
+                        style: detailButtonTextStyle,
+                      )),
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  color: background,
-                  child: Column(
-                    children: <Widget>[
-                      /** Main Page **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Anasayfa',
-                          style: TextStyle(
-                              color: text,
-                              fontSize: 30,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'Tienne'),
-                        ),
-                        onTap: () {
-                          Navigator.pushNamed(context, HomePage.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Notification **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Bildirimler',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, Notifications.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Messages **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Mesajlar',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, MessageList.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** My Products **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Ürünlerim',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, MyProduct.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Settings **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Ayarlar',
-                            style: TextStyle(
-                                color: text,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () {
-                          Navigator.pushNamed(context, SettingPage.routeName);
-                        },
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                      /** Log out **/
-                      Divider(
-                        color: Colors.transparent,
-                        height: 20,
-                      ),
-                      ListTile(
-                        title: Text('Çıkış',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 30,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'Tienne')),
-                        onTap: () =>_signOut(context),
-                      ),
-                      Container(
-                        width: 280,
-                        child: Divider(
-                          color: filterBackground,
-                          thickness: 2,
-                          height: 3,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
-
-      ),
+                )
+              : SizedBox(),
+        ]),
+        SizedBox(
+          width: 280,
+          child: Divider(
+            color: filterBackground,
+            thickness: 2,
+            height: 3,
+          ),
+        ),
+      ],
     );
   }
 }
+
 //class for rating with star
 class StarDisplay extends StatelessWidget {
   final int value;

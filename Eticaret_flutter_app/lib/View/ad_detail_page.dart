@@ -1,9 +1,11 @@
-
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/chat_service.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
-import 'package:e_ticaret_flutter_app/Model/messageCreate.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/wish_list_service.dart';
+import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:e_ticaret_flutter_app/Model/Wish.dart';
 import 'package:e_ticaret_flutter_app/Model/product.dart';
-import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:e_ticaret_flutter_app/View/message_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:provider/provider.dart';
 
-import 'message_list_page.dart';
 
 class AdDetail extends StatefulWidget {
   static String routeName = '/routeAdDetailPage';
@@ -28,15 +29,14 @@ class AdDetail extends StatefulWidget {
 }
 
 class _AdDetailState extends State<AdDetail> {
-  ProductShareService service=ProductShareService();
+  final WishListService _wishListService = WishListService();
   PageController pageController;
-  int current_photo;
+  int currentPhoto;
   _AdDetailState({
     @required this.product,
     @required this.images
   });
   final Product product;
-
   final List<String> images;
 
 
@@ -46,18 +46,18 @@ class _AdDetailState extends State<AdDetail> {
     // TODO: implement initState
     super.initState();
     pageController = PageController(initialPage: 0, viewportFraction: 1);
-    current_photo = pageController.initialPage;
+    currentPhoto = pageController.initialPage;
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
+    final Size size = MediaQuery.of(context).size;
     final _pageView = SizedBox(
       height: size.height/2,
       width: size.width,
       child: Stack(
         children: [
+          ///image view
           PageView.builder(
             pageSnapping: true,
             controller: pageController,
@@ -67,13 +67,15 @@ class _AdDetailState extends State<AdDetail> {
               return imageSlider(position);
             },
           ),
+          ///image counter display
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomRight,
             child: SelectedPhoto(
               numberOfDots: images.length,
-              photoIndex: current_photo,
+              photoIndex: currentPhoto,
             ),
           ),
+          ///return back button
           Align(
             alignment: Alignment.topRight,
             child: Padding(
@@ -93,131 +95,59 @@ class _AdDetailState extends State<AdDetail> {
         ],
       ),
     );
-    final _productDetail =Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 15.0, left: 15),
-          child: Text(
-            product.productPrice,
-            style: TextStyle(
-              color: themeColor,
-              fontSize: 30,
-              fontFamily: "Tienne",
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5, left: 15),
-          child: Text(
-            product.productTitle,
-            style: TextStyle(
-              color: text,
-              fontSize: 25,
-              fontFamily: "Tienne",
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Text(
-            "Açıklama :",
-            style: TextStyle(
-              fontSize: 19,
-              fontFamily: "Tienne",
-              fontWeight: FontWeight.bold,
-              color: text,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: Text(
-            product.productOfDescription,
-            style: TextStyle(
-              fontSize: 19,
-              fontFamily: "Tienne",
-              color: text,
-            ),
-          ),
-        ),
-      ],
+    final _productDetail = Padding(
+      padding: const EdgeInsets.only(left:15.0, right: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText(product.productTitle, style: detailTitle, maxLines: 2,),
+          SizedBox(height: 15,),
+          Text("${product.productPrice} TL", style: detailPrice,),
+          SizedBox(height: 15,),
+          Text("Açıklama :", style: detailDescriptionTitle,),
+          SizedBox(height: 15,),
+          Text(product.productOfDescription, style: detailDescription,),
+        ],
+      ),
     );
 
+
     return Consumer<User>(
-      builder: (context, user, child) =>Scaffold(
+      builder: (context, user, child) => Scaffold(
         backgroundColor: background,
-        bottomNavigationBar: BottomAppBar(
-          color: filterBackground,
-          child: product.userId!=user.uid ? Row(
-            children: [
-              Spacer(),
-               ElevatedButton(
-                onPressed: ()=>showInformationDialog(context),
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child:  Text(
-                    "Mesaj At",
-                    style: TextStyle(
-                        color: background, fontSize: 20, fontFamily: 'Tienne'),
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    primary: themeColor,
-                    elevation: 10),
-              ),
-              Spacer(),
-              ElevatedButton(
-                  onPressed: () {},
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(vertical: 3, horizontal: 30),
-                    child: Text(
-                      "Ara",
-                      style: TextStyle(
-                          color: background, fontSize: 20, fontFamily: 'Tienne'),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    primary: themeColor,
-                    elevation: 10,
-                  )),
-              Spacer(),
-            ],
-          ):  Row(
-            children: [
-              Spacer(),
-              ElevatedButton(
-                onPressed: () async{
-                  await service.remove(product.id).whenComplete(() => Navigator.pop(context));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child:  Text(
-                    "Sil",
-                    style: TextStyle(
-                        color: background, fontSize: 20, fontFamily: 'Tienne'),
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    primary: themeColor,
-                    elevation: 10),
-              ),
-              Spacer(),
-            ],
-          ),
-        ),
+        bottomNavigationBar: DetailBottomAppBar(product: product),
         body: Column(
           children: [
-            _pageView,
-            Expanded(
+            Flexible(child: _pageView),
+            StreamBuilder<QuerySnapshot>(
+              stream: _wishListService.countOfProductWish(product.id),
+              builder: (builder,count){
+                print(count.data);
+                if(count.hasData)
+                  return product.userId != user.uid ?
+                  _wishListService.isInWishList(product.id,count.data.size,
+                    whenTrue: IconButton(
+                      iconSize: 45,
+                      color: themeColor,
+                      icon: Icon(Icons.favorite,) ,
+                      onPressed: ()=> removeWishList(user.uid),
+                    ),
+                    whenFalse: IconButton(
+                      iconSize: 45,
+                      color: themeColor,
+                      icon: Icon(Icons.favorite_outline),
+                      onPressed: ()=> addWishList(),
+                    ),
+                  ):Container(
+                    width: size.width,
+                    color: Colors.black45.withOpacity(0.3),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(child: Text("${count.data.size} kişi istek listesine ekledi",style: detailDescription,)),
+                  );
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
+            Flexible(
               child: ListView(
                 children: [
                   _productDetail
@@ -230,9 +160,23 @@ class _AdDetailState extends State<AdDetail> {
     );
   }
 
+  ///Product Detail Page FUNCTIONS
+  addWishList(){
+    setState(() {
+      _wishListService.addWishList(product);
+    });
+  }
+  removeWishList(String userId){
+    setState(() {
+      _wishListService.removeWishList(Wish(
+        willingId: userId,
+        productId: product.id,
+      ));
+    });
+  }
   _onPageChanged(int page) {
     setState(() {
-      current_photo = page;
+      currentPhoto = page;
     });
   }
   imageSlider(int index) {
@@ -249,101 +193,227 @@ class _AdDetailState extends State<AdDetail> {
     );
   }
 
+}
+
+class DetailBottomAppBar extends StatefulWidget {
+  final Product product;
+
+
+  DetailBottomAppBar({@required this.product});
+
+  @override
+  _DetailBottomAppBarState createState() => _DetailBottomAppBarState();
+}
+
+class _DetailBottomAppBarState extends State<DetailBottomAppBar> {
+  ChatService _chatService = ChatService();
+
+  final ProductShareService service = ProductShareService();
+
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery
+        .of(context)
+        .size;
+    final Size buttonSize = Size(size.width / 3, size.height * 0.05);
+    final buttonStyle = ElevatedButton.styleFrom(
+        minimumSize: buttonSize,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        primary: themeColor,
+        elevation: 10
+    );
+    return Consumer<User>(
+      builder: (context, user, child) =>
+          BottomAppBar(
+            color: filterBackground,
+            child: widget.product.userId != user.uid ? Row(
+              children: [
+                Spacer(),
+               FutureBuilder<String>(
+                 future: _chatService.productConversitonsExist(widget.product.id,user.uid),
+
+                 builder: (context, snapshot) {
+                   if (snapshot.hasError) {
+                     return Text("Birşeyler yanlış gitti");
+                   }
+                   if (snapshot.connectionState == ConnectionState.waiting) {
+                     return Center(
+                       child: CircularProgressIndicator(),
+                     );
+                   }
+                    return snapshot.data!=null ? ElevatedButton(
+                     onPressed: () {
+                       Navigator.push(context,
+                           MaterialPageRoute(builder:
+                           ((context) => MessageDetailPage(
+                             product: widget.product,conservationId:snapshot.data,))));
+                     },
+                     child: Padding(
+                       padding: const EdgeInsets.all(3.0),
+                       child: Text("Mesaja Git", style: detailButtonTextStyle,),
+                     ),
+                     style: buttonStyle,
+                   ):ElevatedButton(
+                     onPressed: () {
+                       showInformationDialog(context);
+                     },
+                     child: Padding(
+                       padding: const EdgeInsets.all(3.0),
+                       child: Text("Mesaj At", style: detailButtonTextStyle,),
+                     ),
+                     style: buttonStyle,
+                   );
+                 },
+               ),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Padding(
+                      padding: const EdgeInsets.all(3),
+                      child: Text("Ara", style: detailButtonTextStyle,)
+                  ),
+                  style: buttonStyle,
+                ),
+                Spacer(),
+              ],
+            ) : Row(
+              children: [
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () async {
+                    await service.remove(widget.product.id).whenComplete(() =>
+                        Navigator.pop(context));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text(
+                      "Sil",
+                      style: TextStyle(
+                          color: background,
+                          fontSize: 20,
+                          fontFamily: 'Tienne'),
+                    ),
+                  ),
+                  style: buttonStyle,
+                ),
+                Spacer(),
+              ],
+            ),
+          ),
+    );
+  }
+  
+  ///Form key for dialog of form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  ///Dialog builder for sending const or custom message to seller
   Future<void> showInformationDialog(BuildContext context) async {
     return await showDialog(context: context,
-      builder: (context){
+      builder: (context) {
+        ///information dialog text edit controller
         final TextEditingController _textEditingController = TextEditingController();
-        Widget getButton(String text){
+
+        ///information dialog button style
+        final buttonStyle = ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18)),
+            primary: themeColor,
+            elevation: 10
+        );
+
+        ///information dialog button template
+        Widget getButton(String text) {
           return ButtonTheme(
             minWidth: double.infinity,
             height: 50,
             buttonColor: themeColor,
-            child: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  _textEditingController.text=text;
-                });
-              },
-              elevation: 3,
-              child: Text(text,style: TextStyle(color: background, fontSize: 20),),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            child: ElevatedButton(
+              onPressed: () => _textEditingController.text = text,
+              style: buttonStyle,
+              child: Text(
+                text, style: TextStyle(color: background, fontSize: 20),),
             ),
           );
         }
+
+        ///information dialog text field input border style
         OutlineInputBorder border = OutlineInputBorder(
           borderRadius: BorderRadius.circular(13),
           borderSide: BorderSide(
-            width:2,
+            width: 2,
             color: themeColor,),
         );
-        return Consumer<User>(
-          builder: (context, user, child) => StatefulBuilder(builder: (context,setState){
-            return AlertDialog(
-              scrollable: true,
-              title: Center(child: Text("Mesaj Gönder",style: TextStyle(color:Colors.white),)),
-              backgroundColor: background,
-              content: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    getButton("Hala satılık mı?"),
-                    SizedBox(height: 10,),
-                    getButton("Pazarlık var mı?"),
-                    SizedBox(height: 10,),
-                    getButton("Ne zaman alabilirim?"),
-                    SizedBox(height: 10,),
-                    getButton("Sorunu var mı?"),
-                    SizedBox(height: 10,),
-                    TextFormField(
-                      controller: _textEditingController,
-                      style: TextStyle(color: themeColor),
-                      validator: (value){
-                        return value.isNotEmpty ? null : "Invalid Field";
-                      },
-                      decoration: InputDecoration(
-                        labelText: "Keni Mesajını Yaz",
-                        labelStyle: TextStyle(color: themeColor),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.send_outlined,color: themeColor,),
-                          onPressed: () =>
-                              sendMessage(context,
-                                  _textEditingController.text,product,user.uid),
-                        ),
-                        enabledBorder: border,
-                        focusedBorder: border,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          }),
-        );
 
+        return StatefulBuilder(builder: (context, setState) {
+          return Consumer<User>(
+            builder: (context, user, child) =>
+                AlertDialog(
+                  scrollable: true,
+                  title: Center(child: Text(
+                    "Mesaj Gönder", style: TextStyle(color: Colors.white),)),
+                  backgroundColor: background,
+                  content: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        getButton("Hala satılık mı?"),
+                        SizedBox(height: 10,),
+                        getButton("Pazarlık var mı?"),
+                        SizedBox(height: 10,),
+                        getButton("Ne zaman alabilirim?"),
+                        SizedBox(height: 10,),
+                        getButton("Sorunu var mı?"),
+                        SizedBox(height: 10,),
+                        TextFormField(
+                          controller: _textEditingController,
+                          style: TextStyle(color: themeColor),
+                          validator: (value) {
+                            return value.isNotEmpty ? null : "Invalid Field";
+                          },
+                          decoration: InputDecoration(
+                            labelText: "Keni Mesajını Yaz",
+                            labelStyle: TextStyle(color: themeColor),
+                            suffixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.send_outlined, color: themeColor,),
+                                onPressed: () async {
+                                  sendMessage(
+                                      context, _textEditingController.text,
+                                      widget.product, user);
+                                }
+                            ),
+                            enabledBorder: border,
+                            focusedBorder: border,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+          );
+        });
       },
     );
-
   }
 
-  sendMessage(BuildContext context,String message,Product product,String user) async{
-   var listRef = FirebaseFirestore.instance
-        .collection("Conversitons");
-
-   listRef.add({
-      'message': message,
-      'members':FieldValue.arrayUnion([
-       product.userId,
-       user,
-     ]),
-    });
+  ///send message function for sending custom or const message send to
+  ///message detail page
+  sendMessage(BuildContext context,
+      String message,
+      Product product,
+      User user) async {
+    var concversitonId=await _chatService.chatStart(product, user.uid, message);
 
 
-    Navigator.pushNamed(context, MessageList.routeName,arguments:MessageCreate(
-      product: product,
-      message: message,
-    ),) ;
+    Navigator.push(context,
+        MaterialPageRoute(builder:
+        ((context) => MessageDetailPage(
+          product: widget.product,conservationId:concversitonId,))));
+
+
+
   }
 }
 
@@ -404,7 +474,6 @@ class SelectedPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(right: 30.0, bottom: 20.0),
       child: Row(
@@ -413,7 +482,6 @@ class SelectedPhoto extends StatelessWidget {
       ),
     );
   }
-
 
 
 }

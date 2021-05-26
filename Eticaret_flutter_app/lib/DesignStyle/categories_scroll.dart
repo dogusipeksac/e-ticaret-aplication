@@ -4,7 +4,7 @@ class CategoriesScroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double categoryHeight = MediaQuery.of(context).size.height * 0.30 - 50;
+
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
@@ -15,82 +15,50 @@ class CategoriesScroller extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Row(
             children: <Widget>[
-              Container(
-                width: 150,
-                margin: EdgeInsets.only(right: 20),
-                height: categoryHeight,
-                decoration: BoxDecoration(color: Colors.orange.shade400, borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Most\nFavorites",
-                        style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "20 Items",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
+              CategoryCard(CategoryName: "Most\nFavorites", CountOfProduct: "20 Items"),
+              CategoryCard(CategoryName: "Newest", CountOfProduct: "20 Items"),
+              CategoryCard(CategoryName: "Super\nSaving", CountOfProduct: "20Items"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//Colors.blue.shade400 Colors.lightBlueAccent.shade400 Colors.orange.shade400
+class CategoryCard extends StatelessWidget {
+  final String CategoryName;
+  final String CountOfProduct;
+  CategoryCard({
+    @required this.CategoryName,
+    @required this.CountOfProduct
+  });
+  @override
+  Widget build(BuildContext context) {
+    final double categoryHeight = MediaQuery.of(context).size.height * 0.30 - 50;
+
+    return Container(
+      width: 150,
+      margin: EdgeInsets.only(right: 20),
+      height: categoryHeight,
+      decoration: BoxDecoration(color: Colors.orange.shade400, borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      child: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                this.CategoryName,
+                style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
               ),
-              Container(
-                width: 150,
-                margin: EdgeInsets.only(right: 20),
-                height: categoryHeight,
-                decoration: BoxDecoration(color: Colors.blue.shade400, borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Newest",
-                          style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "20 Items",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              SizedBox(
+                height: 10,
               ),
-              Container(
-                width: 150,
-                margin: EdgeInsets.only(right: 20),
-                height: categoryHeight,
-                decoration: BoxDecoration(color: Colors.lightBlueAccent.shade400, borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Super\nSaving",
-                        style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "20 Items",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
+              Text(
+                this.CountOfProduct,
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ],
           ),

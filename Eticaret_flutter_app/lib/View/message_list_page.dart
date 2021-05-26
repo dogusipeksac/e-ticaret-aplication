@@ -1,5 +1,6 @@
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/Model/chat.dart';
+import 'package:e_ticaret_flutter_app/Model/product.dart';
 import 'package:e_ticaret_flutter_app/View/message_detail.dart';
 import 'package:e_ticaret_flutter_app/ViewModal/chats_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,12 +12,26 @@ import 'package:provider/provider.dart';
 import '../Map/main_drawer.dart';
 
 //bildirimler sayfasi
-class MessageList extends StatelessWidget {
+class MessageList extends StatefulWidget {
+
   static String routeName = '/routeMessageList';
+  final Product product;
+  final String conversitonsId;
+
+  const MessageList({Key key,this.product,this.conversitonsId})
+      : super(key: key);
+
+  @override
+  _MessageListState createState() => _MessageListState();
+}
+
+class _MessageListState extends State<MessageList> {
+
+
+
   @override
   Widget build(BuildContext context) {
     var model=GetIt.instance<ChatsModel>();
-
     return Consumer<User>(
       builder: (context, user, child) => Scaffold(
         backgroundColor: background,
@@ -47,11 +62,8 @@ class MessageList extends StatelessWidget {
                       Navigator.push(context,
                           MaterialPageRoute(builder:
                           ((context)=>
-                              MessageDetail(
-                                userId:user.uid,
-                                conservationId: doc.id,))));
-                      print(doc.id);
-
+                              MessageDetailPage(
+                                product: widget.product,conservationId: doc.id,))));
                     },
                     child: Card(
                       color: background,
@@ -79,7 +91,7 @@ class MessageList extends StatelessWidget {
                                   child: Container(
                                     child: CircleAvatar(
                                       backgroundImage: NetworkImage(
-                                          doc.productImage),
+                                          doc.productUserImage),
                                     ),
                                     width: 20,
                                     height: 20,
@@ -89,7 +101,7 @@ class MessageList extends StatelessWidget {
                                   backgroundColor: filterBackground,
                                   foregroundColor: filterBackground,
                                   backgroundImage: NetworkImage(
-                                      doc.userImage),
+                                      doc.productImage),
                                 ),
                               ),
                             ),
@@ -102,20 +114,17 @@ class MessageList extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    doc.productTitle,
+                                    doc.title,
                                     style: TextStyle(color: themeColor, fontSize: 15),
                                   ),
                                   Text(
-                                    doc.name,
+                                    doc.productUserId != user.uid ? doc.productUserName : 'bu senin',
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text(
-                                    doc.displayMessage,
-                                    style: TextStyle(color: Colors.white, fontSize: 15),
-                                  ),
+
                                 ],
                               ),
                             ),
