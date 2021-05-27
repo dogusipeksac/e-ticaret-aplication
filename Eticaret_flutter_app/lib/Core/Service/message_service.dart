@@ -19,27 +19,33 @@ class MessageService{
                 (doc) => Message(
               message: doc.get('message'),
               senderId: doc.get('senderId'),
-              receiverId: doc.get('receiver'),
               messageId: doc.id,
             )
         ).toList()
     );
   }
 
-  addMessage(String message,String userId,String conservationId,String receiver)async{
-    var _ref=_firestore
+  addMessage(String message,String userId,String conservationId)async{
+    var _ref=await _firestore
         .collection("Conversitons/${conservationId}/Messages");
     _ref.add({
       'message': message,
       'senderId': userId,
       'timeStamp': DateTime.now(),
-      'receiver':receiver,
     });
   }
 
 
+
   getConversitonsPath(String conversitonsId){
     return _firestore.collection('Conversitons').doc(conversitonsId).snapshots();
+  }
+   updateLastMessage(String conversitonsId,String message)async{
+     await _firestore.collection("Conversitons")
+         .doc(conversitonsId).update({
+      'lastMessage':message,
+    });
+
   }
 
 

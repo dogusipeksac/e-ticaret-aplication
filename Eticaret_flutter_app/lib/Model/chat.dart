@@ -10,6 +10,7 @@ class Chat {
   String productUserImage;
   String productUserName;
   String productUserId;
+  String message;
 
 
   Chat(
@@ -20,6 +21,7 @@ class Chat {
       this.productUserImage,
       this.productUserName,
       this.title,
-        this.productUserId
+        this.productUserId,
+        this.message
       });
 }

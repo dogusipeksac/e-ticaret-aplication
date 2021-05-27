@@ -15,15 +15,15 @@ class ChatService {
         .where("members", arrayContains: userId);
     return ref.snapshots().map((qShot) => qShot.docs
         .map((doc) => Chat(
-            id: doc.id,
-            title: doc.get('title'),
-            productId: doc.get('productId'),
-            productImage: doc.get('productImage'),
-            productPrize: doc.get('productPrize'),
-            productUserImage: doc.get('userImage'),
-            productUserName: doc.get('userName'),
-      productUserId: doc.get('productUserId')
-            ))
+        id: doc.id,
+        title: doc.get('title'),
+        productId: doc.get('productId'),
+        productImage: doc.get('productImage'),
+        productPrize: doc.get('productPrize'),
+        productUserImage: doc.get('userImage'),
+        productUserName: doc.get('userName'),
+        productUserId: doc.get('productUserId')
+    ))
         .toList());
   }
 
@@ -48,7 +48,7 @@ class ChatService {
       //
 
     });
-    _service.addMessage(message, userId, doc.id, product.userId);
+    _service.addMessage(message, userId, doc.id);
 
     return doc.id;
   }
@@ -56,10 +56,10 @@ class ChatService {
   Future<String> productConversitonsExist(
       String productId, String userId) async {
     var query = (await FirebaseFirestore.instance
-            .collection("Conversitons")
-            .where("productId", isEqualTo: productId)
-            .where("members", arrayContains: userId)
-            .get())
+        .collection("Conversitons")
+        .where("productId", isEqualTo: productId)
+        .where("members", arrayContains: userId)
+        .get())
         .docs;
     print("Query result:" + query.toString());
     print("productId:" + productId);

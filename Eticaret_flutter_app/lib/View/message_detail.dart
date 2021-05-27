@@ -146,7 +146,6 @@ class _MessageDetailState extends State<MessageDetailPage> {
                                             ),
                                             padding: EdgeInsets.all(16),
                                             child: Text(
-
                                               messageSnapshot
                                                   .message,
                                               style: TextStyle(
@@ -200,14 +199,17 @@ class _MessageDetailState extends State<MessageDetailPage> {
                     width: 15,
                   ),
                   FloatingActionButton(
-                    onPressed: () async {
+                    onPressed: () async{
                       await _messageService.addMessage(
-                          messageEditingController.text,user.uid,widget.conservationId,widget.product.userId);
+                          messageEditingController.text,
+                          user.uid,
+                          widget.conservationId);
                       _scrollController.animateTo(
                           _scrollController.position.maxScrollExtent,
                           duration:Duration(microseconds:200),
                           curve: Curves.easeIn);
                       messageEditingController.text = '';
+
                     },
                     child: Icon(
                       Icons.send,
@@ -284,7 +286,7 @@ class _MessageDetailState extends State<MessageDetailPage> {
                             child: Center(
                               //inkwell ile daha yumuşak tıklanma verebiliriz
                               child: IconButton(
-                                onPressed: () {
+                                onPressed: ()async {
                                   Navigator.pushNamed(context, MessageList.routeName);
                                 },
                                 icon: Icon(
