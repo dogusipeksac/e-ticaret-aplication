@@ -381,7 +381,7 @@ class _DetailBottomAppBarState extends State<DetailBottomAppBar> {
                                 onPressed: () async {
                                   sendMessage(
                                       context, _textEditingController.text,
-                                      widget.product, user);
+                                      widget.product,user);
                                 }
                             ),
                             enabledBorder: border,

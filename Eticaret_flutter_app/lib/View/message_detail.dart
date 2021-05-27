@@ -117,14 +117,18 @@ class _MessageDetailState extends State<MessageDetailPage> {
                                                 CircleAvatar(
                                                   backgroundImage:
                                                   NetworkImage(
-                                                      docsnapshot.data['userImage']),
+                                                      user.uid!=
+                                                          docsnapshot.data['productUserId']?
+                                                      docsnapshot.data['receiverImage']:docsnapshot.data['senderImage']),
                                                 ),
                                                 Padding(
                                                   padding:
                                                   const EdgeInsets.only(
                                                       left: 8.0),
                                                   child: Text(
-                                                    docsnapshot.data['userName'],
+                                                    user.uid!=
+                                                        docsnapshot.data['productUserId']?
+                                                    docsnapshot.data['receiverName']:docsnapshot.data['senderName'],
                                                     style: TextStyle(
                                                         color: themeColor),
                                                   ),

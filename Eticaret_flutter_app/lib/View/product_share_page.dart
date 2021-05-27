@@ -5,6 +5,7 @@ import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -128,6 +129,8 @@ class _ProductSharePageState extends State<ProductSharePage> {
           }
           return null;
         },
+        // ignore: deprecated_member_use
+        keyboardType: TextInputType.number,
         controller: _price,
         obscureText: false,
         cursorColor: themeColor,

@@ -91,7 +91,9 @@ class _MessageListState extends State<MessageList> {
                                   child: Container(
                                     child: CircleAvatar(
                                       backgroundImage: NetworkImage(
-                                          doc.productUserImage),
+                                          doc.productUserId != user.uid
+                                              ? doc.receiverImage :
+                                          doc.senderImage,),
                                     ),
                                     width: 20,
                                     height: 20,
@@ -118,7 +120,7 @@ class _MessageListState extends State<MessageList> {
                                     style: TextStyle(color: themeColor, fontSize: 15),
                                   ),
                                   Text(
-                                    doc.productUserId != user.uid ? doc.productUserName : 'bu senin',
+                                    doc.productUserId != user.uid ? doc.receiverName : doc.senderName,
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
                                   SizedBox(

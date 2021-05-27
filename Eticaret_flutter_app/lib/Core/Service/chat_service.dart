@@ -10,19 +10,28 @@ class ChatService {
   MessageService _service = MessageService();
 
   Stream<List<Chat>> getConversition(String userId) {
+
+
+
+
     var ref = _firestore
         .collection("Conversitons")
-        .where("members", arrayContains: userId);
-    return ref.snapshots().map((qShot) => qShot.docs
+        .where("members", arrayContains: userId).snapshots();
+
+
+    return ref.map((qShot) => qShot.docs
         .map((doc) => Chat(
         id: doc.id,
         title: doc.get('title'),
         productId: doc.get('productId'),
         productImage: doc.get('productImage'),
         productPrize: doc.get('productPrize'),
-        productUserImage: doc.get('userImage'),
-        productUserName: doc.get('userName'),
-        productUserId: doc.get('productUserId')
+        senderImage: doc.get('senderImage'),
+        senderName: doc.get('senderName'),
+        receiverImage: doc.get('receiverImage'),
+        receiverName: doc.get('receiverName'),
+        productUserId: doc.get('productUserId'),
+
     ))
         .toList());
   }
@@ -30,17 +39,26 @@ class ChatService {
   Future<String> chatStart(
       Product product, String userId, String message) async {
     //ürün sahibinni bilgilerini çekme için
-    UserModel sellerProduct = await UserModel().fromUserId(product.userId);
+
+
+
+    UserModel profileSender = await UserModel().fromUserId(userId);
+    UserModel profileReceiver = await UserModel().fromUserId(product.userId);
+
+
     var doc;
     var startConversitns = _firestore.collection("Conversitons");
     doc = await startConversitns.add({
       //
-      'members': FieldValue.arrayUnion([product.userId, userId]),
+      'members': FieldValue.arrayUnion([userId, product.userId]),
       //
       'title': product.productTitle,
       'productImage': product.productImage1,
-      'userName': sellerProduct.name,
-      'userImage': sellerProduct.userImageLink,
+      'senderName': profileSender.name,
+      'senderImage': profileSender.userImageLink,
+      'receiverName':profileReceiver.name,
+      'receiverImage':profileReceiver.userImageLink,
+
       'productPrize': product.productPrice,
       'productUserId':product.userId,
       //
