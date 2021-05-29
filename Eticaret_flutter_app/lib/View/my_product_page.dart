@@ -41,12 +41,10 @@ class MyProduct extends StatelessWidget {
               height: 100,
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-              child: Card(
-                color: background,
-                elevation: 2.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.0),
-                ),
+              child: GestureDetector(
+                onTap: (){
+
+                },
                 child: Container(
                   decoration: BoxDecoration(
                       color: filterBackground,
@@ -61,7 +59,8 @@ class MyProduct extends StatelessWidget {
                         child: Container(
                           color: filterBackground,
                           child: snapshot.data.docs[index]["Image 1"] == "" ?
-                          Image.asset("images/Opel_KARL.jpg") : Image.network(snapshot.data.docs[index]["Image 1"]),
+                          Image.asset("images/Opel_KARL.jpg") : 
+                          Image.network(snapshot.data.docs[index]["Image 1"]),
                         ),
                       ),
                       SizedBox(
@@ -81,28 +80,13 @@ class MyProduct extends StatelessWidget {
                               SizedBox(
                                 height: 5.0,
                               ),
-                              Text(
-                                snapshot.data.docs[index]["Aciklama"],
-                                style: TextStyle(color: Colors.white, fontSize: 15),
+                              Expanded(
+                                child: Text(
+                                  snapshot.data.docs[index]["Aciklama"],
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ],
-                          ),
-                        ),
-                      ),
-                      Expanded(flex: 1,
-                        child: Container(
-                          padding:
-                          EdgeInsets.only(left: 20),
-                          child: PopupMenuButton(
-                            elevation: 5,
-                            icon: Icon(Icons.more_vert,color:themeColor),
-                            color: themeColor,
-                            itemBuilder: (BuildContext bc) => [
-                              PopupMenuItem(child: Text("Sil",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
-                            ],
-                            onSelected: (route) {
-                              Navigator.pushNamed(context, route);
-                            },
                           ),
                         ),
                       ),
@@ -113,18 +97,6 @@ class MyProduct extends StatelessWidget {
             ),
           );
         },
-      ),
-
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        shape: CircleBorder(side: BorderSide(color: background, width: 3)),
-        child: const Icon(
-          Icons.add,
-          color: background,
-          size: 40,
-        ),
-        backgroundColor: themeColor,
       ),
     );
   }

@@ -31,7 +31,7 @@ class _SettingPageState extends State<SettingPage> {
   final TextEditingController _locationController = TextEditingController();
 
 
-   baglantiAl() async{
+   Future baglantiAl() async{
     var baglanti =await FirebaseStorage
         .instance.ref()
         .child("Profil Resimleri")
@@ -40,7 +40,6 @@ class _SettingPageState extends State<SettingPage> {
     setState((){
       downloadUrl=  baglanti;
     });
-    print("adamın profilinin urli:"+downloadUrl);
   }
   initState(){
     super.initState();
@@ -93,171 +92,162 @@ class _SettingPageState extends State<SettingPage> {
 
 
     return Scaffold(
-      backgroundColor: themeColor,
+      backgroundColor: background,
       appBar: settingScaffoldAppBar(),
       drawer: MainDrawer(),
-      body: Container(
-        padding: EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Consumer<User>(
-              builder: (context, user, child) => StreamBuilder<DocumentSnapshot>(
-                  stream: userController.getPath().snapshots(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text("Birşeyler yanlış gitti");
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    _isimControllerr.text= snapshot.data['name'];
-                    _passwordController.text=snapshot.data['password'];
-                    _locationController.text=snapshot.data['location'];
+      body: SingleChildScrollView(
+        child: Consumer<User>(
+          builder: (context, user, child) => StreamBuilder<DocumentSnapshot>(
+              stream: userController.getPath().snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text("Birşeyler yanlış gitti");
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                _isimControllerr.text= snapshot.data['name'];
+                _passwordController.text=snapshot.data['password'];
+                _locationController.text=snapshot.data['location'];
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: Stack(
                       children: <Widget>[
-                        Center(child: Stack(
-                          children: <Widget>[
-                            CircleAvatar(
-                              radius: 80,
-                              backgroundImage: downloadUrl == null ?
-                              AssetImage("images/profile.png",)
-                              :NetworkImage(downloadUrl)
-                            ),
-                            Positioned(
-                              bottom: 20,
-                              right: 20,
-                              child: InkWell(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: ((builer) => Container(
-                                      height: 100,
-                                      width: MediaQuery.of(context).size.width,
-                                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                      child: Column(
+                        CircleAvatar(
+                          radius: 80,
+                          backgroundImage: downloadUrl == null ?
+                          AssetImage("images/profile.png",)
+                          :NetworkImage(downloadUrl)
+                        ),
+                        Positioned(
+                          bottom: 20,
+                          right: 20,
+                          child: InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: ((builer) => Container(
+                                  height: 100,
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        "Profil resmini seç",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Text(
-                                            "Profil resmini seç",
-                                            style: TextStyle(fontSize: 20),
+                                          // ignore: deprecated_member_use
+                                          FlatButton.icon(
+                                            icon: Icon(Icons.camera),
+                                            onPressed: () {
+                                              setState(() {
+                                                Navigator.pop(context);
+                                                onImageButtonPressed(ImageSource.camera);
+                                              });
+                                            },
+                                            label: Text("Kamera"),
                                           ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              // ignore: deprecated_member_use
-                                              FlatButton.icon(
-                                                icon: Icon(Icons.camera),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    Navigator.pop(context);
-                                                    onImageButtonPressed(ImageSource.camera);
-                                                  });
-                                                },
-                                                label: Text("Kamera"),
-                                              ),
-                                              // ignore: deprecated_member_use
-                                              FlatButton.icon(
-                                                icon: Icon(Icons.image),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    Navigator.pop(context);
-                                                    onImageButtonPressed(ImageSource.gallery);
-                                                  });
+                                          // ignore: deprecated_member_use
+                                          FlatButton.icon(
+                                            icon: Icon(Icons.image),
+                                            onPressed: () {
+                                              setState(() {
+                                                Navigator.pop(context);
+                                                onImageButtonPressed(ImageSource.gallery);
+                                              });
 
-                                                },
-                                                label: Text("Galeri"),
-                                              ),
-                                            ],
+                                            },
+                                            label: Text("Galeri"),
                                           ),
                                         ],
                                       ),
-                                    )),
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                        SizedBox(height: 20.0),
-                        settingTitlePackage('Profil İsmi'),
-                        SizedBox(height: 20.0),
-                        TextFormField(
-                          controller: _isimControllerr,
-                          style: TextStyle(color: Colors.white),
-                          cursorColor: Colors.white,
-                          decoration: Decoration(
-                              Icons.person_rounded,'İsminizi giriniz',null),
-                        ),
-                        SizedBox(height: 20.0),
-                        settingTitlePackage('Şifre'),
-                        SizedBox(height: 10.0),
-                        TextFormField(
-                            controller: _passwordController,
-                            style: TextStyle(color: Colors.white),
-                            obscureText: obsture,
-                            cursorColor: Colors.white,
-                            decoration: Decoration(
-                                Icons.vpn_key, 'Şifreniz',Icons.remove_red_eye)),
-                        SizedBox(height: 20.0),
-                        settingTitlePackage('Konum'),
-                        SizedBox(height: 20.0),
-                        TextFormField(
-                            controller: _locationController,
-                            style: TextStyle(color: Colors.white),
-                            cursorColor: Colors.white,
-                            decoration: Decoration(Icons.location_on_rounded,
-                                'Konum:',null)),
-                        SizedBox(height: 30.0),
-                        Center(
-                            child: Material(
-                          borderRadius: BorderRadius.circular(1.0),
-                          color: background,
-                          // ignore: deprecated_member_use
-                          child: FlatButton(
-                            minWidth: 60,
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: text)),
-                            onPressed: (){
-                             setState(() {
-                               userController.updateUser(
-                                   user.uid,
-                                   _locationController.text,
-                                   _isimControllerr.text,
-                                   _passwordController.text,
-                                   downloadUrl).whenComplete(() =>Navigator.pushNamed(context, SettingPage.routeName));
-                               uploading = true;
-                             });
+                                    ],
+                                  ),
+                                )),
+                              );
                             },
-                            child: Text("UYGULA",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                              size: 25,
+                            ),
                           ),
-                        )),
-                        SizedBox(height: 40.0),
+                        ),
                       ],
-                    );
-                  }),
-            ),
-          ),
+                    )),
+                    SizedBox(height: 20.0),
+                    settingTitlePackage('Profil İsmi'),
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _isimControllerr,
+                      style: TextStyle(color: Colors.white),
+                      cursorColor: Colors.white,
+                      decoration: Decoration(
+                          Icons.person_rounded,'İsminizi giriniz',null),
+                    ),
+                    SizedBox(height: 20.0),
+                    settingTitlePackage('Şifre'),
+                    SizedBox(height: 10.0),
+                    TextFormField(
+                        controller: _passwordController,
+                        style: TextStyle(color: Colors.white),
+                        obscureText: obsture,
+                        cursorColor: Colors.white,
+                        decoration: Decoration(
+                            Icons.vpn_key, 'Şifreniz',Icons.remove_red_eye)),
+                    SizedBox(height: 20.0),
+                    settingTitlePackage('Konum'),
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                        controller: _locationController,
+                        style: TextStyle(color: Colors.white),
+                        cursorColor: Colors.white,
+                        decoration: Decoration(Icons.location_on_rounded,
+                            'Konum:',null)),
+                    SizedBox(height: 30.0),
+                    Center(
+                        child: Material(
+                      borderRadius: BorderRadius.circular(1.0),
+                      color: background,
+                      // ignore: deprecated_member_use
+                      child: FlatButton(
+                        minWidth: 60,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: text)),
+                        onPressed: (){
+                         setState(() {
+                           userController.updateUser(
+                               user.uid,
+                               _locationController.text,
+                               _isimControllerr.text,
+                               _passwordController.text,
+                               downloadUrl).whenComplete(() =>Navigator.pushNamed(context, SettingPage.routeName));
+                           uploading = true;
+                         });
+                        },
+                        child: Text("UYGULA",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                    )),
+                    SizedBox(height: 40.0),
+                  ],
+                );
+              }),
         ),
-        decoration: new BoxDecoration(
-            color: background,
-            borderRadius:
-                new BorderRadius.only(bottomRight: const Radius.circular(180))),
       ),
     );
   }

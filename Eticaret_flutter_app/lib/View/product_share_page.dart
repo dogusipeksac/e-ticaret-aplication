@@ -20,7 +20,7 @@ class ProductSharePage extends StatefulWidget {
 
 class _ProductSharePageState extends State<ProductSharePage> {
   String valueChoseCategory;
-  String valueChoseProductState;
+  String valueChoseProductlocation;
 
   ProductShareService _productSharePage = ProductShareService();
   //
@@ -47,7 +47,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
     "Telefon",
     "Giyim"
   ];
-  List listItemProductState = ["İyi", "Çok İyi", "Eski", "Orta"];
+  List listItemProductLocation = ["Adana", "Mersin", "İstanbul", "Malatya"];
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool validation() {
@@ -130,6 +130,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
           return null;
         },
         // ignore: deprecated_member_use
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         keyboardType: TextInputType.number,
         controller: _price,
         obscureText: false,
@@ -294,7 +295,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     height: 20,
                   ),
                   Text(
-                    "Durum",
+                    "Şehir",
                     style: TextStyle(color: themeColor, fontSize: 20),
                   ),
                   SizedBox(
@@ -315,15 +316,15 @@ class _ProductSharePageState extends State<ProductSharePage> {
                     ),
                     iconSize: 20,
                     isExpanded: true,
-                    decoration: inputDecoraton("Bir durum seç..."),
-                    value: valueChoseProductState,
+                    decoration: inputDecoraton("Bir şehir seç..."),
+                    value: valueChoseProductlocation,
                     style: textStyle,
                     onChanged: (newValue) {
                       setState(() {
-                        valueChoseProductState = newValue;
+                        valueChoseProductlocation = newValue;
                       });
                     },
-                    items: listItemProductState.map((valueItem) {
+                    items: listItemProductLocation.map((valueItem) {
                       return DropdownMenuItem(
                         value: valueItem,
                         child: Text(valueItem),
@@ -367,7 +368,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
                                     valueChoseCategory,
                                     _title.text,
                                     _price.text,
-                                    valueChoseProductState,
+                                valueChoseProductlocation,
                                     _explain.text)
                                 .whenComplete(() => Navigator.of(context).pop()));
                             uploading = true;

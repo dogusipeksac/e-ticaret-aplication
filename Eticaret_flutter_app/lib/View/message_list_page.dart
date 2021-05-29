@@ -130,23 +130,6 @@ class _MessageListState extends State<MessageList> {
                                 ],
                               ),
                             ),
-                            Container(
-                              padding:EdgeInsets.only(left: 20),
-                              child: PopupMenuButton(
-                                elevation: 5,
-                                icon: Icon(Icons.more_vert,color:themeColor),
-                                color: themeColor,
-                                itemBuilder: (BuildContext bc) => [
-                                  PopupMenuItem(child: Text("Sil",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
-                                ],
-                                onSelected: (route) {
-                                  print(route);
-                                  // Note You must create respective pages for navigation
-                                  Navigator.pushNamed(context, route);
-
-                                },
-                              ),
-                            ),
                           ],
                         ),
                       ),

@@ -18,7 +18,7 @@ class ProductShareService {
       String productCategory,
       String productTitle,
       String productPrize,
-      String productState,
+      String productLocation,
       String productOfDescription) async {
     var ref = _firestore.collection("Product");
 
@@ -32,7 +32,7 @@ class ProductShareService {
       'Kategori': productCategory,
       'Baslik': productTitle,
       'Fiyat': productPrize,
-      'Durumu': productState,
+      'Konum': productLocation,
       'Aciklama': productOfDescription,
     });
     return Product(
@@ -46,7 +46,7 @@ class ProductShareService {
         productCategory: productCategory,
         productOfDescription: productOfDescription,
         productPrice: productPrize,
-        productState: productState,
+        productLocation: productLocation,
         productTitle: productTitle);
   }
 
@@ -66,6 +66,15 @@ class ProductShareService {
   Stream<List<Product>> getProduct() {
     var stream =
     _firestore.collection('Product').snapshots();
+    return stream.map(
+            (qShot) => qShot.docs.map(
+                (doc) => Product.fromSnapshot(doc)
+        ).toList()
+    );
+  }
+  Stream<List<Product>> FilteredgetProduct(String kategori) {
+    var stream =
+    _firestore.collection('Product').where('Kategori',isEqualTo: kategori).snapshots();
     return stream.map(
             (qShot) => qShot.docs.map(
                 (doc) => Product.fromSnapshot(doc)

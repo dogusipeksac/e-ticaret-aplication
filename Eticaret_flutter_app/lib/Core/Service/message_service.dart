@@ -24,6 +24,22 @@ class MessageService{
         ).toList()
     );
   }
+  Stream<List<Message>> getMessageLast(String conservationId) {
+
+    var stream =
+    _firestore.
+    collection("Conversitons/${conservationId}/Messages").
+    orderBy('timeStamp').limit(1).snapshots();
+    return stream.map(
+            (qShot) => qShot.docs.map(
+                (doc) => Message(
+              message: doc.get('message'),
+              senderId: doc.get('senderId'),
+              messageId: doc.id,
+            )
+        ).toList()
+    );
+  }
 
   addMessage(String message,String userId,String conservationId)async{
     var _ref=await _firestore

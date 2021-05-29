@@ -5,7 +5,7 @@ class Product {
   String id;
   String userId;
   //mesela çok iyi durumda
-  String productState;
+  String productLocation;
 
   //mesela 2 el sıfır gibi
   String productCategory;
@@ -33,7 +33,7 @@ class Product {
         this.productImage5,
         this.productOfDescription,
         this.productPrice,
-        this.productState,
+        this.productLocation,
         this.productTitle});
 
   List<String> getImages(){
@@ -57,7 +57,7 @@ class Product {
       userId: snapshot['User id'],
       productOfDescription: snapshot['Aciklama'],
       productTitle: snapshot['Baslik'],
-      productState: snapshot['Durumu'],
+      productLocation: snapshot['Konum'],
       productPrice: snapshot['Fiyat'],
       productImage1: snapshot['Image 1'],
       productImage2: snapshot['Image 2'],

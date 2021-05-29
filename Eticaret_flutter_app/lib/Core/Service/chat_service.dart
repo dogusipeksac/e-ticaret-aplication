@@ -10,15 +10,9 @@ class ChatService {
   MessageService _service = MessageService();
 
   Stream<List<Chat>> getConversition(String userId) {
-
-
-
-
     var ref = _firestore
         .collection("Conversitons")
         .where("members", arrayContains: userId).snapshots();
-
-
     return ref.map((qShot) => qShot.docs
         .map((doc) => Chat(
         id: doc.id,
@@ -32,8 +26,7 @@ class ChatService {
         receiverName: doc.get('receiverName'),
         productUserId: doc.get('productUserId'),
 
-    ))
-        .toList());
+    )).toList());
   }
 
   Future<String> chatStart(

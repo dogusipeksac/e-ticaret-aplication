@@ -2,6 +2,7 @@
 import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -323,7 +324,11 @@ class _FilterPageState extends State<FilterPage> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ProductShareService service=ProductShareService();
+                    service.FilteredgetProduct(valueChoseCategoryOnTheFilter);
+
+                  },
                   child: Text(
                     "Filtrele",
                     style: TextStyle(

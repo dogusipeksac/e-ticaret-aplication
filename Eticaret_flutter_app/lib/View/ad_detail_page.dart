@@ -162,17 +162,15 @@ class _AdDetailState extends State<AdDetail> {
 
   ///Product Detail Page FUNCTIONS
   addWishList(){
-    setState(() {
       _wishListService.addWishList(product);
-    });
   }
   removeWishList(String userId){
-    setState(() {
+
       _wishListService.removeWishList(Wish(
         willingId: userId,
         productId: product.id,
       ));
-    });
+
   }
   _onPageChanged(int page) {
     setState(() {
@@ -227,12 +225,11 @@ class _DetailBottomAppBarState extends State<DetailBottomAppBar> {
       builder: (context, user, child) =>
           BottomAppBar(
             color: filterBackground,
-            child: widget.product.userId != user.uid ? Row(
+            child: Row(
               children: [
                 Spacer(),
                FutureBuilder<String>(
                  future: _chatService.productConversitonsExist(widget.product.id,user.uid),
-
                  builder: (context, snapshot) {
                    if (snapshot.hasError) {
                      return Text("Birşeyler yanlış gitti");
@@ -267,20 +264,14 @@ class _DetailBottomAppBarState extends State<DetailBottomAppBar> {
                  },
                ),
                 Spacer(),
-                ElevatedButton(
+                widget.product.userId != user.uid ? ElevatedButton(
                   onPressed: () {},
                   child: Padding(
                       padding: const EdgeInsets.all(3),
                       child: Text("Ara", style: detailButtonTextStyle,)
                   ),
                   style: buttonStyle,
-                ),
-                Spacer(),
-              ],
-            ) : Row(
-              children: [
-                Spacer(),
-                ElevatedButton(
+                ):  ElevatedButton(
                   onPressed: () async {
                     await service.remove(widget.product.id).whenComplete(() =>
                         Navigator.pop(context));
@@ -299,7 +290,8 @@ class _DetailBottomAppBarState extends State<DetailBottomAppBar> {
                 ),
                 Spacer(),
               ],
-            ),
+            )
+
           ),
     );
   }

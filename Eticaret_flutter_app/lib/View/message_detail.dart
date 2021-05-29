@@ -1,17 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/message_service.dart';
-import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/Model/message.dart';
-import 'package:e_ticaret_flutter_app/Model/messageCreate.dart';
 import 'package:e_ticaret_flutter_app/Model/product.dart';
 import 'package:e_ticaret_flutter_app/View/message_list_page.dart';
-import 'package:e_ticaret_flutter_app/ViewModal/chats_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import '../DesignStyle/colors_cons.dart';
 
@@ -21,20 +17,18 @@ class MessageDetailPage extends StatefulWidget {
   final String conservationId;
   final Product product;
 
-
-
-  const MessageDetailPage({Key key, this.conservationId,this.product})
+  const MessageDetailPage({Key key, this.conservationId, this.product})
       : super(key: key);
-
 
   @override
   _MessageDetailState createState() => _MessageDetailState();
 }
 
 TextEditingController messageEditingController = TextEditingController();
-MessageService _messageService=MessageService();
+MessageService _messageService = MessageService();
+
 class _MessageDetailState extends State<MessageDetailPage> {
-  MessageService _service=MessageService();
+  MessageService _service = MessageService();
   FocusNode _focusNode;
   ScrollController _scrollController;
   var _ref;
@@ -54,12 +48,8 @@ class _MessageDetailState extends State<MessageDetailPage> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
-
     return Consumer<User>(
       builder: (context, user, child) => SafeArea(
         child: Scaffold(
@@ -67,91 +57,107 @@ class _MessageDetailState extends State<MessageDetailPage> {
           appBar: buildAppBarMessage(),
           body: Column(
             children: <Widget>[
-              Expanded(
+              Flexible(
                 flex: 80,
                 child: GestureDetector(
-                  onTap:()=> _focusNode.unfocus(),
+                  onTap: () => _focusNode.unfocus(),
                   child: StreamBuilder<DocumentSnapshot>(
-                      stream:_service.getConversitonsPath(widget.conservationId),
-                      builder: (context, AsyncSnapshot<DocumentSnapshot> docsnapshot) {
-                        if(docsnapshot.hasError){
-                          return Text("Eror: ${docsnapshot.error}");
-                        }
-                        if(docsnapshot.connectionState==ConnectionState.waiting){
-                          return CircularProgressIndicator();
-                        }
-
+                      stream:
+                          _service.getConversitonsPath(widget.conservationId),
+                      builder: (context,
+                          AsyncSnapshot<DocumentSnapshot> docsnapshot) {
                         return StreamBuilder(
-                            stream: _messageService.getMessage(widget.conservationId),
+                            stream: _messageService
+                                .getMessage(widget.conservationId),
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<Message>> snapshot) {
-                              if(snapshot.hasError){
+                              if (snapshot.hasError || docsnapshot.hasError) {
                                 return Text("Eror: ${snapshot.error}");
                               }
-                              if(snapshot.connectionState==ConnectionState.waiting){
-                                return CircularProgressIndicator();
+                              if (snapshot.connectionState ==
+                                      ConnectionState.waiting ||
+                                  docsnapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
                               }
                               return ListView.builder(
                                 controller: _scrollController,
                                 itemCount: snapshot.data.length,
                                 itemBuilder: ((context, index) {
-                                  var messageSnapshot = snapshot.data.elementAt(index);
+                                  var messageSnapshot =
+                                      snapshot.data.elementAt(index);
                                   return Container(
                                     padding: EdgeInsets.only(
-                                        left: 14, right: 14, top: 10, bottom: 10),
+                                        left: 14,
+                                        right: 14,
+                                        top: 10,
+                                        bottom: 10),
                                     child: Align(
-                                      alignment: (user.uid == messageSnapshot.senderId
-                                          ? Alignment.topRight
-                                          : Alignment.topLeft),
+                                      alignment:
+                                          (user.uid == messageSnapshot.senderId
+                                              ? Alignment.topRight
+                                              : Alignment.topLeft),
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          (user.uid !=
-                                              messageSnapshot.senderId
+                                          (user.uid != messageSnapshot.senderId
                                               ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: Row(
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundImage:
-                                                  NetworkImage(
-                                                      user.uid!=
-                                                          docsnapshot.data['productUserId']?
-                                                      docsnapshot.data['receiverImage']:docsnapshot.data['senderImage']),
-                                                ),
-                                                Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      left: 8.0),
-                                                  child: Text(
-                                                    user.uid!=
-                                                        docsnapshot.data['productUserId']?
-                                                    docsnapshot.data['receiverName']:docsnapshot.data['senderName'],
-                                                    style: TextStyle(
-                                                        color: themeColor),
+                                                      const EdgeInsets.only(
+                                                          bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        backgroundImage: NetworkImage(user
+                                                                    .uid !=
+                                                                docsnapshot
+                                                                        .data[
+                                                                    'productUserId']
+                                                            ? docsnapshot.data[
+                                                                'receiverImage']
+                                                            : docsnapshot.data[
+                                                                'senderImage']),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 8.0),
+                                                        child: Text(
+                                                          user.uid !=
+                                                                  docsnapshot
+                                                                          .data[
+                                                                      'productUserId']
+                                                              ? docsnapshot
+                                                                      .data[
+                                                                  'receiverName']
+                                                              : docsnapshot
+                                                                      .data[
+                                                                  'senderName'],
+                                                          style: TextStyle(
+                                                              color:
+                                                                  themeColor),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
+                                                )
                                               : SizedBox(
-                                            width: 5,
-                                          )),
+                                                  width: 5,
+                                                )),
                                           Container(
                                             decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius.circular(20),
-                                              color:
-                                              (user.uid == messageSnapshot.senderId
+                                                  BorderRadius.circular(20),
+                                              color: (user.uid ==
+                                                      messageSnapshot.senderId
                                                   ? themeColor
                                                   : filterBackground),
                                             ),
                                             padding: EdgeInsets.all(16),
                                             child: Text(
-                                              messageSnapshot
-                                                  .message,
+                                              messageSnapshot.message,
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
@@ -165,9 +171,7 @@ class _MessageDetailState extends State<MessageDetailPage> {
                                 }),
                               );
                             });
-                      }
-
-                  ),
+                      }),
                 ),
               ),
               SizedBox(
@@ -181,7 +185,7 @@ class _MessageDetailState extends State<MessageDetailPage> {
                   Expanded(
                     child: Container(
                       margin:
-                      EdgeInsets.only(right: 5, left: 5, bottom: 8, top: 8),
+                          EdgeInsets.only(right: 5, left: 5, bottom: 8, top: 8),
                       decoration: BoxDecoration(
                           color: filterBackground,
                           borderRadius: BorderRadius.circular(10)),
@@ -203,17 +207,17 @@ class _MessageDetailState extends State<MessageDetailPage> {
                     width: 15,
                   ),
                   FloatingActionButton(
-                    onPressed: () async{
+                    onPressed: () async {
+                      _scrollController.animateTo(
+                          _scrollController.position.maxScrollExtent,
+                          duration: Duration(microseconds: 200),
+                          curve: Curves.easeIn);
                       await _messageService.addMessage(
                           messageEditingController.text,
                           user.uid,
                           widget.conservationId);
-                      _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent,
-                          duration:Duration(microseconds:200),
-                          curve: Curves.easeIn);
-                      messageEditingController.text = '';
 
+                      messageEditingController.text = '';
                     },
                     child: Icon(
                       Icons.send,
@@ -233,80 +237,78 @@ class _MessageDetailState extends State<MessageDetailPage> {
   }
 
   AppBar buildAppBarMessage() {
-
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: filterBackground,
       flexibleSpace: Consumer<User>(
-        builder: (context, user, child) =>
-            StreamBuilder<DocumentSnapshot>(
-                stream: _service.getConversitonsPath(widget.conservationId),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Birşeyler yanlış gitti");
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return SafeArea(
-                    child: Container(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Image(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(snapshot.data['productImage']),
-                              ),
-                            ),
+        builder: (context, user, child) => StreamBuilder<DocumentSnapshot>(
+            stream: _service.getConversitonsPath(widget.conservationId),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text("Birşeyler yanlış gitti");
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return SafeArea(
+                child: Container(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Image(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(snapshot.data['productImage']),
                           ),
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  snapshot.data['title'],
-                                  style: TextStyle(
-                                      color: themeColor,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                Text(
-                                  snapshot.data['productPrize'],
-                                  style: TextStyle(color: text, fontSize: 15),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Center(
-                              //inkwell ile daha yumuşak tıklanma verebiliriz
-                              child: IconButton(
-                                onPressed: ()async {
-                                  Navigator.pushNamed(context, MessageList.routeName);
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                }
-            ),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              snapshot.data['title'],
+                              style: TextStyle(
+                                  color: themeColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 6,
+                            ),
+                            Text(
+                              snapshot.data['productPrize'],
+                              style: TextStyle(color: text, fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          //inkwell ile daha yumuşak tıklanma verebiliriz
+                          child: IconButton(
+                            onPressed: () async {
+                              Navigator.pushNamed(
+                                  context, MessageList.routeName);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
       ),
     );
   }

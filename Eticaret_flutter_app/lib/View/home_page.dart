@@ -14,6 +14,8 @@ import '../DesignStyle/colors_cons.dart';
 //anasayfa
 class HomePage extends StatefulWidget {
   static String routeName = '/routeHomePage';
+
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -26,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   Stream productDatas;
   double topContainer = 0;
   bool closeTopContainer = false;
+
 
   onSearchTextChanged(String text) async {
     _searchResult.clear();
