@@ -12,7 +12,7 @@ class Product {
 
   //ürün ile ilgili açıklamalar
   String productOfDescription;
-  String productPrice;
+  int productPrice;
 
   //birdenn fazla resim olacak
   String productImage1;

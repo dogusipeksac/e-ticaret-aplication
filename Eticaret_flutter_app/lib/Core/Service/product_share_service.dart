@@ -17,7 +17,7 @@ class ProductShareService {
       String pickedFile5,
       String productCategory,
       String productTitle,
-      String productPrize,
+      int productPrize,
       String productLocation,
       String productOfDescription) async {
     var ref = _firestore.collection("Product");
@@ -55,6 +55,13 @@ class ProductShareService {
     return FirebaseFirestore.instance.collection("Product").
     where("User id",isEqualTo: FirebaseAuth.instance.currentUser.uid);
   }
+
+  Future<int> getCount(String field) async{
+        var deger =Product.getPath
+          .where("Kategori",isEqualTo: field).get().then((value) =>  value.docs.length);
+        return deger;
+  }
+
   Stream<List<Product>> getUserProducts(){
     return getUserProduct()
         .snapshots()

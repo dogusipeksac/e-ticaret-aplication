@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +39,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
   final TextEditingController _title = TextEditingController();
   final TextEditingController _price = TextEditingController();
   TextEditingController _explain = TextEditingController();
-  FocusNode _focusNode;
+  //FocusNode _focusNode;
 
   List listItemCategory = [
     "2.El Araç",
@@ -101,7 +102,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
   @override
   Widget build(BuildContext context) {
     final title = TextFormField(
-        focusNode: _focusNode,
+        //focusNode: _focusNode,
         validator: (value) {
           if (value == "") {
             return "Boş bırakılmaz.";
@@ -120,9 +121,8 @@ class _ProductSharePageState extends State<ProductSharePage> {
           color: text,
         ),
         decoration: inputDecoraton("İlanınız için başlık giriniz."));
-
     final price = TextFormField(
-        focusNode: _focusNode,
+        //focusNode: _focusNode,
         validator: (value) {
           if (value == "") {
             return "Boş bırakılmaz.";
@@ -143,7 +143,7 @@ class _ProductSharePageState extends State<ProductSharePage> {
         ),
         decoration: inputDecoraton("İlanınız için fiyat giriniz."));
     final explane = TextFormField(
-        focusNode: _focusNode,
+        //focusNode: _focusNode,
         validator: (value) {
           if (value == "") {
             return "Boş bırakılmaz.";
@@ -166,251 +166,248 @@ class _ProductSharePageState extends State<ProductSharePage> {
       //resizeToAvoidBottomInset: false,
       backgroundColor: background,
       appBar: produckShareScaffoldAppbar(),
-      body: GestureDetector(
-        onTap:()=> _focusNode.unfocus(),
-        child: Stack(
-          children: [
-            Form(
-              key: _formKey,
-              child: ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(10),
-                /*
-              controller: myScrollConroller,*/
-                children: [
-                  Container(
-                    height: 130.0,
-                    color: Colors.transparent,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Stack(
-                            children: <Widget>[
-                              GridView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 1),
-                                  itemCount: image.length + 1,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return index == 0
-                                        ? Container(
-                                            margin: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                            child: IconButton(
-                                              icon: Icon(Icons.add),
-                                              color: themeColor,
-                                              iconSize: 40,
-                                              onPressed: () {
-                                                !uploading ? choseImage() : null;
-                                              },
-                                            ),
-                                          )
-                                        : Container(
-                                            margin: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              image: DecorationImage(
-                                                  image:
-                                                      FileImage(image[index - 1]),
-                                                  fit: BoxFit.cover),
-                                            ),
-                                          );
-                                  }),
-                            ],
-                          ),
+      body: Stack(
+        children: [
+          Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(10),
+              /*
+            controller: myScrollConroller,*/
+              children: [
+                Container(
+                  height: 130.0,
+                  color: Colors.transparent,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Stack(
+                          children: <Widget>[
+                            GridView.builder(
+                                scrollDirection: Axis.horizontal,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 1),
+                                itemCount: image.length + 1,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return index == 0
+                                      ? Container(
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          child: IconButton(
+                                            icon: Icon(Icons.add),
+                                            color: themeColor,
+                                            iconSize: 40,
+                                            onPressed: () {
+                                              !uploading ? choseImage() : null;
+                                            },
+                                          ),
+                                        )
+                                      : Container(
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                            image: DecorationImage(
+                                                image:
+                                                    FileImage(image[index - 1]),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        );
+                                }),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 20,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Kategori",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                DropdownButtonFormField(
+                  //focusNode: _focusNode,
+                  validator: (value) {
+                    if (value == null) {
+                      return "Lütfen birini seçin...";
+                    }
+                    return null;
+                  },
+                  dropdownColor: background,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
                   ),
-                  Text(
-                    "Kategori",
-                    style: TextStyle(color: themeColor, fontSize: 20),
+                  iconSize: 20,
+                  isExpanded: true,
+                  decoration: inputDecoraton("Bir kategori seç..."),
+                  value: valueChoseCategory,
+                  style: textStyle,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueChoseCategory = newValue;
+                    });
+                  },
+                  items: listItemCategory.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Başlık",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                title,
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Fiyat",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                price,
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Şehir",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                DropdownButtonFormField(
+                  //focusNode: _focusNode,
+                  validator: (value) {
+                    if (value == null) {
+                      return "Boş bırakılmaz.";
+                    }
+                    return null;
+                  },
+                  dropdownColor: background,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.white,
                   ),
-                  SizedBox(
-                    height: 20,
+                  iconSize: 20,
+                  isExpanded: true,
+                  decoration: inputDecoraton("Bir şehir seç..."),
+                  value: valueChoseProductlocation,
+                  style: textStyle,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueChoseProductlocation = newValue;
+                    });
+                  },
+                  items: listItemProductLocation.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Tanım",
+                  style: TextStyle(color: themeColor, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                explane,
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 45,
+                  margin:
+                      EdgeInsets.only(right: 50, left: 50, bottom: 20, top: 20),
+                  decoration: BoxDecoration(
+                    color: themeColor,
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  DropdownButtonFormField(
-                    focusNode: _focusNode,
-                    validator: (value) {
-                      if (value == null) {
-                        return "Lütfen birini seçin...";
-                      }
-                      return null;
-                    },
-                    dropdownColor: background,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.white,
-                    ),
-                    iconSize: 20,
-                    isExpanded: true,
-                    decoration: inputDecoraton("Bir kategori seç..."),
-                    value: valueChoseCategory,
-                    style: textStyle,
-                    onChanged: (newValue) {
+                  child: FlatButton(
+                    onPressed: () {
                       setState(() {
-                        valueChoseCategory = newValue;
+                        if (validation()) {
+                          uploadFile().whenComplete(() => _productSharePage
+                              .addProduct(
+                                  auth.currentUser.uid,
+                                  urls.length >= 1 ? urls[0] : "",
+                                  urls.length >= 2 ? urls[1] : "",
+                                  urls.length >= 3 ? urls[2] : "",
+                                  urls.length >= 4 ? urls[3] : "",
+                                  urls.length >= 5 ? urls[4] : "",
+                                  valueChoseCategory,
+                                  _title.text,
+                                  int.parse(_price.text),
+                              valueChoseProductlocation,
+                                  _explain.text)
+                              .whenComplete(() => Navigator.pushNamed(context, HomePage.routeName)));
+                          uploading = true;
+                        }
                       });
                     },
-                    items: listItemCategory.map((valueItem) {
-                      return DropdownMenuItem(
-                        value: valueItem,
-                        child: Text(valueItem),
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Başlık",
-                    style: TextStyle(color: themeColor, fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  title,
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Fiyat",
-                    style: TextStyle(color: themeColor, fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  price,
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Şehir",
-                    style: TextStyle(color: themeColor, fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  DropdownButtonFormField(
-                    focusNode: _focusNode,
-                    validator: (value) {
-                      if (value == null) {
-                        return "Boş bırakılmaz.";
-                      }
-                      return null;
-                    },
-                    dropdownColor: background,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.white,
-                    ),
-                    iconSize: 20,
-                    isExpanded: true,
-                    decoration: inputDecoraton("Bir şehir seç..."),
-                    value: valueChoseProductlocation,
-                    style: textStyle,
-                    onChanged: (newValue) {
-                      setState(() {
-                        valueChoseProductlocation = newValue;
-                      });
-                    },
-                    items: listItemProductLocation.map((valueItem) {
-                      return DropdownMenuItem(
-                        value: valueItem,
-                        child: Text(valueItem),
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Tanım",
-                    style: TextStyle(color: themeColor, fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  explane,
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 45,
-                    margin:
-                        EdgeInsets.only(right: 50, left: 50, bottom: 20, top: 20),
-                    decoration: BoxDecoration(
-                      color: themeColor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          if (validation()) {
-                            uploadFile().whenComplete(() => _productSharePage
-                                .addProduct(
-                                    auth.currentUser.uid,
-                                    urls.length >= 1 ? urls[0] : "",
-                                    urls.length >= 2 ? urls[1] : "",
-                                    urls.length >= 3 ? urls[2] : "",
-                                    urls.length >= 4 ? urls[3] : "",
-                                    urls.length >= 5 ? urls[4] : "",
-                                    valueChoseCategory,
-                                    _title.text,
-                                    _price.text,
-                                valueChoseProductlocation,
-                                    _explain.text)
-                                .whenComplete(() => Navigator.of(context).pop()));
-                            uploading = true;
-                          }
-                        });
-                      },
-                      child: Text(
-                        "İlanı Paylaş",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                        ),
+                    child: Text(
+                      "İlanı Paylaş",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            uploading
-                ? Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "uploading...",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
+          ),
+          uploading
+              ? Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          "uploading...",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CircularProgressIndicator(
-                            value: val,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.green)),
-                      ],
-                    ),
-                  )
-                : Container(),
-          ],
-        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CircularProgressIndicator(
+                          value: val,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.green)),
+                    ],
+                  ),
+                )
+              : Container(),
+        ],
       ),
     );
   }
@@ -457,14 +454,14 @@ class _ProductSharePageState extends State<ProductSharePage> {
 
   @override
   void initState() {
-    _focusNode = FocusNode();
+    //_focusNode = FocusNode();
     super.initState();
     /*
     imgRef = FirebaseFirestore.instance.collection('imageURLs');*/
   }
   @override
   dispose() {
-    _focusNode.dispose();
+   // _focusNode.dispose();
     super.dispose();
   }
 }

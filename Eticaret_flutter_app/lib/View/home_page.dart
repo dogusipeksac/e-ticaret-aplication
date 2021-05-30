@@ -1,4 +1,5 @@
 
+import 'package:e_ticaret_flutter_app/Core/Service/filter_service.dart';
 import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/card_view.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/categories_scroll.dart';
@@ -25,9 +26,11 @@ class _HomePageState extends State<HomePage> {
   TextEditingController controller = new TextEditingController();
   ScrollController scrollController = ScrollController();
   ProductShareService _productShareService = ProductShareService();
+  FilterService _filterService = FilterService();
   Stream productDatas;
   double topContainer = 0;
   bool closeTopContainer = false;
+  bool filtered = false;
 
 
   onSearchTextChanged(String text) async {
@@ -44,14 +47,21 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    productDatas = _productShareService.getProduct();
+    if(FilterService.getQuery == null){
+      productDatas = _productShareService.getProduct();
+      filtered = false;
+    }else{
+      productDatas = _filterService.filteredProductList();
+      filtered = true;
+    }
     scrollController.addListener(() {
       double value = scrollController.offset / 150;
-      bool newBool = scrollController.offset > 40;
+      bool newBool = scrollController.offset > 50;
       if(newBool != closeTopContainer){
         setState(() {
           topContainer = value;
@@ -67,7 +77,7 @@ class _HomePageState extends State<HomePage> {
     const double _radius = 3;
 
     final Size size = MediaQuery.of(context).size;
-    final double categoryHeight = size.height * 0.30;
+    final double categoryHeight = size.height * 0.10;
     final underLine = UnderlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(_radius)),
         borderSide: BorderSide(color: themeColor));
@@ -122,7 +132,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () => Navigator.pushNamed(context, FilterPage.routeName),
               icon: Icon(
                 Icons.filter_list_rounded,
-                color: Colors.white,
+                color: filtered ? themeColor : Colors.white,
                 size: 30,
               ),
             ),
@@ -145,7 +155,11 @@ class _HomePageState extends State<HomePage> {
                 );
               }
               if (snapshot.hasData && snapshot.data.isEmpty) {
-                return Text("Document does not exist");
+                return Center(
+                    child: Text("Ürün Bulunamadı!",
+                      style: TextStyle(color: Colors.white,fontSize: 30),
+                    ),
+                );
               }
               return Container(
                 height: size.height,
@@ -153,12 +167,12 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     SizedBox(height: 20,),
                     AnimatedOpacity(
-                      duration: const Duration(milliseconds: 400),
+                      duration: const Duration(milliseconds: 500),
                       opacity: closeTopContainer ? 0 : 1,
                       child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 400),
+                          duration: const Duration(milliseconds: 500),
                           width: size.width,
-                          alignment: Alignment.topCenter,
+                          alignment: Alignment.topRight,
                           height: closeTopContainer ? 0 : categoryHeight,
                           child: categoriesScroller,
                       ),
@@ -181,9 +195,9 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                           staggeredTileBuilder: (index) => StaggeredTile.count(
-                              /*(index % 7 == 0) ? 2 : */1, /*(index % 7 == 0) ? 2 :*/ 1),
-                          mainAxisSpacing: 10.0,
-                          crossAxisSpacing: 10.0,
+                              /*(index % 7 == 0) ? 2 : */1, /*(index % 7 == 0) ? 2 :*/ 1.4),
+                          mainAxisSpacing: 20.0,
+                          crossAxisSpacing: 5.0,
                         ),
                       ),
                     ),

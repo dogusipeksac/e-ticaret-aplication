@@ -1,9 +1,11 @@
 
-import 'package:e_ticaret_flutter_app/Core/Service/product_share_service.dart';
+import 'package:e_ticaret_flutter_app/Core/Service/filter_service.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/colors_cons.dart';
 import 'package:e_ticaret_flutter_app/DesignStyle/for_text_style.dart';
+import 'package:e_ticaret_flutter_app/Model/filteredArgClass.dart';
 import 'package:e_ticaret_flutter_app/View/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 class FilterPage extends StatefulWidget {
@@ -19,24 +21,54 @@ class _FilterPageState extends State<FilterPage> {
   final TextEditingController _minimum = TextEditingController();
   final TextEditingController _maximum = TextEditingController();
 
-  ProductShareService _productSharePage = ProductShareService();
   String image = "";
 
   List listItemCategory = [
+    "Bir kategori seç...",
     "2.El Araç",
     "1.El Araç",
     "Teknoloji",
     "Telefon",
     "Giyim"
   ];
-  List listItemCityState = ["Adana", "Mersin", "İstanbul", "Malatya"];
+  List listItemCityState = ["Bir şehir seç...","Adana", "Mersin", "İstanbul", "Malatya"];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FilteredArgClass filter = FilterService.getFilter;
+    if(filter != null){
+      valueChoseCategoryOnTheFilter = filter.category;
+      valueChoseLocation = filter.location;
+      selectedButtonSmartSort = filter.getSort;
+      _maximum.text = filter.priceMax != null
+          ? filter.priceMax.toString()
+          : "";
+      _minimum.text = filter.priceMin != null
+          ? filter.priceMin.toString()
+          : "";
+    }
+  }
+
+  reset(){
+    setState(() {
+      valueChoseCategoryOnTheFilter = null;
+      valueChoseLocation = null;
+      selectedButtonSmartSort = null;
+      _maximum.text = "";
+      _minimum.text = "";
+      FilterService.setFilter = null;
+      FilterService.setQuery = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width * 2;
-    double height = MediaQuery.of(context).size.height * 2;
 
     final minumumPrize = TextField(
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        keyboardType: TextInputType.number,
         controller: _minimum,
         obscureText: false,
         cursorColor: themeColor,
@@ -58,8 +90,11 @@ class _FilterPageState extends State<FilterPage> {
           border: UnderlineInputBorder(
             borderSide: BorderSide(color: filterBackground, width: 0),
           ),
-        ));
+        ),
+    );
     final maximumPrize = TextField(
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        keyboardType: TextInputType.number,
         controller: _maximum,
         obscureText: false,
         cursorColor: themeColor,
@@ -81,12 +116,17 @@ class _FilterPageState extends State<FilterPage> {
           border: UnderlineInputBorder(
             borderSide: BorderSide(color: filterBackground, width: 0),
           ),
-        ));
+        ),
+    );
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       backgroundColor: background,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pushNamed(context, HomePage.routeName),
+        ),
         title: Text('Filtrele'),
         backgroundColor: background,
       ),
@@ -130,7 +170,10 @@ class _FilterPageState extends State<FilterPage> {
                   style: textStyle,
                   onChanged: (newValue) {
                     setState(() {
-                      valueChoseCategoryOnTheFilter = newValue;
+                      if(newValue == listItemCategory.elementAt(0))
+                        valueChoseCategoryOnTheFilter = null;
+                      else
+                        valueChoseCategoryOnTheFilter = newValue;
                     });
                   },
                   items: listItemCategory.map((valueItem) {
@@ -229,7 +272,10 @@ class _FilterPageState extends State<FilterPage> {
                   style: textStyle,
                   onChanged: (newValue) {
                     setState(() {
-                      valueChoseLocation = newValue;
+                      if(newValue == listItemCityState.elementAt(0))
+                        valueChoseLocation = null;
+                      else
+                        valueChoseLocation = newValue;
                     });
                   },
                   items: listItemCityState.map((valueItem) {
@@ -257,10 +303,10 @@ class _FilterPageState extends State<FilterPage> {
                       ForShortContainer(
                         onPressed: () {
                           setState(() {
-                            selectedButtonSmartSort = 'Akıllı';
+                            selectedButtonSmartSort = FilteredArgClass.SORT_PRIVATE;
                           });
                         },
-                        color: selectedButtonSmartSort == 'Akıllı'
+                        color: selectedButtonSmartSort == FilteredArgClass.SORT_PRIVATE
                             ? themeColor
                             : filterBackground,
                         child: Center(child: Text("Akıllı Sıralama",style: textStyle,)),
@@ -271,10 +317,10 @@ class _FilterPageState extends State<FilterPage> {
                       ForShortContainer(
                         onPressed: () {
                           setState(() {
-                            selectedButtonSmartSort = 'Düşük';
+                            selectedButtonSmartSort = FilteredArgClass.SORT_DECRAESE;
                           });
                         },
-                        color: selectedButtonSmartSort == 'Düşük'
+                        color: selectedButtonSmartSort == FilteredArgClass.SORT_DECRAESE
                             ? themeColor
                             : filterBackground,
                         child: Center(child: Text("Azalan fiyat",style: textStyle,)),
@@ -289,10 +335,10 @@ class _FilterPageState extends State<FilterPage> {
                       ForShortContainer(
                         onPressed: () {
                           setState(() {
-                            selectedButtonSmartSort = 'Yüksek';
+                            selectedButtonSmartSort = FilteredArgClass.SORT_INCREASE;
                           });
                         },
-                        color: selectedButtonSmartSort == 'Yüksek'
+                        color: selectedButtonSmartSort == FilteredArgClass.SORT_INCREASE
                             ? themeColor
                             : filterBackground,
                         child: Center(child: Text("Artan fiyat",style: textStyle,)),
@@ -314,29 +360,48 @@ class _FilterPageState extends State<FilterPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Container(
-                padding: EdgeInsets.only(left: 14, right: 14),
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: themeColor,
-                  border: Border.all(color: filterBackground, width: 1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: FlatButton(
-                  onPressed: () {
-                    ProductShareService service=ProductShareService();
-                    service.FilteredgetProduct(valueChoseCategoryOnTheFilter);
-
-                  },
-                  child: Text(
-                    "Filtrele",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
+              child: Column(
+                children: [
+                  FlatButton(
+                    minWidth: 150,
+                    color: themeColor,
+                    shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(15),),
+                    onPressed: () {
+                      FilterService.setFilter =
+                          FilteredArgClass(
+                            category: valueChoseCategoryOnTheFilter == null ? null : valueChoseCategoryOnTheFilter,
+                            location: valueChoseLocation == null ? null : valueChoseLocation,
+                            priceMax: _maximum.text.isEmpty ? null : double.parse(_maximum.text),
+                            priceMin: _minimum.text.isEmpty ? null : double.parse(_minimum.text),
+                          ).setSort(selectedButtonSmartSort);
+                      FilterService.setQuery = FilterService.getFilter.buildQuery();
+                      Navigator.pushNamed(context, HomePage.routeName);
+                    },
+                    child: Text(
+                      "Filtrele",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                ),
+                  FilterService.getFilter != null ?FlatButton(
+                    minWidth: 150,
+                    color: themeColor,
+                    shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(15),),
+                    onPressed: () {
+                      reset();
+                    },
+                    child: Text(
+                      "Resetle",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                      ),
+                    ),
+                  )
+                      :SizedBox(),
+                ],
               ),
             ),
           ],

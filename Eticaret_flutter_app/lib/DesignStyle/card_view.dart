@@ -37,19 +37,14 @@ class _CardViewState extends State<CardView> {
     return Container(
       constraints: BoxConstraints.tight(Size.square(200.0)),
       child: GestureDetector(
-        onTap: () => setState(() =>_displayFront = !_displayFront),
-        onLongPress: () => _onTileClicked(product, context),
-        child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 600),
-          layoutBuilder: (widget, list) => Stack(children: [widget, ...list]),
-          transitionBuilder: __transitionBuilder,
-          child: _displayFront ? _buildFront(product.productImage1) : _buildRear(product),
-        ),
+        onDoubleTap: () => setState(() =>_displayFront = !_displayFront),
+        onTap: () => _onTileClicked(product, context),
+        child: __buildLayout(product.productImage1),
       ),
     );
   }
 
-  Widget __transitionBuilder(Widget widget, Animation<double> animation) {
+  /*Widget __transitionBuilder(Widget widget, Animation<double> animation) {
     final rotateAnim = Tween(begin: pi, end: 0.0).animate(animation);
     return AnimatedBuilder(
       animation: rotateAnim,
@@ -68,22 +63,69 @@ class _CardViewState extends State<CardView> {
         );
       },
     );
-  }
-  Widget __buildLayout({Key key, Widget widget, Color backgroundColor}) {
-    return Container(
-      key: key,
-      width: double.maxFinite,
-      height: double.maxFinite,
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(20.0),
-        color: backgroundColor,
-      ),
-      child: widget,
+  }*/
+  Widget __buildLayout(String imageUrl,{Widget widget}) {
+    var title = product.productTitle;
+    var category = product.productCategory;
+    var price = "${product.productPrice} TL";
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:[
+        Expanded(
+          flex: 10,
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(20.0),
+              image: DecorationImage(
+                  image: NetworkImage(imageUrl),
+                  fit: BoxFit.fill
+              ),
+              color: themeColor,
+            ),
+            child: widget,
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: AutoSizeText(price,
+            maxLines: 1,
+            style: TextStyle(
+                color: text,
+                fontSize:50,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: AutoSizeText(category,
+            maxLines: 1,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: textDarkHint,
+              fontSize:40,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: AutoSizeText(title.length>33 ?
+          title.replaceRange(33, title.length, "..."):title,
+            maxLines: 2,
+            style: TextStyle(
+              fontSize:50,
+              color:themeColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ]
     );
   }
-  Widget _buildFront(String imageUrl) {
-    return __buildLayout(
+  /*Widget _buildFront(String imageUrl) {
+    return __buildLayout(imageUrl
       key: ValueKey(true),
       backgroundColor: Colors.blue,
       widget: Container(
@@ -117,6 +159,7 @@ class _CardViewState extends State<CardView> {
               child: AutoSizeText(category,
                 maxLines: 1,
                 style: TextStyle(
+                  fontWeight: FontWeight.bold,
                   color: background,
                   fontSize:50,),
               ),
@@ -148,5 +191,5 @@ class _CardViewState extends State<CardView> {
         ),
       ),
     );
-  }
+  }*/
 }
