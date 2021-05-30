@@ -25,6 +25,7 @@ class ChatService {
         receiverImage: doc.get('receiverImage'),
         receiverName: doc.get('receiverName'),
         productUserId: doc.get('productUserId'),
+      displayMessage: doc.get('displayMessage')
 
     )).toList());
   }
@@ -56,6 +57,7 @@ class ChatService {
       'productUserId':product.userId,
       //
       'productId': product.id,
+      'displayMessage':message,
       //
 
     });

@@ -126,6 +126,10 @@ class _MessageListState extends State<MessageList> {
                                   SizedBox(
                                     height: 2,
                                   ),
+                                  Text(
+                                    doc.displayMessage,
+                                    style: TextStyle(color: Colors.white, fontSize: 15),
+                                  ),
 
                                 ],
                               ),

@@ -221,10 +221,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  /*Widget isEmptyImage(Product product)=>product.productImage1 == "" ?
-  Image.asset("images/Opel_KARL.jpg") : Image.network(product.productImage1);*/
-
   List<Product> _searchResult = [];
 
   List<Product> _products = [];

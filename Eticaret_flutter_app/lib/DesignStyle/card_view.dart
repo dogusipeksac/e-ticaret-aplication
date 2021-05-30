@@ -44,26 +44,7 @@ class _CardViewState extends State<CardView> {
     );
   }
 
-  /*Widget __transitionBuilder(Widget widget, Animation<double> animation) {
-    final rotateAnim = Tween(begin: pi, end: 0.0).animate(animation);
-    return AnimatedBuilder(
-      animation: rotateAnim,
-      child: widget,
-      builder: (context, widget) {
-        final isUnder = (ValueKey(_displayFront) != widget.key);
-        var tilt = ((animation.value - 0.5).abs() - 0.5) * 0.003;
-        tilt *= isUnder ? -1.0 : 1.0;
-        final value = isUnder ? min(rotateAnim.value, pi / 2) : rotateAnim.value;
-        return Transform(
-          transform: _flipXAxis
-              ? (Matrix4.rotationY(value)..setEntry(3, 0, tilt))
-              :(Matrix4.rotationX(value)..setEntry(3, 1, tilt)),
-          child: widget,
-          alignment: Alignment.center,
-        );
-      },
-    );
-  }*/
+
   Widget __buildLayout(String imageUrl,{Widget widget}) {
     var title = product.productTitle;
     var category = product.productCategory;

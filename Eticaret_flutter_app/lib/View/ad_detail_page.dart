@@ -219,8 +219,10 @@ class DetailBottomAppBar extends StatelessWidget {
   final ChatService _chatService = ChatService();
   final ProductShareService service = ProductShareService();
 
+
   @override
   Widget build(BuildContext context) {
+    bool hasMessageData=false;
     final Size size = MediaQuery.of(context).size;
     final Size buttonSize = Size(size.width / 3, size.height * 0.05);
     final buttonStyle = ElevatedButton.styleFrom(
@@ -240,73 +242,86 @@ class DetailBottomAppBar extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text("Birşeyler yanlış gitti");
+
                   }
                   return snapshot.data != null
-                      ? ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => MessageDetailPage(
-                                          product: product,
-                                          conservationId: snapshot.data,
-                                        ))));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Text(
-                              "Mesaja Git",
-                              style: detailButtonTextStyle,
+                      ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => MessageDetailPage(
+                                            product: product,
+                                            conservationId: snapshot.data,
+                                          ))));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+
+                              child: Text(
+                                "Mesaja Git",
+                                style: detailButtonTextStyle,
+                              ),
                             ),
+                            style: buttonStyle,
                           ),
-                          style: buttonStyle,
-                        )
-                      : product.userId != user.uid ? ElevatedButton(
-                          onPressed: () {
-                            showInformationDialog(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Text(
-                              "Mesaj At",
-                              style: detailButtonTextStyle,
+                      )
+                      : product.userId != user.uid ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              showInformationDialog(context);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Text(
+                                "Mesaj At",
+                                style: detailButtonTextStyle,
+                              ),
                             ),
+                            style: buttonStyle,
                           ),
-                          style: buttonStyle,
-                        )
+                      )
                       : Container(width:0,height:0);
                 },
               ),
-              product.userId != user.uid ? Spacer():SizedBox(),
               product.userId != user.uid
-                  ? ElevatedButton(
-                      onPressed: () {},
-                      child: Padding(
-                          padding: const EdgeInsets.all(3),
+                  ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        child: Padding(
+                            padding: const EdgeInsets.all(3),
+                            child: Text(
+                              "Ara",
+                              style: detailButtonTextStyle,
+                            )),
+                        style: buttonStyle,
+                      ),
+                  )
+                  : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          await service
+                              .remove(product.id)
+                              .whenComplete(() => Navigator.pop(context));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
                           child: Text(
-                            "Ara",
-                            style: detailButtonTextStyle,
-                          )),
-                      style: buttonStyle,
-                    )
-                  : ElevatedButton(
-                      onPressed: () async {
-                        await service
-                            .remove(product.id)
-                            .whenComplete(() => Navigator.pop(context));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Text(
-                          "Sil",
-                          style: TextStyle(
-                              color: background,
-                              fontSize: 20,
+                            "Sil",
+                            style: TextStyle(
+                                color: background,
+                                fontSize: 20,
+                            ),
                           ),
                         ),
+                        style: buttonStyle,
                       ),
-                      style: buttonStyle,
-                    ),
+                  ),
               Spacer(),
             ],
           )),

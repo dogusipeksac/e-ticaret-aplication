@@ -5,15 +5,14 @@ class Chat {
 
   String productId;
   String productImage;
-  String productPrize;
+  int productPrize;
   String title;
   String productUserId;
-  String message;
-  List<String> members;
   String senderImage;
   String senderName;
   String receiverImage;
   String receiverName;
+  String displayMessage;
 
   Chat({
     this.id,
@@ -22,11 +21,11 @@ class Chat {
     this.productPrize,
     this.title,
     this.productUserId,
-    this.message,
-    this.members,
+
     this.receiverImage,
     this.receiverName,
     this.senderImage,
     this.senderName,
+    this.displayMessage
   });
 }

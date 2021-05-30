@@ -282,7 +282,7 @@ class _MessageDetailState extends State<MessageDetailPage> {
                               height: 6,
                             ),
                             Text(
-                              snapshot.data['productPrize'],
+                              snapshot.data['productPrize'].toString(),
                               style: TextStyle(color: text, fontSize: 15),
                             ),
                           ],

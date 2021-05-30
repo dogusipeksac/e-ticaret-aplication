@@ -95,24 +95,25 @@ class _SettingPageState extends State<SettingPage> {
       backgroundColor: background,
       appBar: settingScaffoldAppBar(),
       drawer: MainDrawer(),
-      body: SingleChildScrollView(
-        child: Consumer<User>(
-          builder: (context, user, child) => StreamBuilder<DocumentSnapshot>(
-              stream: userController.getPath().snapshots(),
-              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Text("Birşeyler yanlış gitti");
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                _isimControllerr.text= snapshot.data['name'];
-                _passwordController.text=snapshot.data['password'];
-                _locationController.text=snapshot.data['location'];
+      body: Consumer<User>(
+        builder: (context, user, child) => StreamBuilder<DocumentSnapshot>(
+            stream: userController.getPath().snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text("Birşeyler yanlış gitti");
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              _isimControllerr.text= snapshot.data['name'];
+              _passwordController.text=snapshot.data['password'];
+              _locationController.text=snapshot.data['location'];
 
-                return Column(
+              return SingleChildScrollView(
+                padding: EdgeInsets.all(15),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -245,9 +246,9 @@ class _SettingPageState extends State<SettingPage> {
                     )),
                     SizedBox(height: 40.0),
                   ],
-                );
-              }),
-        ),
+                ),
+              );
+            }),
       ),
     );
   }
